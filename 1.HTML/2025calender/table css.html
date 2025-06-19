@@ -31,7 +31,60 @@
     }
   </style>
 </head>
+<body><!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>비율 고정 테이블</title>
+  <style>
+    .table-wrapper {
+      width: 80vw;
+      margin: 0 auto;
+    }
+
+    table {
+      width: 100%;
+      aspect-ratio: 4 / 3; /* 가로:세로 4:3 비율 유지 */
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th, td {
+      border: 1px solid #333;
+      padding: 8px;
+      text-align: center;
+    }
+  </style>
+</head>
 <body>
+
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th>이름</th>
+        <th>나이</th>
+        <th>직업</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>김철수</td>
+        <td>30</td>
+        <td>개발자</td>
+      </tr>
+      <tr>
+        <td>이영희</td>
+        <td>27</td>
+        <td>디자이너</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
+
 
   <table>
     <thead>
