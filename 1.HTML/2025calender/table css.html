@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>스타일 적용된 테이블</title>
+  <style>
+    table {
+      border-collapse: collapse; /* 셀 테두리 겹침 제거 */
+      width: 80%; /* 테이블 전체 너비 */
+      margin: 20px auto; /* 중앙 정렬 */
+      font-size: 16px; /* 전체 글자 크기 */
+    }
+
+    th, td {
+      border: 1px solid #333; /* 셀 테두리 */
+      padding: 10px 15px; /* 셀 내부 여백 */
+      text-align: center; /* 텍스트 가운데 정렬 */
+    }
+
+    th {
+      background-color: #4CAF50; /* 헤더 배경색 */
+      color: white; /* 헤더 글자색 */
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2; /* 짝수 줄 배경색 */
+    }
+
+    tr:hover {
+      background-color: #ddd; /* 마우스 오버 시 배경색 */
+    }
+  </style>
+</head>
+<body>
+
+  <table>
+    <thead>
+      <tr>
+        <th>이름</th>
+        <th>나이</th>
+        <th>직업</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>김철수</td>
+        <td>30</td>
+        <td>개발자</td>
+      </tr>
+      <tr>
+        <td>이영희</td>
+        <td>27</td>
+        <td>디자이너</td>
+      </tr>
+      <tr>
+        <td>박민수</td>
+        <td>35</td>
+        <td>기획자</td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>
