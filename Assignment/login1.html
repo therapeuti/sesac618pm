@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 페이지1</title>
+    <style>
+        label {
+            display: inline-block; /* label은 기본적으로 inline 요소라서 텍스트 길이만큼의 공간만 차지하므로 inline-block으로 변경하여 고정길이를 지정해줄 수 있음*/
+            width: 25px; /* 지정된 길이가 실제 텍스트 크기보다 작으면 그 위로 다른 요소와 겹치게 됨*/
+        }
+
+        body {
+            display: flex;
+            justify-content: center; /* 가로 중앙 */
+            align-items: center;      /* 세로 중앙 */
+        }
+        html, body { /* 이걸 안 쓰면  위 body 부분만 쓰면 세로 중앙이 되지 않음*/
+            height: 100%;
+            margin: 0;
+        }
+
+        .container {
+            display: inline-block;
+            text-align: center;
+            border: 1px solid;
+
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+    <form>
+        <label for id="user_id">ID</label>
+        <input type="text" name="id" id="user_id">
+        <br>
+        <label for id="user_pw">PW</label>
+        <input type="password" name="pw" id="user_pw">
+        
+
+        <!-- <input type="button" value="input type=button"> 버튼이지만 서버로 정보를 보내는 기능이 없음 -->
+        <input type="submit" value="로그인">
+        <!-- <button type="submit">submit</button> input type=submit과 동일한 기능을 가짐 -->
+    </form>
+    <button> 회원가입</button>
+    <button> ID/PW 찾기</button>
+    <button> sns으로 로그인...? 카톡, 네이버..</button>
+    </div>
+
+</body>
+</html>
