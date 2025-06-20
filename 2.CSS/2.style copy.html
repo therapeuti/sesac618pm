@@ -44,13 +44,13 @@
     <h3>style에서 색상표기 : 16진수 #00ff00</h3>
     <h4>style에서 색상표기 : rgb(159, 193, 231)</h4>
     <p> 본문 내용 아무거나 어쩌구 저쩌구1</p>
-    <p class="color1"> 본문 내용 아무거나 어쩌구 저쩌구2</p>
-    <p class="color2"> 본문 내용 아무거나 어쩌구 저쩌구2</p>
-    <p id="color3"> 본문 내용 아무거나 어쩌구 저쩌구4</p>
-    <p id="color4"> 본문 내용 아무거나 어쩌구 저쩌구4</p>
+    <p class="color1"> class = color1 본문 내용 아무거나 어쩌구 저쩌구2</p>
+    <p class="color2"> class = color2 본문 내용 아무거나 어쩌구 저쩌구2</p>
+    <p id="color3"> id = color3 -> Lorem ipsum, dolor sit amet consectetur adipisicing elit. </p>
+    <p id="color4"> id = color4 -> id가 있지만 스타일지정이 안 되어서 기본 p태그 스타일이 적용됨</p>
     <p> 본문 내용 아무거나 어쩌구 저쩌구5</p>
     <p class="color2"> 본문 내용 아무거나 어쩌구 저쩌구5</p>
-    <p class="color1" id="color3"> id > class > tag 디테일</p>
+    <p class="color1" id="color3"> id > class > tag 순으로 우선 적용됨. 디테일한 것 우선적으로 적용. class color1과 id color3 두 개의 스타일이 서로 섞임. 겹치는 속성(색상과 테두리)의 경우 id의 스타일이 우선 적용됨. 그 외 class color1의 남은 속성(배경색)이 적용됨.</p>
     <p style="color:yellow; background:green"> 굳이 스타일 적용을 이렇게 개별적으로 할 이유 없음... 디자이너가 적용x 개발자의 영역이므로...</p>
 </body>
 </html>
