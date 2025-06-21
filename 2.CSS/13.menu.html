@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>메뉴 만들기</title>
+    <style>
+        .menu0 {
+            top:5px;
+            left:5px;
+        }
+        .menu0 ul {
+            display:flex;
+            list-style-type: none;
+            padding:0;
+            margin:0;
+        }
+        ul li {
+            display: inline-block;
+            /* float:left; */
+            width:100px;
+            border-right: 1px solid;
+            text-align:center;
+
+        }
+        #login {
+            border:none;
+            right: 10px; /*이거를 쓰려면 position을 정해줘야 하나?*/
+            position: absolute;/*의도대로 적용이 되나, 창이 좁아졌을 때 다른 요소와 겹침*/
+        }
+
+        /* .container {
+        } */
+        .container .menu { /* 얘는 왜 창을 좁히면 메뉴 박스들도 두 줄로 겹치게 됨... 왜 수업시간에 한 거랑 다르지? 위에 리스트로 만든 메뉴의 있고 없고 차이..?*/
+            /* display:flex; flex 하지 않아도 float 만으로도 박스들이 옆으로 나란히 위치하게 되는 듯..*/
+            float: left;
+            width: 100px;
+            text-align: center;
+            border-right: 1px solid black;
+
+        }
+        .container .menu.login {
+            float: right;
+            border: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="menu0">
+        <ul>
+            <li>menu1</li>
+            <li>menu2</li>
+            <li>menu3</li>
+            <li>menu4</li>
+            <li id="login">login</li>
+        </ul>
+    </div>
+<br>
+<br>
+<br>
+<br>
+<!-- 앞에서 리스트 해서 그런가 메뉴도 리스트로 만들어야 하나 싶어서 해봄 -->
+
+    <!-- 메뉴를 굳이 리스트로 만들어서 복잡하게 하지 말고.. 걍 div로 만들면 됨. -->
+    <div class="container">
+        <div class="menu">menu1</div>
+        <div class="menu">menu2</div>
+        <div class="menu">menu3</div>
+        <div class="menu">menu4</div>
+        <div class="menu login">Login</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .coffee {
+            list-style: "ㅁ"; /* list style 관련 type postion 등의 속성을 한꺼번에 작성*/
+        }
+
+        .cafe {
+            list-style-type: circle;
+            color:blue;
+        }
+
+        .cafe li::after {
+            content:"ㅅ";
+            color:red;
+            margin-left: 10px;
+            font-size: 30px;
+            display: inline-block;
+            width: 20px; /* li::after는 기본적으로 inline 요소이므로 너비 지정을 하려면 inline-block이나 block으로 변경해줘야 함. 해당 블럭의 너비를 지정. margin이나 content 크기와 상관없음. "ㅅ"이 들어가는 박스의 크기. 그러나 현재로선 너비를 줄여도 딱히 ㅅ이 잘리거나 하진 않음. 다른 속성을 더 부여해줘야 하는 듯.*/
+
+        }
+
+        .gu li::before {
+            content:"ㅂ";
+            display: inline-block;
+            width: 5px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <ul class="coffee">
+        <li>아메리카노</li>
+        <li>돌체라떼</li>
+        <li>에스프레소</li>
+    </ul>
+    <ul class="cafe">
+        <li>compose</li>
+        <li>mega</li>
+        <li>twosome</li>
+    </ul>
+    <ul class="gu">
+        <li>성북구</li>
+        <li>서대문구</li>
+        <li>성동구</li>
+    </ul>
+</body>
+</html>

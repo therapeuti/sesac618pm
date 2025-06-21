@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>화면 내에서 위치 고정</title>
     <style>
         .bg {
             height: 300px;
@@ -16,7 +16,9 @@
             height: 100px;
             background-color: teal;
             background-image: url(images/starbucks.png);
-            background-size: 100% 100%; /*커버랑 동일*/         
+            background-size: 80% 80%; /*커버랑 동일*/      
+            background-repeat: no-repeat;
+            background-position: center;   
             position: fixed;
             bottom: 50px;
             right: 50px;
@@ -27,7 +29,7 @@
 
 <body>
     <div class="bg"></div>
-    <div class="bg center"></div>
+    <div class="bg center"></div> <!-- class가 bg와 center 두 개 인 것-->
     <div class="bg"></div>
     <div class="fixed"></div>
 </body>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>메뉴 만들기</title>
+    <style>
+        .container {
+            border: 1px solid black;
+        }
+        .menu {
+            display:inline-block;
+            border: 1px solid blue;
+        }
+
+        ul {
+            list-style-type: none;
+            display: flex; /* 각 메뉴 리스트를 가로로 만들어줌...*/
+            /* display : inline-block; 여기다 써도 소용없음..... */
+            text-align : center;
+            background-color: lightgreen;
+            /* border: green 1px solid; */
+            margin:0;
+            padding:0;
+
+        }
+
+        ul li {            
+            width: 100%; /* 부모요소에 대해 각 li의 너비가 100%여서 창이 변함에 따라 자동으로 각 메뉴의 너비도 바뀜..*/
+            /* border: 1px solid red; */
+            /* padding:5px; */
+        }
+
+        ul li a {
+            text-decoration: none;
+            display: block; 
+            /*전체 영역을 클릭 가능한 영역으로 만듦*/
+            padding: 8px 20px; /*가로패딩 추가...?*/ 
+
+        }
+        ul li a:hover {
+            background-color: yellow;
+            
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="menu">Home</div>
+        <div class="menu">News</div>
+        <div class="menu">Contact</div>
+        <div class="menu">About</div>
+    </div>
+    <hr>
+
+    <ul>
+        <li><a href="">Home</a></li>
+        <li><a href="">News</a></li>
+        <li><a href="">Contact</a></li>
+        <li><a href="">About</a></li>
+    </ul>
+</body>
+</html>

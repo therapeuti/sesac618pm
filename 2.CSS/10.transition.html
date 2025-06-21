@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transition</title>
+    <style>
+        .square {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            transition-property: all;
+            transition-duration: 3s;
+            transition-timing-function: linear; /*마우스 올릴 때, 치울 때 동일하게 적용*/
+
+        }
+        .square:hover {
+            width:150px;
+            height:150px;
+        }
+        .button {
+            color: black;
+
+        }
+
+        .button:hover {
+            color: red;
+            transition-property: color;
+            transition-duration: 2s;
+            transition-timing-function: ease; /* hover 파트에 쓰면 마우스 없을 때는 적용이 되지 않음*/
+        }
+        .image {
+            width: 200px;
+            height: 200px;
+            transition-duration: 2s;
+            transition-timing-function: linear;
+        }
+        .image:hover {
+            transform: rotate(180deg)
+        }
+        .image2 {
+            width: 200px;
+            height: 200px;
+            transition-duration: 2s;
+            transition-timing-function: ease-in-out;
+
+        }
+        .image2:hover {
+            transform: rotate(180deg)
+        }
+        </style>
+</head>
+<body>
+    <div class="square"></div>
+    <br>
+    <button class="button">마우스를 올려보시오</button>
+    <br>
+    <img class="image" src="images/cat.jpg">
+    <br>
+    <img class="image2" src="images/cat.jpg">
+</body>
+</html>

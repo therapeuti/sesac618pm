@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>animation</title>
+    <style>
+        .square {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            animation-name: move;
+            /* animation-name: roundtrip; */
+            animation-direction: alternate; /* 애니메이션이 반대로도 적용..? 왼쪽으로 이동하는 애니메이션이라면 이동 후 다시 돌아오는 것까지 진행. */
+            animation-iteration-count: infinite; /* 반대 동작도 count에 들어감 1이라면 반대 동작 작동 안 함. 2라면 반대동작 후 종료*/
+            animation-duration: 5s; /* animation duration과 position: relative를 넣어야 작동함*/
+            position: relative;
+
+        }
+        @keyframes move {
+            0% {
+                left: 0px;
+            }
+            100% {
+                left: 500px;
+            }
+        }
+        @keyframes roundtrip {
+            0% {
+                left: 0;
+            }
+            50% {
+                left: 300px;
+            }
+            100% {
+                left: 0;
+            }
+        }
+
+        p {
+            animation-name: fadeout;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
+
+        }
+        @keyframes fadeout {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .circle {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            border-radius: 30%;
+            /* animation-name: rotate; */
+            animation-name: RotateAndScale;
+            animation-duration: 5s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+            animation-timing-function: ease-in-out;
+
+        }
+        @keyframes rotate {
+            0% {
+                rotate:0deg;
+            }
+            50% {
+                width:200px;
+                height:200px;
+                rotate:180deg;
+            }
+            100% {
+                width: 100px;
+                height: 100px;
+                rotate:360deg;
+            }
+        }
+        @keyframes RotateAndScale { /* transform, scale 이용해서 한 번에 회전과 크기변경을 시킴*/
+            0% {
+                transform: rotate(0deg) scale(1)
+            }
+            50% {
+                transform: rotate(180deg) scale(1.5)
+            }
+            100% {
+                transform: rotate(0deg) scale(1)
+            }
+        }
+
+        img {
+            animation-name: shake;
+            animation-duration: 3s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+
+        }
+        @keyframes shake {
+            0% {
+                transform: translateX(0)
+            }
+            25% {
+                transform: translateX(-10px) rotate(-5deg)
+            }
+            75% {
+                transform: translateX(100px) rotate(5deg)
+            }
+            100%{
+                transform: translateX(0)
+            }
+            
+
+
+
+        }
+    </style>
+</head>
+<body>
+    <div class="square"></div>
+    <p>Fade Out 애니메이션</p>
+    <div class="circle"></div>
+    <img src="images/cat.jpg"
+    
+</body>
+</html>
