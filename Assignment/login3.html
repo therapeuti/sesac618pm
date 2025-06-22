@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Title</title>
+  	<style>
+		* {
+			box-sizing: border-box;
+			font-family:"Noto Sans KR", sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+		html, body {
+			width: 100%;
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 20px;
+			background: linear-gradient(45deg,rgb(76, 76, 236),purple)
+
+		}
+		#chk {
+			display:none;
+		}
+
+		.main {
+			width:340px;
+			height:500px;
+			background-color: lightgreen;
+			position: relative; /* signup, login 폼을 main 안에 유지하기 위함 */
+			overflow: hidden; /* main 넘어가는 부분은 안 보이게 */
+			border-radius:10px;
+			box-shadow:5px 5px 10px black;
+		}
+
+		.main .signup,
+		.main .login {
+			/* display: flex; */
+			/* flex-direction: column; */
+			align-items: center;
+			justify-content: center;
+		}
+		.signup, .login {
+			width:100%;
+			height:100%;
+			text-align:center;
+			padding: 20px;
+			position: absolute;
+			top:0;
+			left:0;
+			border-radius: 5px;
+			transition-duration:1s;
+			transition-timing-function:ease;
+		}
+		
+		.signup {
+			background: linear-gradient(45deg, rgb(237, 168, 237), purple);
+			transform: translateX(100%)
+		}
+		
+		.login {
+			background: linear-gradient(45deg, skyblue, blue);
+			transform: translateX(0%)
+		}
+		#chk:checked ~ .signup {
+			transform:translate(0)
+		}
+		#chk:checked ~ .login {
+			transform:translateX(-100%)
+		}
+
+		label {
+			display: block;
+            margin-bottom: 30px; /* label이 인라인 요소라 변경해줘야 margin이 적용이 됨 */
+			font-size: 30px;
+			color: white;
+		}
+
+		input {
+			width: 100%;
+			height: 50px;
+			padding: 10px;
+			border-radius: 20px;
+			border: none;
+			margin-bottom: 20px;
+			background-color:rgba(255,255,255,0.3);
+		}
+		input::placeholder {
+			color:rgba(255,255,255,0.7)
+		}
+		button {
+			width: 100%;
+			height:50px;
+			border-radius: 20px;
+			background-color: rgba(255,255,255,1);
+			border:none;
+			margin-top: 30px;
+			font-size: 20px;
+
+		}
+	</style>
+</head>
+<body>
+	<div class="main">  	
+		<input type="checkbox" id="chk" aria-hidden="true">
+
+			<div class="signup">
+				<form>
+					<label for="chk" aria-hidden="true">Sign up</label><br>  <!--라벨 for 속성이 체크박스의 id와 연결되어 있으므로 라벨을 클릭하면 위 체크박스가 체크/해제됨 */-->
+					<input type="text" name="txt" placeholder="User name" required=""><br>
+					<input type="email" name="email" placeholder="Email" required=""><br>
+					<input type="password" name="pswd" placeholder="Password" required=""><br>
+					<button>Sign up</button>
+				</form>
+			</div>
+
+			<div class="login">
+				<form>
+					<label for="chk" aria-hidden="true">Login</label><br> <!-- 라벨을 클릭하면 위 체크박스가 체크/해제됨 -->
+					<input type="email" name="email" placeholder="Email" required=""><br>
+					<input type="password" name="pswd" placeholder="Password" required=""><br>
+					<button>Login</button>
+				</form>
+			</div>
+	</div>
+</body>
+</html>
