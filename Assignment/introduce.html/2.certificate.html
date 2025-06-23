@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+    <title>내 소개</title>
+    <style>
+        * {
+            font-style: "Noto Sans KR", sans-serif;
+            box-sizing:border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+            
+            background: linear-gradient(120deg,#667eea, #764ba2);
+            padding: 20px;
+            min-height:100vh;
+        }
+        .container {
+            display:flex;
+            flex-direction: column;
+            justify-content:center;
+            align-items:center;
+            max-width: 1200px;
+            background: white;
+
+        }
+        .nav {
+            width: 100%;
+            display: flex;
+            justify-content: right;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);  
+            /* padding: 0, auto; */
+            /* margin: 20px; */
+            color: white;
+
+        }
+        .nav .menu {
+            /* width: 100px; */
+            padding: 10px;     
+            margin: 20px;    
+            text-align: center;
+            border-radius: 10px;
+        }
+        .nav .menu:hover {
+            background-color:rgba(255,255,255,0.2)
+        }
+        .nav .menu a {
+            text-decoration: none;
+            color: white;
+
+        }
+        .content {
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            padding:20px;
+        }
+
+        /* .section1 {
+            background-color: #f4f4f4;
+            border-radius: 15px;
+            width: 300px;
+            height: 400px;
+            display:flex;
+            justify-content: center;
+            align-items:center;
+            margin: 20px;
+            padding: 20px;
+        } */
+
+        /* .section2 {
+            background-color: #f4f4f4;
+            border-radius: 15px;
+            width: 500px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            margin: 20px;
+            padding: 20px;
+        } */
+
+        .cert-item {
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+        ul li {
+            display:flex;
+            margin:10px;
+            margin-left:30px;
+            font-size: 18px;
+            font-weight: bold;
+            color:#2c3e50;
+        }
+        li div {
+            margin-left: 20px;
+            font-size: 15px;
+            color:#666;
+            font-weight: lighter;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <div class="menu"><a href="introducemyself.html">홈</a></div>
+            <div class="menu"><a href="certificate.html">자격 & 경력</a></div>
+            <div class="menu">스킬 & 역량</div>
+            <div class="menu">프로젝트</div>
+
+        </div>
+        <div class="content">
+            <div class="about-section">
+                <h2>🏆 보유 자격증</h2>
+                <div class="cert-grid">
+                    <ul>
+                        <li>빅데이터분석기사<div>한국데이터산업진흥원</div></li>
+                        <li>정보처리기사<div>한국산업인력공단</div></li>
+                        <li>ADSP(데이터분석준전문가)<div>한국데이터산업진흥원</div></li>
+                        <li>SQLD<div>한국데이터산업진흥원</div></li>
+                        <li>정보처리기능사<div>한국산업인력공단</div></li>
+                        <li>컴퓨터활용능력 2급<div>대한상공회의소</div></li>
+                        <li>워드프로세서<div>대한상공회의소</div></li>
+                    </ul>                     
+                </div>
+
+            <!-- <div class="section2">
+                <h2>교육 및 경력사항</h2>
+                <div class="experience">교육사항, 자격증, 경력</div>
+                
+            </div> -->
+        </div>
+    </div>
+    
+</body>
+</html>
