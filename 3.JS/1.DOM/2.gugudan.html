@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>구구단</title>
+</head>
+<body>
+    <h1>구구단</h1>
+    <input type="number" placeholder="단 입력 (예:2)">
+    <script>
+        console.log('구구단 출력')
+        document.write("Hello, World")
+        document.write("<p>")
+            for (let i = 2; i <= 9; i ++) {
+                // document.write("숫자: " + i + "<br>");
+                // document.write(`숫자 : ${i} <br>`)
+                document.write(`--------${i}단--------<br>`)
+                for (let n = 1; n <=9; n++){
+                    document.write(`${i} X ${n} = ${i*n}`)
+                    document.write("<br>")
+                }
+
+            
+            }
+            document.write("<p>")
+    </script>
+</body>
+</html>

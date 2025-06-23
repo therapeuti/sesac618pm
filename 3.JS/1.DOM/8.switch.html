@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <!-- <select onclick="fruitDisplay()"> -->
+    <select id="fruitSelector" onchange="fruitDisplay()">
+        <option value="apple">사과</option>
+        <option value="banana">바나나</option>
+        <option value="orange">오렌지</option>
+        <option value="pineapple">파인애플</option>
+        <option value="kiwi">키위</option>
+    </select>
+    <div id="fruitResult">
+
+
+    </div>
+    <script>
+        function fruitDisplay() {
+            console.log("과일 변경")
+            let fruit = document.getElementById("fruitSelector").value;
+            console.log(fruit);
+            let result = document.getElementById("fruitResult")
+
+            switch(fruit) { // if/else로 대체 가능하지만 가독성이 더 좋음.
+                case "apple":
+                case "APPLE": // 이런 경우가 있으므로 break 안 쓰면 계쏙 진행하도록 되어있음.
+                    result.innerText = "이것은 사과입니다."
+                    break; // 안 쓰면 계속 아래 코드 진행
+                case "banana":
+                    result.innerText = "<b>이것은 바나나입니다.</b>"
+                    break; // 안 쓰면 계속 아래 코드 진행
+                case "orange":
+                    result.innerHTML = "<b>이것은 오렌지입니다.</b>"
+                    break; // 안 쓰면 계속 아래 코드 진행
+                case "pineapple":
+                    result.innerHTML = "이것은 파인애플입니다."
+                    break; // 안 쓰면 계속 아래 코드 진행
+                default:
+                    result.textContent = "<b>몰러</b>"
+
+            }
+
+        }
+    </script>
+</body>
+</html>
