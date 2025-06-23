@@ -12,6 +12,7 @@
         <option value="orange">오렌지</option>
         <option value="pineapple">파인애플</option>
         <option value="kiwi">키위</option>
+        <option value="pear">배</option>
     </select>
     <div id="fruitResult">
 
@@ -20,7 +21,7 @@
     <script>
         function fruitDisplay() {
             console.log("과일 변경")
-            let fruit = document.getElementById("fruitSelector").value;
+            let fruit = document.getElementById("fruitSelector").value; //현재 선택되어있는 옵션의 value 값.    
             console.log(fruit);
             let result = document.getElementById("fruitResult")
 
