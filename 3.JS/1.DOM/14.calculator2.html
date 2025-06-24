@@ -32,20 +32,24 @@
         <input type="text" id="result">
         <button onclick="appendSymbol(this.textContent)">+</button>
         <button onclick="appendSymbol(this.textContent)">-</button>
-        <button onclick="appendSymbol(this.textContent)">*</button>
-        <button onclick="appendSymbol(this.textContent)">/</button>
+        <button onclick="clearInput()">C</button>
+        <button onclick="backspace()">&lAarr;</button> <!---------------백스페이스 기능 추가---------->
         <button onclick="appendNumber(this.textContent)">7</button>
         <button onclick="appendNumber(this.textContent)">8</button>
         <button onclick="appendNumber(this.textContent)">9</button>
-        <button onclick="calculate()">=</button>
+        <button onclick="appendSymbol(this.textContent)">*</button>
         <button onclick="appendNumber(this.textContent)">4</button>
         <button onclick="appendNumber(this.textContent)">5</button>
         <button onclick="appendNumber(this.textContent)">6</button>
-        <button onclick="clearInput()">C</button>
+        <button onclick="appendSymbol(this.textContent)">/</button>
         <button onclick="appendNumber(this.textContent)">1</button>
         <button onclick="appendNumber(this.textContent)">2</button>
         <button onclick="appendNumber(this.textContent)">3</button>
+        <button onclick="signChange()">+/-</button> <!----------------양수 음수 전환--------->
+        <button onclick="appendSymbol(this.textContent)">.</button><!----소수점 추가------->
         <button onclick="appendNumber(this.textContent)">0</button>
+        <button onclick="appendSymbol(this.textContent)">^</button><!------거듭제곱------->
+        <button onclick="calculate()">=</button>
     </div>
 
     <script>
@@ -69,12 +73,14 @@
         }
         function appendSymbol(symbol) {
             // 심볼 처리 어떻게 할거냐??
-
             switch (document.getElementById('result').value.slice(-1)){
                 case '+':
                 case '-':
                 case '*':
                 case '/':
+                case '^':
+                case '.':
+                    break;
                 case '':
                     if (symbol == '-'){
                             document.getElementById('result').value += symbol;
@@ -94,12 +100,31 @@
                 case '-':
                 case '*':
                 case '/':
+                case '^':
                 case '':
                     break;
                 default:
                     document.getElementById('result').value = math.evaluate(document.getElementById('result').value)
             }
-
+        }
+        function backspace() {
+            document.getElementById('result').value = document.getElementById('result').value.slice(0,-1)            
+        }
+        function signChange() {
+            switch (document.getElementById('result').value.slice(-1)){
+                case '+':
+                case '-':
+                case '*':
+                case '/':
+                case '^':
+                    backspace();
+                    calculate();
+                    document.getElementById('result').value = document.getElementById('result').value * -1;
+                    break;
+                default:
+                    calculate();
+                    document.getElementById('result').value = document.getElementById('result').value * -1;
+            }
         }
     </script>
 </body>
