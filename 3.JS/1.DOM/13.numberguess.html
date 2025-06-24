@@ -11,13 +11,14 @@
     <button id="guess" onclick="guessNumber()">예측하기</button>
     <div id="result"><!-- 예측 결과 출력 --></div>
     <hr>
-    <div>
+    <div> <!-- div는 굳이 안 넣어도 됨....-->
         <ol id="history">
             <!-- 숫자 예측 히스토리 출력--></ol>
     </div>
 
     <script>
-        const num = Math.round(Math.random() * 100);
+        // const num = Math.round(Math.random() * 100); // 1~100까지이므로 0이 나오면 안 됨. 
+        const num = Math.floor(Math.random() * 100)+1;
         console.log(num);
 
     
