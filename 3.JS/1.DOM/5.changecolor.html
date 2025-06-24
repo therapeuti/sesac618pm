@@ -12,20 +12,17 @@
     <script>
         function changeColor() {
             if (document.body.style.backgroundColor != 'red'){
-                document.body.style.backgroundColor = 'red';
-                
+                document.body.style.backgroundColor = 'red';                
             } else {
                 document.body.style.backgroundColor = 'white';
-
             }
-
         }
+
         function changeColor2() {
             const colors = ["red", "green","blue"];
             //버튼을 누를 때마다 순차적으로 바뀌게 구현
             // let color = document.style.backgroundColor;
             console.log(document.body.style.backgroundColor)
-
             if (document.body.style.backgroundColor === colors[0]){
                 document.body.style.backgroundColor = colors[1];
             }
@@ -34,22 +31,17 @@
             }
             else {
                 document.body.style.backgroundColor = colors[0];
-            }
-            
+            }            
         }
 
         let currentIndex = 0; // 계속 변경되어야 하므로 let으로 변수 선언해야함.
 
         function changeColor3() {
-            const colors = ['red','blue','green','orange','purple','yellow'];   
-            
+            const colors = ['red','blue','green','orange','purple','yellow'];
             console.log(currentIndex, colors[currentIndex])
-
             document.body.style.backgroundColor = colors[currentIndex];
             currentIndex += 1;
-
             console.log(currentIndex, colors[currentIndex])
-
             if (currentIndex == colors.length) {
                 currentIndex = 0;
             }
@@ -57,7 +49,6 @@
 
 
         //숙제 : 클릭할 때 마다 랜덤색상으로 바꾸기
-
         function randomColor() {
             // Math.random : 0 ~ 256 미만의 실수 임의 지정.
             // Math.floor : 소수점 아래 버려서 정수로 만듦.(내림 -3.7 => -4)
@@ -67,22 +58,18 @@
             let r = Math.floor(Math.random() * 256); 
             let g = Math.floor(Math.random() * 256);
             let b = Math.floor(Math.random() * 256);
-            
-            console.log(document.body.style.backgroundColor)
-
+            // console.log(document.body.style.backgroundColor)
             // console.log(r, g, b);
             // console.log(typeof(r));
             console.log(`rgb(${r},${g},${b})`);            
-            document.body.style.backgroundColor = `rgb(${r},${g},${b})`; // 애초에 배경색 지정이 안 되어있는 경우 바로 적용할 수 없음.??? 안 됐ㅇㅆ는데??? 갑자기 또 되네....???????
+            document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
             // document.body.style.backgroundColor = "rgb(50,100,255)";
-
         }
 
-                
-     
-
-
-
+        function changeRandomColor3() {
+            const rrggbb = Math.floor(Math.random() * (256*256*256)).toString.padStart(6,'0');
+            document.body.style.backgroundColor = '#'+rrggbb;
+        }
     </script>
 </body>
 </html>

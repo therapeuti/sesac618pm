@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>테이블 셀 색상 변경하기</title>
+    <style>
+        table {
+            border-collapse: collapse;
+
+        }
+        td {
+            padding: 20px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr><td>셀1</td><td>셀2</td><td>셀3</td></tr>
+        <tr><td>셀4</td><td>셀5</td><td>셀6</td></tr>
+        <tr><td>셀7</td><td>셀8</td><td>셀9</td></tr>
+    </table>
+
+    <button onclick="changeOddCellColor4()">셀 색상 홀수만 변경하기</button> <!--숙제-->
+
+    <script>
+
+
+        function changeOddCell() {            
+            let cells = document.getElementsByTagName('td');
+            console.log(cells);
+            for (i=0; i < cells.length; i+=2){ //i를 2씩 증가시킴
+                cells[i].style.backgroundColor = 'pink';
+            }
+        }
+
+        function changeOddCellColor2() {
+            // foreach에 첫번째 인자는 해당 리스트의 멤버
+            // foreach에 인자를 두개 넣으면 첫번째: 리스트 멤버, 두번재는 리스트의 인덱스
+
+            // cells.forEach(function(cell, index{}))
+            Array.from(cells).forEach((c,i) => {
+                if(i % 2==0) {
+                    cells[i].style.backgroundColor = 'lightgreen';
+                }
+            })
+        }
+
+        function changeOddCellColor3() {
+            // for of 문법
+            let index = 0;
+            for (const c of cells){
+                if (index % 2 === 0){
+                console.log(`인덱스: ${index}: 해당요소: ${c}`);
+                index++; // index += 1 , index = index + 1 모두 같음
+                }
+            }
+        }
+
+        // 홀수 열만 가져옴...
+        function changeOddCellColor4() {
+            // CSS 셀럭터 스타일로 요소를 가져오기 위한 함수..
+            // querySelector - 가장 먼저 매치되는 하나
+            // querySelectorAll - 매치되는 모든 것
+            const oddCells = document.querySelectorAll('td:nth-child(odd)');
+            oddCells.forEach(c => {
+                c.style.backgroundColor = 'yellow';
+            })
+        }
+
+
+    </script>
+    
+</body>
+</html>

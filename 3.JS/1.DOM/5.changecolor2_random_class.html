@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>배경색 변경</title>
+    <style>
+        body {
+            text-align: center;
+            height: 100vh; /* viewport, 높이의 단위*/
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #colorCode {
+            margin-top: 20px;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            background-color: rgba(255,255,255,0.5);
+            border: 1px solid black;
+            border-radius: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+
+        }
+    </style>
+    
+</head>
+<!-- <body style="background-color: rgb(50,10,200);">--->
+<body>
+    <button onclick="changeRandomColor3()">배경색 랜덤하게 변경하기</button>
+    <div id="colorCode"> 색상코드는 여기에 표시</div>
+    <script>
+        //숙제 : 클릭할 때 마다 랜덤색상으로 바꾸기
+        // RGB -> RRGGBB
+
+        function randomColor() {
+            // Math.random : 0 ~ 256 미만의 실수 임의 지정.
+            // Math.floor : 소수점 아래 버려서 정수로 만듦.(내림 -3.7 => -4)
+            // Math.ceil : 올림
+            // Math.round : 반올림
+            // Math.trunc : 소수점 제거 (0에 가까운 쪽으로 버림 ex) -3.7 => -3)
+
+            // 함수의 의미 이해하고 쓰기. random()범위... random()으로 내가 원하는 범위 만드는 방법?
+            // 잘 실행되는지 문제없는지 실행해보고 확인하여 디버깅. padStart 안 쓴 경우 확인
+
+            let r = Math.floor(Math.random() * 256).toString(16).padStart(2,'0'); 
+            let g = Math.floor(Math.random() * 256).toString(16).padStart(2,'0');
+            let b = Math.floor(Math.random() * 256).toString(16).padStart(2,'0');
+
+            let rgb = '#'+r+g+b;
+            console.log(rgb);
+            
+            // console.log(document.body.style.backgroundColor)
+
+            // console.log(r, g, b);
+            // console.log(typeof(r));
+            // console.log(`rgb(${r},${g},${b})`);            
+            document.body.style.backgroundColor = rgb; // 애초에 배경색 지정이 안 되어있는 경우 바로 적용할 수 없음.??? 안 됐ㅇㅆ는데??? 갑자기 또 되네....???????
+            // document.body.style.backgroundColor = "rgb(50,100,255)";
+
+        }
+
+        function changeRandomColor3() {
+            const rrggbb = Math.floor(Math.random() * (256*256*256)).toString(16).padStart(6,'0');
+            // const rrggbb = Math.floor(Math.random() * 0xffffff).toString(16).padStart(6,'0');
+            console.log(rrggbb);
+            document.body.style.backgroundColor = '#'+rrggbb;
+            displayColor(rrggbb);
+        }
+
+        function displayColor(color) {
+            const colorDisplay = document.getElementById('colorCode');
+            colorDisplay.textContent = `현재 배경색상은 #${color}`;
+        }
+    </script>
+</body>
+</html>

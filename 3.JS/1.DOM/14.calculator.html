@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>계산기 만들기</title>
+    <style>
+        body {
+            margin:0;
+            padding:0;
+        }
+        .calculator_container {
+            width: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border: 1px solid;
+            border-radius: 5px;
+        }
+
+        #input {
+            width: 100%;
+            padding: 10px;
+        }
+
+        button {
+            padding: 10px;
+            width:25%;
+        }
+
+    </style>
+</head>
+<body>
+    <H1>계산기</H1>
+    <div class="calculator_container">
+        <div>
+            <input type="text" id="input">
+        </div>
+        <table>
+            <tr>
+                <td><button class="sign" onclick="button_click(this)">+</button></td>
+                <td><button class="sign" onclick="button_click(this)">-</button></td>
+                <td><button class="sign" onclick="button_click(this)">*</button></td>
+                <td><button class="sign" onclick="button_click(this)">/</button></td>
+            </tr>
+            <tr>
+                <td><button class="number" onclick="button_click(this)">1</button></td>
+                <td><button class="number" onclick="button_click(this)">2</button></td>
+                <td><button class="number" onclick="button_click(this)">3</button></td>
+                <td><button id="equal"onclick="button_click(this)">=</button></td>
+            </tr>
+            <tr>
+                <td><button class="number" onclick="button_click(this)">4</button></td>
+                <td><button class="number" onclick="button_click(this)">5</button></td>
+                <td><button class="number" onclick="button_click(this)">6</button></td>
+                <td><button id="reset" onclick="button_click(this)">C</button></td>
+            </tr>
+            <tr>
+                <td><button class="number" onclick="button_click(this)">7</button></td>
+                <td><button class="number" onclick="button_click(this)">8</button></td>
+                <td><button class="number" onclick="button_click(this)">9</button></td>
+                <td><button class="number" onclick="button_click(this)">0</button></td>
+            </tr>
+
+        </table>
+    </div>
+    <script>
+        function button_click(btn) {
+            // const button = document.getElementsTagName("button"); HTML Collection 배열? 클래스?로 가져옴....
+            // const button_value = button.innerText;
+
+            // console.log(btn.innerText, typeof(btn.innerText));
+            // console.log(btn.id)
+            // console.log(btn.className)
+            
+            //버튼 누르면 input칸에 입력되게
+            const inputText = document.getElementById('input');
+
+            //버튼을 눌렀을 때, 클래스나 id에 따라 동작이 달라지게 하고 싶음.
+            //숫자를 누르면 숫자가 쓰이고. string이 아니라 number로 타입 변경해줘야하고..
+            //부호를 누르면 부호가 입력칸에 쓰여도 되고 안 쓰여도 되지만... 여튼.. 연산기호로 작용하게 해야하고
+            //=을 누르면 계산 결과가 나오도록 하고
+            //c를 누르면 입력칸 내용이 초기화 되도록 해야함.
+            // 걍 각각 함수를 따로 만들어야 하나?
+            
+            if (btn.className == "number") { // 숫자 버튼 누른 경우
+                let num = Number(btn.innerText);
+                inputText.value += num;
+                console.log(inputText.value);
+            } else if (btn.className == "sign") { // 연산 기호 버튼 누른 경우
+                let sign = btn.innerText;
+                console.log(inputText.value,sign)
+                inputText.value += sign;
+                console.log(inputText.value);
+            } else if (btn.id == "equal") {
+                a = 2;
+                b = '+'
+                console.log(a+b+a)
+
+            } else {
+                inputText.value = '';
+                inputText.focus();
+            }
+            
+            
+
+
+
+
+        }
+    </script>
+    
+</body>
+</html>
