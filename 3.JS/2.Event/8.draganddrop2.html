@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #dragItem {
+            width: 100px;
+            height: 100px;
+            background-color: orange;
+            display: flex;
+            align-items : center;
+            justify-content : center;
+            cursor: pointer;
+            margin-bottom: 20px;
+            margin-right: 20px;
+        }   
+        #dropzone {
+            min-width: 200px;
+            min-height: 200px;
+            border: 2px dashed red;
+            background-color: lightgray;
+
+            display:inline-flex; /*기본적으로 블럭 요소라 부모요소의 너비만큼 차지하게 되므로 inline-block으로 변경*/
+            align-items: center;
+            justify-content: center;
+
+            position: absolute;
+            top : 200px;
+        }
+        #dropzone2 {
+            min-width: 200px;
+            min-height: 200px;
+            border: 2px dashed red;
+            background-color: lightgray;
+
+            display:inline-flex; /*기본적으로 블럭 요소라 부모요소의 너비만큼 차지하게 되므로 inline-block으로 변경*/
+            align-items: center;
+            justify-content: center;
+
+            position: absolute;
+            top : 200px;
+            left : 350px;
+        }
+    </style>
+</head>
+<body>
+    <div id="dragItem" class="item" draggable="true">드래그하시오</div>
+    <div id="dropzone"> 여기에 떨구시오 dropzone1</div>
+    <div id="dropzone2"> 여기에 떨구시오dropzone2</div>
+
+    <script>
+        const dragItem = document.getElementById('dragItem')
+        const dropzone = document.getElementById('dropzone')
+        const dropzone2 = document.getElementById('dropzone2')
+
+        dragItem.addEventListener('dragstart', () => {
+            console.log('item1 드래그 시작');
+            dropzone.addEventListener('drop', function(e) {
+                console.log('여기에 놨음');
+                dropzone.appendChild(dragItem); // 다른 요소를 드래그 앤 드롭해도 dragItem이 이동함. 드래그 한 요소를 옮기려면....?
+            })})
+
+        dragItem.addEventListener('dragstart', () => {
+            console.log('item1 드래그 시작');
+            dropzone2.addEventListener('drop', function(e) {
+                console.log('여기에 놨음');
+                dropzone2.appendChild(dragItem); // 다른 요소를 드래그 앤 드롭해도 dragItem이 이동함. 드래그 한 요소를 옮기려면....?
+            })})
+
+
+        dropzone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            console.log('여기에 뭔가 올라옴');
+        });
+        dropzone2.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            console.log('여기에 뭔가 올라옴');
+        });
+
+    </script>
+</body>
+</html>
