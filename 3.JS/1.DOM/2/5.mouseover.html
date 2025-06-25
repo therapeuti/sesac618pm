@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #myDiv {
+            width: 100px;
+            height: 100px;
+            background-color:lightblue;
+        }
+    </style>
+</head>
+<body>
+    <div id="myDiv"></div>    
+    <script>
+        const myDiv = document.getElementById('myDiv');
+        myDiv.addEventListener('mouseover', () => {
+            console.log('마우스가 감지됨');
+            document.getElementById('myDiv').style.backgroundColor = 'lightgreen';
+        });
+
+        myDiv.addEventListener('mouseout', function() { // this를 사용할 수 있음. this로 해당 이벤트 객체에  접근 가능.
+            console.log('마우스가 나갔음');
+            document.getElementById('myDiv').style.backgroundColor = 'lightblue';
+        });
+        
+        myDiv.addEventListener('mousemove', (ev) => {
+            console.log(`마우스가 움직임 : x=${ev.clientX}, y=${ev.clientY}`)
+        })
+       
+    
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <button id="myButton">클릭하시오</button>
+    <script>
+        // 버튼 태그에 onclick으로 함수 실행되도록 하지 않고 이벤트리스너 만들어서 사용.
+        // const myButton = document.getElementById('myButton') 
+        // myButton.addEventListener('click', mouse_click);
+        // function mouse_click() {
+        //     console.log('마우스 클릭됨')
+        // }
+
+        //위는 너무 기니까, 보통 아래와 같은 형태로 사용함.
+        document.getElementById('myButton').addEventListener('click', () => {
+            console.log('마우스 클릭됨')
+        })
+    </script>
+</body>
+</html>
