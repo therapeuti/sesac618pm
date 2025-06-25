@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas {
+            border: 1px solid;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="400" height="300"></canvas>
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        const context = canvas.getContext('2d'); //그림을 그릴 공간에 접근하는 포인트
+
+        let x = 100;
+        let y = 100;
+
+        function drawPacman() {
+            context.fillStyle = 'yellow'
+            context.beginPath();
+            context.moveTo(x,y);
+            const startAngle = 0.2 * Math.PI;
+            const endAngle = 1.8 * Math.PI;
+            context.arc(x, y, 50, startAngle, endAngle )
+            context.fill();
+            context.closePath();
+        }    
+        function animate() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            drawPacman();
+            console.log('캔버스 지우고 그리고')
+            requestAnimationFrame(animate);
+        }
+
+        // 미션 : 이벤트 등록해서 x,y이동시키기
+        // 1. 키 누를 대마다 해당 방향으로 x,y좌표를 내가 정한 사이즈(ex.10)만큼 이동시키기
+        // 2. 키를 누를때마다 해당 방향으로 연속적으로 이동한다.
+
+        document.addEventListener('keydown', handleKeyDown);
+
+        function handleKeyDown(){
+            x = x + 10;
+            animate();
+        }
+
+
+    </script>
+</body>
+</html>

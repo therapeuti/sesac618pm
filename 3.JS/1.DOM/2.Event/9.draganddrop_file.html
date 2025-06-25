@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>드래그해서 파일첨부</title>
+    <style>
+        #dropZone {
+            width: 300px;
+            height: 300px;
+            border: 2px dashed gray;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: lightgray;
+        }
+    </style>
+</head>
+<body>
+    <div id="dropZone">여기에 파일을 드래그 하세요.</div>
+    <div id="fileList">
+        <h3>드롭된 파일 목록</h3>
+        <ul id="fileNames"></ul>
+        <button id="sendBtn">전송</button>
+    </div>
+    <script>
+        const dropzone = document.getElementById('dropZone');
+        const fileNames = document.getElementById('fileNames');
+
+        // 첨부될 파일 정보를 저장할 저장소
+        let fileArray = [];
+        
+        dropzone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            dropzone.style.backgroundColor = gray;
+        })
+        
+        dropzone.addEventListener('dropleave', function(e) {
+            dropzone.style.backgroundColor = lightgray;
+        })
+
+        dropzone.addEventListener('drop', function(e){
+            e.preventDefault();
+            dropzone.style.backgroundColor = lightgray;
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0){
+                // for (let i = 0; i < files.length; i++){
+                //     fileArray.push(files)
+                //     const li = document.createElement('li');
+                //     li.textContent = file[i].name;
+                //     fileNames.appendChild(li);
+                // }
+
+
+                // forEach 버전
+                Array.from(files).forEach(file => {
+                    fileArray.push(file);
+                    const li = document.createElement('li');
+                    li.textContent = file.name;
+                    fileNames.appendChild(li);
+                })
+            }
+        })
+        
+        const sendBtn = document.getElementById('sendBtn');
+        sendBtn.addEventListener('click', function() {
+            console.log('fileArray')
+            if (fileArray.length === 0) {
+                alert('업로드 할 파일이 없습니다.')
+                return;
+            }
+            const formData = new FormData();
+            fileArray.forEach((file,index) => {
+                formData.append('file[]', file);
+
+            });
+            console.log(formData)
+
+
+            // 안 배운 거. 나중에 다시 배울 거
+            //서버로 전송하기
+            fetch('upload',{
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.text())
+                .then(result => {
+                    alert('업로드 성공');
+                })
+                .catch(error => {
+                    alert('업로드 실패 :' + error)
+                })
+        })
+
+
+
+
+    </script>
+</body>
+</html>

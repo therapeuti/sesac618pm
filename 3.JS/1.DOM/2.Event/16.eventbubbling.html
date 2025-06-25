@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #grandparent {
+            padding: 50px;
+            background-color: lightgray;
+
+        }
+        #parent {
+            padding: 50px;
+            background-color: lightblue;
+        }
+        #child {
+            padding: 50px;
+            background-color: lightgreen;
+        }
+    </style>
+</head>
+<body>
+    <div id="grandparent">
+        조상
+        <div id="parent">    
+            부모
+            <div id="child">    
+                자식
+            </div>
+        </div>
+    </div>
+    <script>
+        const child = document.getElementById('child');
+        const parent = document.getElementById('parent');
+        const grandparent = document.getElementById('grandparent');
+
+        child.addEventListener('click', function(e) {  //계층구조에 맞게 해당 요소를 포함한 부모 요소로 이벤트가 전달되는 것을 이벤트 버블링이라고 함.
+            alert('child click')
+            e.stopPropagation(); // 더 이상 이벤트 전파하지마..
+        })
+        parent.addEventListener('click', function(e) {
+            alert('parent click')
+            e.stopPropagation();
+        })
+        grandparent.addEventListener('click', () => {
+            alert('grandparent click')
+        })
+    </script>
+    
+</body>
+</html>
