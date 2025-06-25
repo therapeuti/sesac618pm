@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #dragItem {
+            width: 100px;
+            height: 100px;
+            background-color: orange;
+            display: inline-block;
+            align-items : center;
+            justify-content : center;
+            cursor: pointer;
+            margin-bottom: 20px;
+            margin-right: 20px;
+        }
+        #dragItem2 {
+            width: 100px;
+            height: 100px;
+            background-color: lightblue;
+            display: inline-block;
+            align-items : center;
+            justify-content : center;
+            cursor: pointer;
+            margin-bottom: 20px;
+            margin-right: 20px;
+        }
+        #dragItem3 {
+            width: 100px;
+            height: 100px;
+            background-color: pink;
+            display: inline-block;
+            align-items : center;
+            justify-content : center;
+            cursor: pointer;
+            margin-bottom: 20px;
+            margin-right: 20px;
+        }
+        
+        #dropzone {
+            min-width: 200px;
+            min-height: 200px;
+            border: 2px dashed red;
+            background-color: lightgray;
+
+            display:flex; 
+            align-items: center;
+            justify-content: center;
+            position: absolute; /* 위치 변경 되지 않도록 만들어보기. 사용성 위해.*/
+            top: 150px;
+        }
+        #dropzone2 {
+            min-width: 200px;
+            min-height: 200px;
+            border: 2px dashed red;
+            background-color: lightgray;
+
+            display:flex; 
+            align-items: center;
+            justify-content: center;
+            position: absolute; /* 위치 변경 되지 않도록 만들어보기. 사용성 위해.*/
+            top: 400px;
+
+        }
+    </style>
+</head>
+<body>
+
+    <div id="dragItem" class="item" draggable="true">드래그하시오</div>
+    <div id="dragItem2" class="item" draggable="true">드래그하시오</div>
+    <div id="dragItem3" class="item" draggable="true">드래그하시오</div>
+    <div id="dropzone" class="dropzone"> 여기에 떨구시오</div>
+    <div id="dropzone2" class="dropzone"> 여기에 떨구시오</div>
+    
+    <script>
+        // 여러 개의 아이템이 두 개의 드롭존에서 이동 가능하도록 만들기
+        // 아이템 하나하나에 이벤트 리스너 등록하는거 말고 한꺼번에 할 수 있게 만들어보기
+        const dragItem = document.getElementsByClassName('item')
+        const dropzone = document.getElementsByClassName('dropzone')
+        const dropZone1 = document.getElementById('dropzone')
+        const dropZone2 = document.getElementById('dropzone2')
+
+        //dragstart 이벤트 등록
+        for (item of dragItem){
+            item.addEventListener('dragstart', function(e){
+                // console.log(i)
+                // console.log(e)
+                // console.log(e.target.id);
+                e.dataTransfer.setData('text/plain', e.target.id);
+                // console.log(i.id);
+                //드래그를 하는 요소의 정보를 가져와야함. 나중에 드롭할 때 어떤 건 드롭하는지를 알아야하니까.
+            })
+        }
+
+        //dragover 이벤트 등록
+        for (zone of dropzone){
+            zone.addEventListener('dragover', function(e){
+                e.preventDefault(); //기본적으로 드래그 할 경우 드롭을 막아놓기 때문에 이걸 막아야 드롭이 가능해짐.
+            })
+        }
+
+        //drop 이벤트 등록 : 요소 id 가져와서 dropzone에 옮기기
+        for (zone of dropzone) {
+            zone.addEventListener('drop',function(e){
+                //드래그한 요소에 대한 정보를 가져와야함...
+                const drageditemId = e.dataTransfer.getData('text/plain')
+                const DropZone = document.getElementById(e.target.id)
+                // console.log(e.target.id)
+                // console.log(drageditemId)
+                // console.log(document.getElementById(drageditemId))
+                DropZone.appendChild(document.getElementById(drageditemId)); 
+            })
+        } // => dropzone 안에 들어온 드래그 요소자체도 dropzone이 되어버림....... => 드래그한 요소는 dropzone이 되지 않게 막아...? 아니면 dropzone이 되어도 서로 겹치지 않게....위치시켜....?
+        // 이벤트 객체에서 가져온 id를 사용하지 않고(e.target.id) for문의 zone을 사용하면 마지막에 등록된 zone으로만 이동함... 두 zone에서 이동이 가능해야함.
+
+
+        // dropZone1.addEventListener('drop',function(e){
+        //         //드래그한 요소에 대한 정보를 가져와야함...
+        //         const drageditemId = e.dataTransfer.getData('text/plain')
+        //         console.log(drageditemId)
+        //         console.log(document.getElementById(drageditemId))
+        //         dropZone1.appendChild(document.getElementById(drageditemId)); 
+        //     })
+
+        // dropZone2.addEventListener('drop',function(e){
+        //         //드래그한 요소에 대한 정보를 가져와야함...
+        //         const drageditemId = e.dataTransfer.getData('text/plain')
+        //         console.log(drageditemId)
+        //         console.log(document.getElementById(drageditemId))
+        //         dropZone2.appendChild(document.getElementById(drageditemId)); 
+        //     })
+    </script>
+</body>
+</html>
