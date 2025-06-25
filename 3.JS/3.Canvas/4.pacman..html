@@ -42,11 +42,12 @@
 
         document.addEventListener('keydown', handleKeyDown);
 
-        function handleKeyDown(){
+        function handleKeyDown(event){
             x = x + 10;
-            animate();
+            y = y + 10;
         }
-
+        
+        animate();
 
     </script>
 </body>
