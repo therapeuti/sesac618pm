@@ -97,7 +97,7 @@
         function clearInput() {
             document.getElementById('result').value = '';
         }
-        function calculate() {
+        function calculate() {  // 계산할 때 발생하는 버그들.. 예외처리로 진행.a
             // 계산 어떻게 할거냐??
             switch (document.getElementById('result').value.slice(-1)){
                 case '+':
