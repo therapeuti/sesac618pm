@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple To-Do List</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            letter-spacing: -1px;
+        }
+
+        #container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+
+        #input-container {
+            padding: 30px 30px 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            height: 50px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            padding: 0 20px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input::placeholder {
+            color: #999;
+        }
+
+        #addTodo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            font-weight: 300;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #addTodo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        #addTodo:active {
+            transform: scale(0.95);
+        }
+
+        #list-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        #list-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #list-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #list-container::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        li:hover {
+            background: #f8f9ff;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        li.completed {
+            color: #999;
+            text-decoration: line-through;
+            background: #f9f9f9;
+        }
+
+        li .text {
+            flex: 1;
+            margin-right: 10px;
+            word-break: break-word;
+        }
+
+        li button {
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: 2px solid #ff6b6b;
+            border-radius: 50%;
+            color: #ff6b6b;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        li:hover button {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        li button:hover {
+            background: #ff6b6b;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 30px;
+            color: #999;
+            font-size: 18px;
+            font-weight: 300;
+        }
+
+        .empty-state::before {
+            content: "📝";
+            display: block;
+            font-size: 48px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            #input-container {
+                padding: 20px;
+            }
+            
+            li {
+                padding: 12px 20px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>My Tasks</h1>
+    <div id="container">
+        <div id="input-container">
+            <input type="text" id="userInput" placeholder="새로운 할 일을 입력하세요">
+            <button id="addTodo">+</button>
+        </div>
+        <div id="list-container">
+            <ul id="todoList">
+                <div class="empty-state">아직 할 일이 없습니다.<br>새로운 작업을 추가해보세요!</div>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const todoList = document.getElementById('todoList');
+        const addTodo = document.getElementById('addTodo');
+        const Input = document.getElementById('userInput');
+        
+        function updateEmptyState() {
+            const isEmpty = todoList.children.length === 0 || 
+                           (todoList.children.length === 1 && todoList.querySelector('.empty-state'));
+            
+            if (isEmpty && !todoList.querySelector('.empty-state')) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'empty-state';
+                emptyDiv.innerHTML = '아직 할 일이 없습니다.<br>새로운 작업을 추가해보세요!';
+                todoList.appendChild(emptyDiv);
+            } else if (!isEmpty && todoList.querySelector('.empty-state')) {
+                todoList.querySelector('.empty-state').remove();
+            }
+        }
+
+        // 추가 버튼 클릭시 투두리스트 추가 
+        addTodo.addEventListener('click', function(){
+            const userInput = Input.value.trim();
+            
+            if (userInput === '') {
+                Input.focus();
+                return;
+            }
+            
+            // 빈 상태 메시지 제거
+            const emptyState = todoList.querySelector('.empty-state');
+            if (emptyState) {
+                emptyState.remove();
+            }
+            
+            // 리스트 추가
+            const new_li = document.createElement('li');
+            
+            const textSpan = document.createElement('span');
+            textSpan.className = 'text';
+            textSpan.textContent = userInput;
+            new_li.appendChild(textSpan);
+            
+            // 삭제버튼 추가
+            const del_btn = document.createElement('button');
+            del_btn.innerHTML = '×';
+            new_li.appendChild(del_btn);
+            
+            todoList.appendChild(new_li);
+            Input.value = '';
+            Input.focus();
+        });
+
+        // 엔터 키로 추가
+        Input.addEventListener('keydown', function(e){
+            if (e.key === 'Enter'){
+                addTodo.click();
+            }
+        });
+
+        // 클릭 이벤트 (완료/삭제)
+        todoList.addEventListener('click', function(e){ 
+            if (e.target.tagName === 'LI' || e.target.classList.contains('text')) {
+                const li = e.target.tagName === 'LI' ? e.target : e.target.closest('li');
+                
+                if (li.classList.contains('completed')) {
+                    li.classList.remove('completed');
+                } else {
+                    li.classList.add('completed');
+                }
+            }
+            
+            // 삭제 기능
+            if (e.target.tagName === 'BUTTON'){
+                const li = e.target.closest('li');
+                li.style.transform = 'translateX(100%)';
+                li.style.opacity = '0';
+                
+                setTimeout(() => {
+                    li.remove();
+                    updateEmptyState();
+                }, 300);
+            }
+        });
+
+        // 초기 빈 상태 확인
+        updateEmptyState();
+    </script>
+</body>
+</html>
