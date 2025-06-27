@@ -43,6 +43,14 @@
         let Mouthdirection = 1;
         const mouthSpeed = 0.03;
         
+        let randomFoodXY = [ 0, 0, 0, 0, 0, 0] 
+        let score = 0;       
+        let score_before = 0;
+        let j = 0
+        let food = [, , , , , ,]
+        let f_switch = 0;
+        let f2_switch = 0;
+        let f3_switch = 0; 
 
         function drawPacman() {
             context.fillStyle = 'yellow'
@@ -76,12 +84,23 @@
             }            
         }
 
-        let randomFoodXY = [ 0, 0, 0, 0, 0, 0] 
-        let j = 0
+
+
         function randomXY() {  
+            //score가 3의 배수가 아니었는데, 3의 배수가 되었을때 j를 0으로 변경해줘야함...
+            // console.log('0번 score before' + score_before + 'j값은 ' + j)
+            // if ((score_before%3 != 0) && (score%3 === 0) && (j===1)){
+            //     console.log(' scorebefor는 2고 score는 3이고 j는 1인데')
+            // }
+
+            if ((f_switch === 1 && f2_switch === 1 && f3_switch === 1)){ 
+                j = 0
+                console.log('1번 score before: '+ score_before + 'j는 '+ j)
+            }
+
 
             if (score % 3 === 0 && j === 0){   
-                console.log('랜덤 좌표 생성')
+                console.log('2번 랜덤 좌표 생성 score before' + score_before + 'j는 0이겠지 당연히' )
                 // 랜덤 좌표를 생성
                 for ( i=0; i<3; i++) {
                     let foodX = Math.floor(Math.random() * (canvas.width - size)/10)*10 + size/2;
@@ -91,9 +110,21 @@
                     let foodY = Math.floor(Math.random() * (canvas.height - size)/10)*10 + size/2;
                     randomFoodXY[i] = foodY;
                 }            
-                console.log(randomFoodXY);
+                console.log('randomfoodxy' + randomFoodXY);
 
-                j += 1;
+                j = 1;
+                console.log('j에 1을 더했니?' + j)
+
+                // score_before = score;
+
+                // 먹이 다시 그려지도록 스위치 온
+                f_switch = 0;
+                f2_switch = 0;
+                f3_switch = 0;
+                
+                
+                
+                
                 
                 // 스코어가 3의 배수일 때 랜덤 좌표 설정이 한 번만 이루어져야 함. 한 번 되면 그 다음의 3의 배수로 바뀔때까지 작동하지 않도록 해야하는데...
                 // 점수 체크는 계속하되..... 그럼 그 전 스코어를 가져와서 그 스코어와 비교해서 달라졌나 안 달라졌나를 비교하는 게 필요....
@@ -104,64 +135,73 @@
             // 랜덤 좌표를 먹이 좌표에 할당
             for (i = 0; i < 6 ; i++) {
                 food[i] = randomFoodXY[i];
+                
             }                    
-            console.log('먹이 좌표 할당')
+            // console.log('3번 먹이 좌표 할당')
         }
 
-        let food = [, , , , , ,'white']
         function drawFood(){
-               
-            context.fillStyle =food[6];
-            context.beginPath();
-            context.arc(food[0], food[3], size/10, 0, 2*Math.PI)
-            context.fill();
-            context.closePath();
-
-            context.fillStyle = 'white';
-            context.beginPath();
-            context.arc(food[1], food[4], size/10, 0, 2*Math.PI)
-            context.fill();
-            context.closePath();
-
-            context.fillStyle = 'white';
-            context.beginPath();
-            context.arc(food[2], food[5], size/10, 0, 2*Math.PI)
-            context.fill();
-            context.closePath();
+            if (f_switch === 0){ //0이면 먹이 그림 그리고, 아니면 먹이 그림 그리지 않기
+                context.fillStyle = 'white';
+                context.beginPath(); 
+                context.arc(food[0], food[3], size/10, 0, 2*Math.PI)
+                context.fill();
+                context.closePath();
+            }
+            if (f2_switch === 0){
+                context.fillStyle = 'white';
+                context.beginPath();
+                context.arc(food[1], food[4], size/10, 0, 2*Math.PI)
+                context.fill();
+                context.closePath();
+            }
+            if (f3_switch === 0){
+                context.fillStyle = 'white';
+                context.beginPath();
+                context.arc(food[2], food[5], size/10, 0, 2*Math.PI)
+                context.fill();
+                context.closePath();
+            }
         }
 
 
 
-        let score = 0;       
         
 
         function checkPacmanFoodPosition() {
             // 팩맨과 음식이 같은 위치에 있는지 확인한다.
             // 그래서 그 영역 안에 들어왔으면 음식 하나를 지운다... 조건 세개 설정해서 각 조건에 따라 그림 그리고 안 그리고로 조정..?
             if ((food[0] <= (x+(size/20)) && food[0] >= (x-(size/20))) && (food[3] <= (y+(size/20)) && food[3] >= (y-(size/20)))){
-                food[0] = -10;
-                food[3] = -10;
-                food[6] = 'transperent'
-                console.log(`첫번째 먹이 tranperent${food[0]}, ${food[3]} 색상은 ${food[6]}`)
-                score += 1;
-                document.getElementById('score').textContent = `score : ${score}`
-                console.log(randomFoodXY)
-                console.log(food)
+                f_switch_before = f_switch;
+                f_switch = 1;
+                if (f_switch_before !== f_switch){
+                    score_before = score;
+                    score += 1;
+                    document.getElementById('score').textContent = `score : ${score}`
+                    console.log(`첫번째 먹이 하나 지워짐. j값:${j} score befor ${score_before}`)
+                }
             } else if ((food[1] <= (x+(size/20)) && food[1] >= (x-(size/20))) && (food[4] <= (y+(size/20)) && food[4] >= (y-(size/20)))){
-                food[1] = -20;
-                food[4] = -20;
-                score += 1;
-                document.getElementById('score').textContent = `score : ${score}`
-                console.log(score)
-                console.log(`두번째 먹이 ${food[1]}, ${food[4]}`)
+                f_switch_before = f2_switch;
+                f2_switch = 1;
+                if (f_switch_before !== f2_switch){
+                    score_before = score;
+                    score += 1;
+                    document.getElementById('score').textContent = `score : ${score}`
+                    console.log(`두번째 먹이 지워짐 j값:${j} score befor ${score_before}`)
+                }
             } else if ((food[2] <= (x+(size/20)) && food[2] >= (x-(size/20))) && (food[5] <= (y+(size/20)) && food[5] >= (y-(size/20)))){
-                food[2] = -30;
-                food[5] = -30;
-                score += 1;
-                document.getElementById('score').textContent = `score : ${score}`
-                console.log(score)
-                console.log(`세번째 먹이${food[0]}, ${food[3]}`)
+                f_switch_before = f3_switch;
+                f3_switch = 1;
+                if (f_switch_before !== f3_switch){
+                    score_before = score;
+                    score += 1;
+                    document.getElementById('score').textContent = `score : ${score}`
+                    console.log(`세번째 먹이 지워짐. j값:${j} score befor ${score_before} `)
+                }
             }
+            // console.log('5번 score before' + score_before + 'j값은 ' + j)
+            
+
             // console.log(x + ' ' + y);
         }
         
@@ -173,6 +213,7 @@
             drawFood();
             checkPacmanFoodPosition()
             randomXY();
+vo
             // console.log('캔버스 지우고 그리고')
             requestAnimationFrame(animate);
         }
