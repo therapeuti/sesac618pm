@@ -60,14 +60,14 @@ def print_maz(a,b,c):
     return max_val
 
 def print_reverse(sentence):
-    print(reverse[::-1])
+    print(sentence[::-1])
 
-def print_score([1,2,3]):
-    sum = 0
-    for i in [1,2,3]:
-        sum += i
-    avg = sum / len([1,2,3])
-    print(avg)
+# def print_score([1,2,3]):
+#     sum = 0
+#     for i in [1,2,3]:
+#         sum += i
+#     avg = sum / len([1,2,3])
+#     print(avg)
 
 def print_score2(score_list):
     print(sum(score_list)/len(score_list))
@@ -90,12 +90,12 @@ def print_keys(dict):
 def print_value_by_keys(my_dict, date):
     print(my_dict[date])
 
-def print_5xn(string):
-    n = len(string)//5
-    i = len(string)%5
-    for i in range(len(string//5)):
-        print(string[5*i:5*i + 5])
-    print(-1*i:)
+# def print_5xn(string):
+#     n = len(string)//5
+#     i = len(string)%5
+#     for i in range(n):
+#         print(string[5*i:5*i + 5])
+#     print(string[-i:])
    
 
 
