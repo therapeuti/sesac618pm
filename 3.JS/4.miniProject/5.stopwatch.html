@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스톱워치</title>
+    <style>
+        * {
+            margin:0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-attachment: fixed; /*배경색이 창 전체에 적용되도록 함. 창 크기 늘어나도 적용*/
+        }
+        #container {
+            width:400px;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid lightgray;
+            border-radius: 10px;
+            background-color: rgba(255,255,255,0.3);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        h1 {
+            margin-top: 20px;
+            color: white;
+            text-shadow: 0 2px 20px rgba(255,255,255 0.3)
+        }
+
+        #btns {            
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding:15px;
+            margin-top:20px;
+            margin-bottom: 20px;
+            
+        }
+        button {
+            border-radius: 20px;
+            width: 200px;
+            padding: 10px;
+            cursor: pointer;
+            /* font-weight: bold; */
+            color: white;
+            border: none;
+            margin: 5px;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255,255,255,0.2);
+        }
+        button:active {
+            transform: translateY(-1px) /* 버튼을 누르고 있을 때의 효과*/
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        #start {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            border-color: #4caf50;
+        }
+        #stop {
+            background: linear-gradient(135deg, #f44336, #da190b);
+            border-color: #f44336;        }
+
+        #reset {
+            background: linear-gradient(135deg, #2196F3, #0b7dda);
+            border-color: #2196F3;        }
+
+        #lap {
+            background: linear-gradient(135deg, #FF9800, #e68900);
+            border-color: #FF9800;
+        }
+        #lap_container {
+            width: 100%;
+        }
+        ol {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        ol li {
+            counter-increment: lap;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            background-color: rgba(255,255,255,0.1);
+            border: lightgray;
+            border-radius: 8px;
+            padding:10px;
+            margin: 5px;
+        }
+        ol li::before{
+            content: 'lap ' counter(lap);
+            color: #FFD700;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <H1 id="time"></H1>
+        <div id="btns">
+            <button id="start">시작</button>
+            <button id="stop" disabled>일시정지</button>
+            <button id="reset">초기화</button>
+            <button id="lap" disabled>랩타임</button>
+        </div>
+        <div id="lap_container">
+            <ol id="lap_display">
+                
+            </ol>
+        </div>
+        
+        </div>
+    </div>
+    <script>        
+        let startTime = 0
+        let currentTime = 0
+        let elaspedTime = 0
+        let totalelaspedTime = 0 
+        let lap_start = 0
+        
+        let ms = 0
+        let seconds = 0
+        let minutes = 0
+        let hours = 0
+        let displayedTime = `${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}:${String(ms).padStart(2,'0')}`
+        
+        const start_btn = document.getElementById('start');
+        const stop_btn = document.getElementById('stop');
+        const reset_btn = document.getElementById('reset');
+        const lap_btn = document.getElementById('lap');       
+        
+        document.getElementById("time").innerText = displayedTime;
+        
+        // 시작버튼 클릭 시 시간을 startTime에 할당. 이후 setInterval을 통해 displayTime이 계속 실행됨.
+        function start() {
+            startTime = Date.now();
+            lap_start = Date.now();
+            document.getElementById('start').disabled = true;
+            document.getElementById('stop').disabled = false;
+            document.getElementById('reset').disabled = true;
+            document.getElementById('lap').disabled = false;
+
+            // console.log(startTime);           
+            timeInterval = setInterval(displayTime, 10)
+        } 
+        // 시작버튼 눌러서 시작시간 저장되면, 이후 매초마다 현재시간에서 시작시간을 뺀 시간을 업데이트
+        function displayTime() {
+            currentTime = Date.now();
+            totalelaspedTime = elaspedTime + (currentTime - startTime);
+            
+            ms = Math.floor((totalelaspedTime%1000)/10)
+            seconds = Math.floor(totalelaspedTime/1000)
+            minutes = Math.floor(seconds/60)
+            hours = Math.floor(minutes/60) 
+            displayedTime = `${String(hours).padStart(2,'0')}:${String(minutes%60).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}:${String(ms).padStart(2,'0')}`
+                        
+            // console.log('현재시간은 ' + currentTime);
+            // console.log('시작시간은 ' + startTime);
+            // console.log('토탈타임은 ' + totalelaspedTime);
+            // console.log('elasped time은 ' + elaspedTime)
+            document.getElementById("time").innerText = displayedTime;
+        }
+        
+        // 정지버튼을 누르기 전까지 setInterval을 통해 displayTime이 게속 실행.
+        // 정지버튼을 누르면 setInterval 정지.        
+        function stop() {
+            elaspedTime = totalelaspedTime;
+            // console.log('토탈타임은 ' + totalelaspedTime);
+            // console.log('elasped time은 ' + elaspedTime)
+            clearInterval(timeInterval);
+            document.getElementById('start').disabled = false;
+            document.getElementById('stop').disabled = true;
+            document.getElementById('reset').disabled = false;
+            document.getElementById('lap').disabled = true;
+        }
+        
+        function reset() {
+            elaspedTime = 0;
+            totalelaspedTime = 0;            
+            // console.log('시간 초기화 됨')
+            // console.log('토탈타임은 ' + totalelaspedTime);
+            // console.log('elasped time은 ' + elaspedTime)            
+            ms = 0;
+            seconds = 0;
+            minutes = 0;
+            hours = 0;    
+            displayedTime = `${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}:${String(ms).padStart(2,'0')}`
+            document.getElementById("time").innerText = displayedTime;
+            document.getElementById('lap_display').innerHTML = '';
+        }
+        
+        function lap() {
+            lap_time = currentTime - lap_start
+            lap_start = Date.now()
+
+            //시간 표현 변환
+            let lap_ms = Math.floor((lap_time%1000)/10)
+            let lap_seconds = Math.floor(lap_time/1000)
+            let lap_minutes = Math.floor(lap_seconds/60)
+            let lap_hours = Math.floor(lap_minutes/60) 
+            displayedLap = `${String(lap_hours).padStart(2,'0')}:${String(lap_minutes%60).padStart(2,'0')}:${String(lap_seconds%60).padStart(2,'0')}:${String(lap_ms).padStart(2,'0')}`
+
+            //dom에 추가
+            const lap_display = document.getElementById('lap_display')
+            const lapList = document.createElement('li');
+            lapList.textContent = displayedLap;
+            lap_display.appendChild(lapList);
+        }
+        
+        
+        // start_btn.addEventListener('click', start()) => 이벤트 등록시점에 start함수가 바로 실행되어버림.
+        start_btn.addEventListener('click', start) 
+        stop_btn.addEventListener('click', stop)
+        reset_btn.addEventListener('click', reset)
+        lap_btn.addEventListener('click', lap)
+        
+        
+
+    // setTimeout()
+
+
+
+    </script>
+</body>
+</html>
