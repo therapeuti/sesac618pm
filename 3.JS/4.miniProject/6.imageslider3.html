@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지 갤러리</title>
+    <style>
+        * {
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
+        }
+        html, body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            width:100%;
+            margin:0;
+            padding:0;
+        }
+        #display {
+            overflow: hidden;
+            border: 1px solid blue;
+            position: relative;
+            /* display: flex; */
+            /* align-items: center; */
+            /* justify-content: center; */
+            width: 200px;
+
+        }
+        #container {
+            border:1px solid ;
+            padding:0;
+            display: flex;
+            align-items:center;
+            /* justify-content: center; */
+            position:relative;
+            transition-property: transform;
+            transition-duration: 1s;
+            transition-timing-function: ease; 
+            
+        }
+        #container img {
+            width:200px;
+            margin:0;
+            padding:0;
+        }
+        #btns {
+            display:flex;
+            justify-content: space-evenly;
+        }
+        button {
+            display: inline-block;
+            padding: 10px;
+            margin: 10px;
+            background-color: rgba(255,255,255,0.1);
+            border: 1px solid;
+            border-radius: 5px;
+            border-color: lightgray;
+        }
+    </style>
+
+
+
+</head>
+<body>
+    <h1>이미지 갤러리</h1>
+    <div id="display">
+        <div id="container">
+            <img src="images/acnh1.png">
+            <img src="images/acnh2.png">
+            <img src="images/acnh3.png">
+            <img src="images/cat.jpg">
+        </div>
+    </div>
+    <div id="btns">
+        <button id="previous" disabled>이전</button>
+        <button id="next">다음</button>
+    </div>
+
+    <script>
+
+        const centerX = window.innerWidth/2;
+
+        const display = document.getElementById('display');
+        const container = document.getElementById('container');
+        const images = document.querySelectorAll('#container img');
+        
+        const previous = document.getElementById('previous');
+        const next = document.getElementById('next');
+        
+        let count = 0;
+        let cumulative_width = 0;
+        let prev_img = 0;
+        let next_img = 0;
+        let movement_width = 0;
+
+        
+        previous.addEventListener('click', function(e) {
+            prev_img = images[count].offsetWidth/2;
+            count -= 1;
+            next_img = images[count].offsetWidth/2;
+            movement_width = prev_img + next_img;            
+            cumulative_width -= movement_width;
+            console.log(count)
+            if (count === 0){
+                //버튼 비활성화
+                previous.disabled = true;
+                container.style.transform = `translateX(-${cumulative_width}px)`;
+                display.style.width = `${images[count].offsetWidth}px`;
+            } else {
+                previous.disabled = false;
+                next.disabled = false;
+                container.style.transform = `translateX(-${cumulative_width}px)`;
+                display.style.width = `${images[count].offsetWidth}px`;
+            }
+        })        
+        next.addEventListener('click', function(e) {
+            prev_img = images[count].offsetWidth/2;
+            count += 1;
+            next_img = images[count].offsetWidth/2;
+            movement_width = prev_img + next_img;            
+            cumulative_width += movement_width;
+            // console.log(count);
+            console.log(movement_width);
+            console.log(cumulative_width);
+            if (count === (images.length - 1)) {
+                //버튼 비활성화
+                console.log('마지막 사진' + count + ' : '+ cumulative_width);
+                next.disabled = true;
+                container.style.transform = `translateX(-${cumulative_width}px)`;
+                display.style.width = `${images[count].offsetWidth}px`;
+            } else {
+                previous.disabled = false;
+                next.disabled = false;
+                container.style.transform = `translateX(-${cumulative_width}px)`;
+                display.style.width = `${images[count].offsetWidth}px`;
+            }
+        })
+        
+        // let startTranslateX = container.offsetWidth/2 - images[count].offsetWidth/2;
+        
+        // display.style.width = `${images[count].offsetWidth}px`;
+    
+    </script>    
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지 갤러리</title>
+    <style>
+        . {
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
+        }
+        html, body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #container {
+            border:1px solid ;
+
+        }
+        #display {
+            border: 1px blue;
+
+        }
+    </style>
+
+
+
+</head>
+<body>
+    <h1>이미지 갤러리</h1>
+    <div id="container">
+        <img src="images/acnh1.png" width="200px">
+        <img src="images/acnh2.png" width="200px">
+        <img src="images/acnh3.png" width="200px">
+    </div>
+    <div id="display">
+    </div>
+    <script>
+        const images = document.getElementById('container');
+        images.addEventListener('click', function(e) {
+            console.log(e.target.src);
+            const display = document.getElementById('display');
+            const copy = e.target.cloneNode(true);
+            copy.removeAttribute('width')
+            display.innerHTML = ''
+            display.appendChild(copy);
+
+        })
+    </script>
+    
+</body>
+</html>
