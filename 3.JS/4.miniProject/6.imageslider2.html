@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지 갤러리</title>
+    <style>
+        * {
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
+        }
+        html, body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #container {
+            border:1px solid ;
+            display: none;
+        }
+        #container img {
+            width:200px;
+        }
+        #btns {
+            display:flex;
+            justify-content: space-evenly;
+
+        }
+        button {
+            display: inline-block;
+            padding: 10px;
+            margin: 10px;
+        }
+        #display {
+            border: 1px blue;
+        }
+    </style>
+
+
+
+</head>
+<body>
+    <h1>이미지 갤러리</h1>
+    <div id="container">
+        <img src="images/acnh1.png">
+        <img src="images/acnh2.png">
+        <img src="images/acnh3.png">
+    </div>
+    <div id="btns">
+        <button id="previous" disabled>이전</button>
+        <button id="next">다음</button>
+    </div>
+    <div id="display">
+    </div>
+    <script>
+        const images = document.querySelectorAll('#container img');
+        const display = document.getElementById('display');
+        
+        const previous = document.getElementById('previous')
+        const next = document.getElementById('next')
+
+        let count = 0;
+        let copy = images[count].cloneNode(true);
+        display.appendChild(copy);
+
+        previous.addEventListener('click', function(e) {
+            count -= 1;
+            console.log(count)
+            if (count === 0){
+                //버튼 비활성화
+                // console.log(e)
+                previous.disabled = true;
+                copy = images[count].cloneNode(true);
+                display.innerHTML = ''
+                display.appendChild(copy)                
+            } else {
+                previous.disabled = false;
+                next.disabled = false;
+                copy = images[count].cloneNode(true);
+                display.innerHTML = ''
+                display.appendChild(copy)                
+            }
+        })
+        
+        next.addEventListener('click', function(e) {
+            count += 1;
+            console.log(count);
+            if (count === (images.length - 1)) {
+                //버튼 비활성화
+                console.log('마지막 사진이니까 다음 버튼이 비활성화');
+                next.disabled = true;
+                copy = images[count].cloneNode(true);
+                display.innerHTML = ''
+                display.appendChild(copy)
+            } else {
+                previous.disabled = false;
+                next.disabled = false;
+                copy = images[count].cloneNode(true);
+                display.innerHTML = ''
+                display.appendChild(copy)
+            }
+        })
+
+        console.log(images.length + typeof(images.length))
+
+
+        
+    </script>
+    
+</body>
+</html>

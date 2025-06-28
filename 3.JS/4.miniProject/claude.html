@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지 갤러리</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        
+        h1 {
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        #display {
+            overflow: hidden;
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            width: 300px;
+            height: 200px;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        #container {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+        
+        #container img {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        
+        /* 샘플 이미지를 위한 플레이스홀더 */
+        .sample-image {
+            width: 300px;
+            height: 200px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .sample-image:nth-child(1) {
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+        }
+        
+        .sample-image:nth-child(2) {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+        
+        .sample-image:nth-child(3) {
+            background: linear-gradient(45deg, #a8edea, #fed6e3);
+        }
+        
+        #btns {
+            display: flex;
+            gap: 20px;
+        }
+        
+        button {
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        
+        button:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+        
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .counter {
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>이미지 갤러리</h1>
+    <div id="display">
+        <div id="container">
+            <!-- 실제 이미지 경로가 있다면 아래 주석을 해제하고 사용하세요 -->
+            <img src="images/acnh1.png" alt="이미지 1">
+            <img src="images/acnh2.png" alt="이미지 2">
+            <img src="images/acnh3.png" alt="이미지 3">
+            <img src="images/cat.jpg">
+
+            
+            <!-- 샘플 이미지 (실제 이미지가 없을 때 사용) -->
+            <!-- <div class="sample-image">이미지 1</div>
+            <div class="sample-image">이미지 2</div>
+            <div class="sample-image">이미지 3</div> -->
+            
+        </div>
+    </div>
+    <div id="btns">
+        <button id="previous" disabled>이전</button>
+        <button id="next">다음</button>
+    </div>
+    <div class="counter">
+        <span id="current">1</span> / <span id="total">3</span>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+        const container = document.getElementById('container');
+        const images = document.querySelectorAll('#container .sample-image, #container img');
+        const previous = document.getElementById('previous');
+        const next = document.getElementById('next');
+        const currentSpan = document.getElementById('current');
+        const totalSpan = document.getElementById('total');
+        
+        let currentIndex = 0;
+        const imageWidth = 300; // 이미지 너비 고정
+        
+        // 총 이미지 수 설정
+        totalSpan.textContent = images.length;
+        
+        function updateGallery() {
+            const translateX = -currentIndex * imageWidth;
+            container.style.transform = `translateX(${translateX}px)`;
+            
+            // 버튼 상태 업데이트
+            previous.disabled = currentIndex === 0;
+            next.disabled = currentIndex === images.length - 1;
+            
+            // 카운터 업데이트
+            currentSpan.textContent = currentIndex + 1;
+            
+            console.log(`현재 인덱스: ${currentIndex}, 이동거리: ${translateX}px`);
+        }
+        
+        previous.addEventListener('click', function() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateGallery();
+            }
+        });
+        
+        next.addEventListener('click', function() {
+            if (currentIndex < images.length - 1) {
+                currentIndex++;
+                updateGallery();
+            }
+        });
+        
+        // 키보드 이벤트 추가
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                currentIndex--;
+                updateGallery();
+            } else if (e.key === 'ArrowRight' && currentIndex < images.length - 1) {
+                currentIndex++;
+                updateGallery();
+            }
+        });
+        
+        // 초기 상태 설정
+        updateGallery();
+    </script>    
+</body>
+</html>
