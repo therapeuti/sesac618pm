@@ -109,3 +109,163 @@ def calc_monthly_salary(annual_salary): #연봉을 12개월 나눔.1미만은 �
     return monthly_salary
 
 ### 파이썬 예제 230까지 완료
+
+def make_url(string):
+    url = "www."+string+".com"
+    return url
+
+print(make_url("naver"))
+
+def make_list(string):
+    made_list = []
+    for i in string:
+        made_list.append(i)
+    return made_list
+
+print(make_list("made_list"))
+
+def pickup_even(num_list):
+    even = []
+    for num in num_list:
+        if num % 2 == 0:
+            even.append(num)
+    return even
+
+print(pickup_even([1,2,3,4,5,6,7,8,9]))
+
+def convert_int(string):
+    string_list = string.split(',')
+    result = int(''.join(string_list))
+    return result
+
+print(convert_int("123,456,34,6,7"))
+
+# 240까지 완료
+from datetime import datetime,timedelta
+
+print(datetime.now())
+
+now = datetime.now()
+
+print(type(now))
+
+
+days5_ = timedelta(days=5)
+print(now - days5_)
+
+for i in range(5,0,-1):
+    day = timedelta(days=i)
+    print(now - day)
+
+print(datetime.now().strftime("%H:%M:%S"))
+
+date = ("2020-05-04")
+print(datetime.strptime(date,"%Y-%m-%d"))
+
+import time
+i = 0
+# while i < 10:
+#
+#     print(datetime.now())
+#     i += 1
+#     time.sleep(1)
+
+
+import os
+print(os.getcwd())
+
+# os.rename('practice.txt','practice2.txt')
+
+import numpy as np
+
+np_array = np.arange(0, 5.1, 0.1, dtype='float64')
+# print(np_array)
+
+for i in np.arange(0, 5.1, 0.1):
+    print(i)
+
+# 파이썬 예제 250까지 완료 -> 이후부터 코랩으로 진행
+# 예외처리
+
+
+# os.rename('종목코드.txt', '매수종목1.txt')
+# print('메모장 이름 바뀌었나?')
+
+memo = open('매수종목1.txt', "w", encoding='utf-8')
+# w면 기존 파일 지우고 새로 씀
+# a는 기존 파일 뒤에 추가
+memo.write('005930\n005380\n035420')
+memo.close()
+
+memo2 = open('매수종목2.txt', 'w', encoding='utf-8')
+memo2.write('005930 삼성전자\n')
+memo2.write('005380 현대차\n')
+memo2.write('035420 NAVER\n')
+memo2.close()
+
+
+memo3 = open('매수종목.csv', 'w', encoding='utf-8')
+memo3.write('종목명,종목코드,PER\n')
+memo3.write('삼성전자,005930,15.79\n')
+memo3.write('NAVER,035420,55.82\n')
+memo3.close()
+
+code_list = []
+with open('매수종목1.txt','r',encoding='utf-8') as f:
+    # code_list = f.readlines()
+    for line in f: #파일을 한 줄 씩 읽음
+        line = line.strip() # 줄바꿈 \n . 변수에 할당해야함.
+        code_list.append(line)
+
+print(code_list)
+f.close()
+
+
+dict = {}
+with open('매수종목2.txt', 'r', encoding='utf-8') as f:
+    for line in f:
+        i = line.strip().split(' ')
+        print(i)
+        dict[i[0]] = i[1]
+        print(dict)
+
+
+per = ["10.31", "", "8.00"]
+per_float = []
+for i in per:
+    try:
+        per_float.append(float(i))
+        print(per_float) 
+    except ValueError as e:
+        print(0)
+        per_float.append(0)
+
+
+num = 10
+num_list = [1,4,8,0,6,5]
+
+for i in num_list:
+    try:
+        print(num / i)
+    except ZeroDivisionError as e:
+        print(e)
+
+
+data = [1,2,3]
+
+for i in range(5):
+    try:
+        print(data[i])
+    except IndexError as e:
+        print(e)
+
+
+for i in per:
+    try:
+        print(float(i))
+    except ValueError as e:
+        print(e)
+    else:
+        print('else 예외가 발생하지 않았을 때 수행할 코드')
+    finally:
+        print('예외 발생 여부와 상관없이 항상 수행할 코드')
