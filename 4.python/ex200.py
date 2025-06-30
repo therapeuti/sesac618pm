@@ -218,7 +218,7 @@ with open('매수종목1.txt','r',encoding='utf-8') as f:
         code_list.append(line)
 
 print(code_list)
-f.close()
+f.close()## with를 쓰면 close 할 필요가 없음.
 
 
 dict = {}
