@@ -1,6 +1,0 @@
-Hello!
-안녕!
-바이
-
-\r : carriage return
-\n : line feed
