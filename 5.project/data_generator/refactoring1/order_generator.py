@@ -61,7 +61,7 @@ class Order_generator(Generator):
         for order in range(n):
             order = self.generate_data()
             for i in order:
-                self.attend_csv(Generator.dataset_file_path_order_item, i)
+                self.append_csv(Generator.dataset_file_path_order_item, i)
         print(f'주문 데이터 {n}개를 생성했습니다!')
         
     
