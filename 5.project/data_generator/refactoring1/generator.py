@@ -13,7 +13,8 @@ class Generator(ABC):
     file_path_address = 'address_sample.csv'
     file_path_item = 'item_data.csv'
 
-    dataset_file_path_user = 'dataset/user.csv'
+    # 상속받은 클래스에서 사용하는거니까 상속받는 클래스에서 정의하는 것이 더 나음.
+    dataset_file_path_user = 'dataset/user.csv' # 추상함수로 만들어서 강제로 변수 만들도록
     dataset_file_path_store = 'dataset/store.csv'
     dataset_file_path_item = 'dataset/item.csv'
     dataset_file_path_order_item = 'dataset/order_item_dataset.csv'
@@ -42,7 +43,7 @@ class Generator(ABC):
             csv_writer.writerow(contents)
         
     
-    def attend_csv(self, file_path, contents):
+    def append_csv(self, file_path, contents):
         with open(file_path, 'a', encoding='utf-8', newline='') as file:
             csv_writer = csv.writer(file)
             csv_writer.writerow(contents)

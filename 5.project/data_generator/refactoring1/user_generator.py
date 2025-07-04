@@ -8,7 +8,7 @@ class User_generator(Generator):
     def generate_name(self):
         last_name = random.choice(self.read_csv(self.file_path_lastname))[0]
         first_name = random.choice(self.read_csv(self.file_path_firstname))[0]
-        # print(last_name)
+        # print(last_name) # 로깅모듈 알아볼 것. 
         # print(first_name)
         u_name = last_name + first_name
         # print(u_name)
@@ -47,7 +47,7 @@ class User_generator(Generator):
         self.write_csv(Generator.dataset_file_path_user, field)
         for _ in range(n):
             user = self.generate_data()
-            self.attend_csv(Generator.dataset_file_path_user, user)
+            self.append_csv(Generator.dataset_file_path_user, user)
         print(f'사용자 데이터 {n}가 생성되었습니다.')
 
 

@@ -6,8 +6,10 @@ class Store_generator(Generator):
     def generate_store_name(self):
         # store type
         store_type = self.read_csv(self.file_path_store)
+        print(store_type)
         store = random.choice(store_type)[0]
-        # print(store)
+        print(store)
+        # print(type)
         
         # store address
         address_list = self.read_csv(Generator.file_path_address)
@@ -34,15 +36,16 @@ class Store_generator(Generator):
         self.write_csv(Generator.dataset_file_path_store, field)
         for _ in range(n):
             store_info = self.generate_data()
-            self.attend_csv(Generator.dataset_file_path_store, store_info)
+            self.append_csv(Generator.dataset_file_path_store, store_info)
         print(f'스토어 데이터 {n}개가 생성되었습니다.')
 
 
 if __name__=='__main__':
-    if len(sys.argv) > 1:
-        data_num = int(sys.argv[1])
-    else:
-        data_num = int(input('생성할 데이터 개수를 입력하세요: '))
+    # if len(sys.argv) > 1:
+    #     data_num = int(sys.argv[1])
+    # else:
+        # data_num = int(input('생성할 데이터 개수를 입력하세요: '))
 
     store_dataset = Store_generator()
-    store_dataset.generate_dataset(data_num)
+    # store_dataset.generate_dataset(data_num)
+    store_dataset.generate_store_name()

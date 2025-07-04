@@ -17,7 +17,7 @@ class Item_generator(Generator):
         field = ['item_id','item_name','item_type','item_price']
         self.write_csv(Generator.dataset_file_path_item, field)
         for row in item_list:
-            self.attend_csv(Generator.dataset_file_path_item, row)
+            self.append_csv(Generator.dataset_file_path_item, row)
         print('메뉴 아이템 데이터셋을 생성했습니다.')
 
 
