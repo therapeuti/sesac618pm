@@ -52,14 +52,16 @@ class User_generator(Generator):
 
 
 if __name__=='__main__':
-    if len(sys.argv) > 1:
-        data_num = int(sys.argv[1])
-    else:
-        data_num = int(input('생성할 데이터의 개수를 입력하세요: '))
+    # if len(sys.argv) > 1:
+    #     data_num = int(sys.argv[1])
+    # else:
+    #     data_num = int(input('생성할 데이터의 개수를 입력하세요: '))
 
     user_gen = User_generator()
-    user_gen.generate_dataset(data_num)
-        
+    # user_gen.generate_dataset(data_num)
+    file_path = 'name_sample.json'
+    user_gen.generate_person_name(file_path)    
+    
 
 
 
