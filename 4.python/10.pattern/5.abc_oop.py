@@ -6,19 +6,19 @@ class Displayable(ABC):
     def display():
         pass
 
-class User:
+class User(Displayable):
     def display(self):
         print('사용자 객체 처리')
 
-class Store:
+class Store(Displayable):
     def display(self):
         print('상점 객체 처리')
 
-class Item:
+class Item(Displayable):
     def display(self):
         print('아이템 객체 처리')
 
-class Order:
+class Order(Displayable):
     # def display_order(self):
     def display(self): # 이걸 강제로 만들도록 함.
         print('주문 객체 처리')
