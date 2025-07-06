@@ -41,11 +41,9 @@ class Store_generator(Generator):
 
 
 if __name__=='__main__':
-    # if len(sys.argv) > 1:
-    #     data_num = int(sys.argv[1])
-    # else:
-        # data_num = int(input('생성할 데이터 개수를 입력하세요: '))
+    if len(sys.argv) > 1:
+        data_num = int(sys.argv[1])
+    else:
+        data_num = int(input('생성할 데이터 개수를 입력하세요: '))
 
     store_dataset = Store_generator()
-    # store_dataset.generate_dataset(data_num)
-    store_dataset.generate_store_name()
