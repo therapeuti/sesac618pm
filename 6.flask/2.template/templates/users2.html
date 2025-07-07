@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!--사용자 출력 -->
+    {% if page is none %}
+    <h1>All Users</h1>
+    {%for user in users %}
+    <ul>
+        <li>{{user['id']}} - {{user['name']}} ({{user['age']}}, {{user['mobile']}})</li>
+    </ul>
+    {% endfor %}
+    {% else %}
+    <h1>Page{{page}}</h1>
+        {%for user in users %}
+        {% if page*10-9 <= user['id'] <= page*10 %}
+        <ul>
+            <li>{{user['id']}} - {{user['name']}} ({{user['age']}}, {{user['mobile']}})</li>
+        </ul>
+        {% endif %}
+        {% endfor %}
+        {% if page > 1 %}
+        <a href="/page/{{ page - 1 }}">Previous</a>
+        {% else %}
+        <a href="">Previous</a>
+        {% endif %}
+        {% if page >= 1 and page < 10 %}
+        <a href="/page/{{ page + 1 }}">Next</a>
+        {% else %}
+        <a href="">Next</a>
+        {% endif %}
+    {% endif %}
+
+</body>
+</html>
