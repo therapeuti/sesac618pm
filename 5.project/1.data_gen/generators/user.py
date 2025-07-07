@@ -18,5 +18,5 @@ class UserGenerator:
             bday = self.bday.generate_bday()
             gender = self.gender.generate_gender()
             address = self.address.generate_address()
-            users.append((name,bday,gender,address))
+            users.append((name, bday, gender, address))
         return users

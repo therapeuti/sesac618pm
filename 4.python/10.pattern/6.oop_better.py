@@ -31,12 +31,10 @@ class Order(ABC):
     def display(self): # 이걸 강제로 만들도록 함.
         print('주문 객체 처리')
 
-class OrderItem:
+class OrderItem(ABC):
     def display(self): 
         print('주문아이템 객체 처리')
 
-# 걍 출력해주는.. 역할... 디테일은 모름.....
-# order의 경우.. 런타임 오류... display()가 강제되어 있찌 않음 => 추상클래스
 class DisplayData:
     def __init__(self, data):  # 이 클래스를 누가 사용할 수 있는지 알 수 있게..
         handler = Displayable.registry.get(type(data))
