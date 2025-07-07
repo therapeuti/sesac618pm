@@ -66,7 +66,7 @@ class Order_generator:
             order.append((str(order_id), ordertime, store_id, user_id, order_item_id, item_id))
         return order
     
-    def generate_order_item_dataset(self, n:int): 
+    def generate_order_item_dataset(self, n:int): # 생성할 때마다 파일을 열고 닫고 반목하면서 하나씩 만드느라 시간이 오래 걸릴 수 있음. 아예 메모리에 올려놓고 읽고 쓰기를 진행.
         with open('dataset/orderitem_dataset.csv','w',encoding='utf-8',newline='') as f:
             csv_writer = csv.writer(f)
             csv_writer.writerow(['order_id','ordertime','store_id','user_id','order_item_id','item_id'])
