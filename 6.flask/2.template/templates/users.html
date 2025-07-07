@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>All Users</h1>
+    <!--사용자 출력 -->
+    {% if page == 10%p}
+    {%for user in users %}
+    <ul>
+        <li>{{user}}</li>
+    </ul>
+    {% endfor %}
+
+    {% if page %}
+    <a href="/?page={{ page - 1 }}">previous</a>
+    <a href="/?page={{ page + 1 }}">next</a>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #submit {
+            cursor : pointer
+        }
+        input {
+            padding: 5px;
+        }
+        table, th,td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: lightgray;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Information</h1>
+    <p>이름과 나이로 사용자 정보 검색</p>
+    <form>
+    <input type="text" placeholder="이름을 입력하세요." name="name">
+    <input type="number" placeholder="나이를 입력하세요" name="age">
+    <input type="submit" value="Search" id="submit" >
+    </form>
+    <h2>검색된 사용자 정보</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Mobile</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{user['name']}}</td>
+            <td>{{user['age']}}</td>
+            <td>{{user['mobile']}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+  
+</body>
+</html>
