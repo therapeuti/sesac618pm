@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인사 페이지</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> <!-- jinja2 템플릿을 사용하는게 서버사이드 렌더링-->
+</head>
+<body>
+    <h1>빈 페이지</h1>
+    <img src="{{ url_for('static', filename='img/cat.jpg') }}" alt="'고양이"> <!-- static 폴더 자체가 자동으로 노출되는 폴더여서 그 안에 넣어둬야 함. -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

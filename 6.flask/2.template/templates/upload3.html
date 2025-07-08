@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>파일업로드</h1>
+    <form action="/upload" method="POST" enctype='multipart/form-data'>
+        <!-- enctype에 어떤 것들이 있는지 알아야 함. 파일업로드 시에 꼭 써야함!!!!!-->
+        <input type="file" name="file">
+        <button type="submit">전송</button>
+    </form>
+    <div>
+        <h2>파일 목록</h2>
+        {% for f in file_list %}
+            <ul>
+                <li>{{f}} <a href="/delete/{{f}}">삭제</a></li>
+            </ul>
+        {% endfor %}
+    </div>
+</body>
+</html>
