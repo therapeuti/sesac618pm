@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지</title>
+    <style>
+        table, th, tr, td {
+            border-collapse: collapse;
+            border: 1px solid black;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            table-layout: fixed;
+        }
+        th:first-child {
+            width: 150px;
+            padding: 5px;
+        }
+        td:first-child img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>이미지 업로드</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="img">
+        <input type="submit" value="이미지 업로드">
+    </form>
+    <h2>이미지 목록</h2>
+    <table>
+        <tr>
+            <th>미리보기</th>
+            <th>파일명</th>
+            <th>키워드</th>
+            <th>삭제</th>
+        </tr>
+        {% for i in images %}
+        <tr>
+            <td><img src='{{ i.url }}'></td>
+            <td>{{i.filename}}</td>
+            <td><input type=text><button>수정</button></td>
+            <td><a href='/delete/{{i.filename}}'>삭제</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
