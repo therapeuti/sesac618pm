@@ -68,21 +68,6 @@
         });
     
 
-    // 태그 폼이 나중에 DOM에 추가되는거라서...
-    document.addEventListener('DOMContentLoaded', () => {
-    const forms = document.getElementsByTagName('form');
-    for (const form of forms) {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            console.log('폼 제출 막음!');
-        });
-    }
-});
-
-
-
-    
-
     </script>    
 </body>
 </html>
