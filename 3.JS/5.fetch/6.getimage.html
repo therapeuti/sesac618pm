@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn">강아지 이미지 요청</button>
+    <div id="result"></div>
+    <label>강아지 품종 고르기</label>
+    <select id="breed_selection"></select>
+    <label>강아지 서브품종 고르기</label>
+    <select id="subbreed_selection"></select>
+    <button id="breed_btn">선택한 품종의 강아지 이미지 요청</button>
+
+    <script>
+        document.getElementById('btn').addEventListener('click', () => {
+            fetch('https://dog.ceo/api/breeds/image/random')
+                .then(response => response.json())
+                .then(json => {
+                    console.log(json.message)
+                    const resultDiv = document.getElementById('result')
+                    resultDiv.innerHTML = `<img src=${json.message}>` // 취약한 코드
+
+                    // const img_url = json.message
+                    // const img = document.createElement('img');
+                    // img.src = img_url;
+                    // img.alt = '강아지';
+                    // img.div.appendChild(img);
+                })
+            })
+            
+        const breed_select = document.getElementById('breed_selection')
+        const subbreed_select = document.getElementById('subbreed_selection')
+        let breed_info = ''
+
+        function get_breed_list() {
+            fetch('https://dog.ceo/api/breeds/list/all')
+            .then(response => response.json())
+            .then(json => {
+                console.log(json.message)
+                console.log(typeof(json.message))
+                // console.log(json.message[1])  이런 식으로는 못 가져오는 듯.
+                breed_info = json.message
+                console.log(breed_info)
+                // for ( const dog of Object.keys(json.message) ) {
+                // breed_info.forEach(dog => {  -------> 안 됨. for of도 안 됨!!!!!!!!!!!
+                for ( const dog in breed_info ) {
+                    console.log(dog)
+                    breed_select.innerHTML += `<option>${dog}</option>` // 이런 식의 코드가 좋은 건 아님. 취약함.
+                }
+                if (Object.values(breed_info)[0].length != 0){ ///////// object를 안 쓴다고 한다면 subbreed를 표시하는 함수를 따로 만들어서 적용하는 방법도 있음. 어차피 아래 이벤트 리스너에서도 반복되는 코드니까....
+                    let subbreed = Object.values(breed_info)[0]
+                    subbreed_select.innerHTML = ''
+                    for (const i of subbreed) {
+                        subbreed_select.innerHTML = `<option>${i}</option>`
+                    }
+                } else {
+                    subbreed_select.innerHTML = `<option>none</option>`
+                }
+            })
+        }        
+        get_breed_list()
+        
+        breed_select.addEventListener('change', (e) => {
+            console.log(e)
+            console.log(e.target.value)
+            let sub_breed = e.target.value;
+            console.log(breed_info[sub_breed]) // console.log(breed_info.sub_breed) 이렇게 하면 undefined
+            subbreed_select.innerHTML = ''
+            if (breed_info[sub_breed].length != 0) {
+                for (const subbreed of breed_info[sub_breed]) {
+                    subbreed_select.innerHTML += `<option>${subbreed}</option>`
+                }
+            } else {
+                subbreed_select.innerHTML = `<option>none</option>`
+            }
+        })
+
+
+        const subbreed = document.getElementById('subbreed_selection')
+
+        document.getElementById('breed_btn').addEventListener('click', ()=> {
+            console.log(breed_select.value)
+            console.log(subbreed_select.value)
+            if (subbreed_select.value == 'none') {
+                fetch(`https://dog.ceo/api/breed/${breed_select.value}/images/random`)
+                .then(response => response.json())
+                .then(json => {
+                    console.log(json)
+                    const resultDiv = document.getElementById('result')
+                    resultDiv.innerHTML = `<img src=${json.message}>`
+                })
+            } else {
+                fetch(`https://dog.ceo/api/breed/${breed_select.value}/${subbreed_select.value}/images/random`)
+                .then(response => response.json())
+                .then(json => {
+                    console.log(json)
+                    const resultDiv = document.getElementById('result')
+                    resultDiv.innerHTML = `<img src=${json.message}>`
+                })
+            }
+         })
+
+    </script>
+
+</body>
+</html>

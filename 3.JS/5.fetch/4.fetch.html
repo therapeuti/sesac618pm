@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fetch 학습</title>
+    <style>
+        .error {
+            color: red;
+        }
+        .success {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h1></h1>
+    <button id="load">로드</button>
+    <div id="result"> 응답 온 거 넣을 곳</div>
+    <script>
+        const loadBtn = document.getElementById('load')
+        const resultDiv = document.getElementById('result')
+        loadBtn.addEventListener('click', () => {
+            console.log('버튼클릭')
+
+            fetch('http://127.0.0.1:5000/data')
+                .then(response => {
+                    console.log('응답 받았음. 응답코드는', response.status, response.ok)
+                    console.log(response)
+                    if (!response.ok) {
+                        throw new Error('통신 중 오류가 발생')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    console.log(data)
+                    if (data.result == 'success'){
+                        resultDiv.classList.add('success')
+                        resultDiv.innerHTML = data.message
+                    } else {
+                        resultDiv.classList.add('error')
+                        resultDiv.innerHTML = data.message
+                    }
+                })
+                .catch(error => {
+                    resultDiv.classList.add('error')
+                    resultDiv.innerHTML = '통신 중 오류 발생'
+                    console.log('통신 중 오류 발생')
+                });
+            console.log('fetch이후')
+        })
+    </script>
+</body>
+</html>
