@@ -1,6 +1,7 @@
 from flask import Flask, url_for, redirect, render_template, request
 import os
 import csv
+import json
 
 app = Flask(__name__)
 app.config['image_folder'] = 'static/img'
@@ -14,10 +15,16 @@ def image_list_from_db(filepath):
             csv_reader = csv.DictReader(file)
             print(csv_reader)
             for row in csv_reader:
-                images.append(row)
+                try:
+                    row['tag'] = json.loads(row['tag'])
+                    images.append(row)
+                except:
+                    print('json 파싱 오류')
+                    row['tag'] = []
         return images
     except FileNotFoundError as e:
         return None
+
 
 def image_list():
     images = image_list_from_db('image_db')
@@ -43,6 +50,7 @@ def update_image_db(images):
         csv_writer = csv.DictWriter(file, fieldnames=fieldname)
         csv_writer.writeheader()
         for i in images:
+            i['tag'] = json.dumps(i['tag'], ensure_ascii=False)
             csv_writer.writerow(i)
 
     
@@ -95,14 +103,12 @@ def delete_img(filename):
 @app.route('/edit_tag/<filename>', methods=['POST'])
 def edit_tag(filename):
     print(request.form)
-    tag = request.form['tag'].split(',')
+    tag = request.form['tag']
     # ,로 split해서 각각 서로 다른 단어로 구분.
     print(tag)
-    keywords = [word.strip() for word in tag ]
-    print(keywords)
     for img in  images:
         if img['filename'] == filename:
-            img['tag'] = tag
+            img['tag'] = [word.strip() for word in tag.lower().split(',') if len(word.strip())]
             break
     print(images)
     update_image_db(images)
