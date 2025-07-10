@@ -95,8 +95,11 @@ def delete_img(filename):
 @app.route('/edit_tag/<filename>', methods=['POST'])
 def edit_tag(filename):
     print(request.form)
-    tag = request.form['tag']
+    tag = request.form['tag'].split(',')
+    # ,로 split해서 각각 서로 다른 단어로 구분.
     print(tag)
+    keywords = [word.strip() for word in tag ]
+    print(keywords)
     for img in  images:
         if img['filename'] == filename:
             img['tag'] = tag

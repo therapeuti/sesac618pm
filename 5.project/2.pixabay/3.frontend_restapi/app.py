@@ -1,9 +1,8 @@
 from flask import Flask, jsonify, url_for, request, send_from_directory
-import random
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+CORS(app) # 나의 서버에 누구든 요청이 가능.( 프론트와 백엔드가 서로 다른 서버? 위치?에 있는 경우에 필요 )
 
 images = [
     {'filename':"cat.jpg", 'tag':['cat','cute','pet']},
