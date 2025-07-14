@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>사용자 수정</h2>
+    <form method="POST"> <!-- 경로를 따로 지정하지 않았기 때문에 실행한 그 페이지 경로로 전달-->
+        이름: <input type="text" name="name" required value="{{ user.name }}">
+        나이: <input type="number" name="age" required value="{{ user.age }}">
+        <button type="submit">수정</button>
+    </form>
+    <P><a href='/'>&lt- 돌아가기</a></P>
+</body>
+</html>

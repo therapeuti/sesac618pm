@@ -6,3 +6,17 @@
 __pycache__/  
 # 특정 확장자를 가진 모든 파일
 *.pyc
+
+# 데이터파일
+**/uploads/*
+*.db
+*.sqlite
+*.sqlite3
+*.jpg
+*.png
+*.gif
+*.jpeg
+
+
+# 민감정보 파일
+.env
