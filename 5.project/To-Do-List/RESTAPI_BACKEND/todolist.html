@@ -75,7 +75,7 @@
     <p>서버사이드 렌더링</p>
     <div id="container">
         <div id="input-container">
-            <input type="text" id="userInput" name='todo' placeholder="오늘 할 일?">
+            <input type="text" id="userInput" name='todo' placeholder="오늘 할 일?" required>
             <button type=submit id="addTodo">추가</button>
         </div>
         <div id="list-container">
@@ -88,37 +88,57 @@
         // 1. 데이터 불러오기 : 시작 시 로드..
         // 2. 데이터 삭제하기
         // 3. 데이터 추가하기
-
         const todoList = document.getElementById('todoList');
         const addTodo = document.getElementById('addTodo');
         const Input = document.getElementById('userInput');
+        const new_li = document.createElement('li');
+        const del_btn = document.createElement('button')
         
-        // 버튼 클릭 시 투두리스트 추가 
-        addTodo.addEventListener('click', (e) => {
-            const userInput = document.getElementById('userInput').value;
-            const new_li = document.createElement('li');
-            console.log('서버로 보낼 내용 및 투두리스트에 추가할 내용: ', userInput)
-            fetch('/add',{
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({'todo':userInput, 'status':'not_complete'})
-            })
-            
-            if (userInput == ''){ // 빈 값일 경우 추가 버튼 눌리지 않게.? 리스트 추가 되지 않게..
-                return;
-            }
+        function add_todo(userInput, status) {            
             //리스트 추가
+            const new_li = document.createElement('li');
             new_li.textContent = userInput;
-            todoList.appendChild(new_li);   
-            console.log('투두리스트 추가됐니?')
+            todoList.appendChild(new_li);  
             
+            if (status == 'complete') {
+                new_li.style.textDecoration = 'line-through'
+            }
+            // console.log('투두리스트 추가됐니?')            
             //삭제버튼도 추가
             const del_btn = document.createElement('button')
             del_btn.textContent = 'x'
-            new_li.appendChild(del_btn)
+            new_li.appendChild(del_btn)           
+        }
+
+        function load_data(){
+            fetch('/send_data')
+            .then(response => response.json())
+            .then(data => {
+                    console.log(data.data)
+                    for (const todo of data.data){
+                        console.log(todo['todo'])
+                        add_todo(todo['todo'],todo['status'])
+                    }
+                })
+            }
+
+        // 버튼 클릭 시 투두리스트 추가 
+        addTodo.addEventListener('click', (e) => {
+            const userInput = Input.value;
+            const status = 'not_complete'
+            console.log('서버로 보낼 내용 및 투두리스트에 추가할 내용: ', userInput)
+            const today = new Date();
+            console.log(today)
             
-            document.getElementById('userInput').value = ''; //DOM 요소를 직접 수정하는 것 //엔터 치면 인풋 밸류 사라지기
-            // userInput = ''; userInput 변수에 저장된 값을 바꾸려는 것! 
+            fetch('/add',{
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({'todo':userInput, 'status':status, 'date':today})
+            })
+
+            add_todo(userInput, status)
+            
+            Input.value = ''; //엔터 치면 인풋 밸류 사라지기
         })
         
         // 엔터 치면 추가 버튼 클릭 기능 활성화. input에 대해서 keydown 이벤트를 등록해야할지, 버튼에 대해서 등록해야할지??
@@ -155,10 +175,10 @@
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({'todo': todoText, 'status':'complete'})
             })
-        }
-    } else {
-        // console.log(e.target.tagName)
-            }
+                }
+            } else {
+                // console.log(e.target.tagName)
+            }   
             //삭제 기능 추가
             if (e.target.tagName === 'BUTTON'){
                 
@@ -166,32 +186,11 @@
                 fetch('/delete',{
                     method: 'delete',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({'todo': todoText})
-                })
-            }
-        })       
-        
-        function load_data(){
-            fetch('/send_data')
-            .then(response => response.json())
-            .then(data => {
-                    console.log(data.data)
-                    for (const todo of data.data){
-                        console.log(todo['todo'])
-                        const new_li = document.createElement('li');
-                        new_li.textContent = todo['todo'];
-                        todoList.appendChild(new_li);
-                        console.log('추가됐나?');
-                        //삭제버튼도 추가
-                        const del_btn = document.createElement('button')
-                        del_btn.textContent = 'x';
-                        new_li.appendChild(del_btn);
-                        if (todo['status'] == 'complete'){
-                            new_li.style.textDecoration = 'line-through';
-                        }
+                            body: JSON.stringify({'todo': todoText})
+                        })
                     }
-                })
-            }
+                })       
+        
 
         load_data()
     </script>
