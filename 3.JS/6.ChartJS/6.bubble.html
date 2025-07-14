@@ -1,0 +1,30 @@
+<div>
+  <canvas id="myChart" width="600"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('myChart');
+
+    const data = {
+    datasets: [{
+        label: 'First Dataset',
+        data: [
+            {x: 20, y: 30, r: 15},
+            {x: 30, y: 10, r: 50},
+            {x: 40, y: 15, r: 60},
+            {x: 35, y: 0, r: 30},
+            {x: 60, y: 10, r: 5}
+        ],
+        backgroundColor: 'rgb(255, 99, 132)'
+    }]
+    };
+    const config = {
+        type: 'bubble',
+        data: data,
+        options: {}
+        };
+
+    new Chart(ctx, config)
+
+</script>

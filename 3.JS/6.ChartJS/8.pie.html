@@ -1,0 +1,42 @@
+<div>
+  <canvas id="myChart" width="600"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('myChart');
+
+    const data = {
+        labels: [
+            'Red',
+            'Blue',
+            'Yellow'
+        ],
+        datasets: [{
+            label: 'My First Dataset',
+            data: [300, 50, 100],
+            backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)'
+        ]},
+        {
+        label: 'Outer Ring',
+        data: [100, 50, 75],
+        backgroundColor: ['#ff99aa', '#66ccff', '#ffee99']
+        },
+                {
+            label: 'Inner Ring',
+            data: [10, 30, 15],
+            backgroundColor: ['#ff6384', '#36a2eb', '#ffce56']
+            }],
+        hoverOffset: 40
+        }
+        ;  
+    const config = {
+        type: 'doughnut',
+        data: data,
+        };
+    new Chart(ctx, config)
+
+</script>
