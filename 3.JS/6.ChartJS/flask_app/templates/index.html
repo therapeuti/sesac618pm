@@ -1,0 +1,38 @@
+<div>
+  <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    function fetchData(){
+        fetch('/api/data')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            drawChart(data)
+        })
+  }
+  function drawChart(revenue) {          
+        console.log(revenue)
+        const ctx = document.getElementById('myChart')
+        const data = {
+            labels: revenue.labels,
+            datasets: [{
+                label: 'My First Dataset',
+                data: revenue.values,
+            }]
+        }
+
+        const config = {
+            type: 'bar',
+            data: data
+        }
+
+        new Chart(ctx, config)
+    }
+    // drawChart()
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchData();
+    });
+</script>
