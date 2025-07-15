@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 목록</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <h1> 사용자 목록</h1>
+    <form>
+        <input type="text" name="query">
+        <button type="submit">검색</button>
+    </form>
+    
+    <table id="user_table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Birthdate</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+           <!-- 사용자 정보 뜨는 곳 -->
+        </tbody>
+        <div id="pages">
+            <a href=`/api/getUsers/?page=${}`></a>
+            <a href=""></a>
+        </div>
+
+    </table>
+
+    <script>
+        const user_list = document.getElementById('tbody')
+        
+        fetch('/api/getUsers')
+            .then(response => response.json())
+            .then(data => {
+                // console.log(data)
+                console.log(data[0])
+                console.log(data[0]['address'])
+                console.log(data[0].name)
+                for (u of data) {
+                    // console.log(u)
+                    const new_tr = document.createElement('tr')
+                    new_tr.innerHTML = `<td>${u.id}</td><td>${u.name}</td><td>${u.birthdate}</td><td>${u.age}</td><td>${u.gender}</td><td>${u.address}</td>`
+                    user_list.appendChild(new_tr)
+                }
+
+            })
+
+        fetch('/api/pages')
+            .then(response => response.json())
+            .then(data=> {
+                console.log(data)
+                const pages = document.getElementById('pages')
+                pages.textContent = data.data
+            })
+
+        
+    </script>
+
+</body>
+</html>
