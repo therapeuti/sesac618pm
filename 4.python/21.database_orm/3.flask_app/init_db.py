@@ -1,7 +1,7 @@
 from app import app
 from models import db, User
 
-app = app()
+app = app
 
 with app.app_context(): # 위 flask 앱이 초기화 되면
     db.drop_all()
@@ -12,5 +12,9 @@ with app.app_context(): # 위 flask 앱이 초기화 되면
     db.session.add(User(name="Charlie", age=40))
     db.session.commit
 
+    users = User.query.all()
+    print(users)
+
     for u in User.query.all():
+        print(u)
         print(u.id, u.name, u.age)

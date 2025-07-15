@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 목록</title>
+</head>
+<body>
+    <h1>사용자 목록</h1>
+    <form>
+        <input type='text' name="name">
+        <button type="submit">검색</button>
+    </form>
+    <table border="1px">
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>BIRTHDATE</th>
+            <th>AGE</th>
+            <th>ADDRESS</th>
+        </tr>
+        {% for u in users %}
+        <tr>
+            <td>{{ u.Id }}</td>
+            <td>{{ u.Name }}</td>
+            <td>{{ u.Birthdate }}</td>
+            <td>{{ u.Age }}</td>
+            <td>{{ u.Address }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+    <!-- 페이지 이동 번호 그리기 : 기본 열페이지 보이게 하고, 양 옆에 처음페이지, 이전,다음, 마지막 페이지.  또 가능하면 버튼 누르면 셀럭트 옵션같은거 확장시켜서 페이지 번호 클릭할 수 있게? 원하는 페이지 쓸 수 있게?--> 
+    <a href="?page={{ page }}">{{ page }}</a>
+    <div>
+    <p>전체 페이지 수 : {{ total_pages }}</p>
+        {% for i in total_pages.length %}
+        {% endfor %}
+
+    </div>
+</body>
+</html>
