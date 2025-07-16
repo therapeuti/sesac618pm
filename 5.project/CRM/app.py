@@ -15,19 +15,17 @@ def index():
 
 
 count_per_page = 10
-@app.route('/api/getUsers')
+@app.route('/api/getUsers/')
 def send_users():
-    page = request.args.get('page', default=1)
-    users = get_users(count_per_page, page)
+    page = request.args.get('page', default=1, type=int)
+    logging.debug(f'page 겟 파라미터 : {page}')
+    users = get_users_list(count_per_page, page)
+    all_users = count_users()
+    total_pages = math.ceil(all_users / count_per_page)
     logging.debug(f'send_user() : {users[0]['id'], users[0]['name']}')
-    return jsonify(users)
-
-@app.route('/api/pages')
-def send_pages():
-    all_users = get_count_users()
-    total_pages = math.ceil(all_users // count_per_page)
     logging.debug(f'전체 페이지 수: {total_pages}')
-    return jsonify({'data': total_pages})
+    return jsonify({'users':users, 'total_pages':total_pages})
+
 
 if __name__=='__main__':
     app.run(debug=True)
