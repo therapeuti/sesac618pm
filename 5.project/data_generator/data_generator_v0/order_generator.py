@@ -41,7 +41,7 @@ class Order_generator:
         return user_id
     
     def generate_orderitem(self): # 하나의 order내 orderitem 생성
-        count = random.randint(1, 10) # 주문한 아이템 개수 설정
+        count = random.randint(1, 4) # 주문한 아이템 개수 설정
         items_in_order = []
         # 아이템 중 count많큼 고르기. 중복 상관없음.
         with open('dataset/item_dataset.csv','r',encoding='utf-8') as f:
@@ -67,27 +67,27 @@ class Order_generator:
         return order
     
     def generate_order_item_dataset(self, n:int): # 생성할 때마다 파일을 열고 닫고 반목하면서 하나씩 만드느라 시간이 오래 걸릴 수 있음. 아예 메모리에 올려놓고 읽고 쓰기를 진행.
-        with open('dataset/orderitem_dataset.csv','w',encoding='utf-8',newline='') as f:
+        with open('orderitem_dataset.csv','w',encoding='utf-8',newline='') as f:
             csv_writer = csv.writer(f)
             csv_writer.writerow(['order_id','ordertime','store_id','user_id','order_item_id','item_id'])
 
         for order in range(n):
             order = self.generate_order()
-            with open('dataset/orderitem_dataset.csv','a',encoding='utf-8',newline='') as f:
+            with open('orderitem_dataset.csv','a',encoding='utf-8',newline='') as f:
                 csv_writer = csv.writer(f)
                 for i in order:
                     csv_writer.writerow(i)
 
     def split_order(self):
-        df = pd.read_csv('dataset/orderitem_dataset.csv', encoding='utf-8')
+        df = pd.read_csv('orderitem_dataset.csv', encoding='utf-8')
         order = df[['order_id','ordertime','store_id','user_id']].drop_duplicates()
         orderitem = df[['order_item_id','order_id','item_id']].drop_duplicates()
-        order.to_csv('dataset/order.csv',index=False)
-        orderitem.to_csv('dataset/orderitem.csv',index=False)
+        order.to_csv('order.csv',index=False)
+        orderitem.to_csv('orderitem.csv',index=False)
   
 
    
 if __name__=='__main__':
     order = Order_generator()
-    # order.generate_order_item_dataset(10000)
+    order.generate_order_item_dataset(5000)
     order.split_order()

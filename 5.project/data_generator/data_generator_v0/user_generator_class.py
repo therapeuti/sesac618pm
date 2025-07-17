@@ -68,7 +68,7 @@ class User_generator:
 
 if __name__=='__main__':
     user_gen = User_generator()
-    user_gen.generate_user_dataset(1000)
+    user_gen.generate_user_dataset(115)
         
 
 

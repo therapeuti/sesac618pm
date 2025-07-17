@@ -53,7 +53,7 @@ class Store_generator:
 
 if __name__=='__main__':
     store_dataset = Store_generator()
-    store_dataset.generate_store_dataset(100)
+    store_dataset.generate_store_dataset(125)
 
 
 
