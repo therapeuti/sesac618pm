@@ -18,9 +18,29 @@
 <body>
     <h1> 사용자 목록</h1>
     <form>
-        <input type="text" name="query">
-        <button type="submit">검색</button>
-    </form>
+        <select id="search_field">
+            <option value="id">ID</option>
+            <option value="name">Name</option>
+            <option value="address">Address</option>
+        </select>
+        <input type="text" id="input_query" placeholder="검색어 입력">
+        <select id="gender" name="gender">
+            <option value="">성별 선택</option>
+            <option value="Female">Female</option>
+            <option value="Male">Male</option>
+        </select>
+        <button type="submit" id="submit">검색</button>
+        <label> 정렬기준
+            <select id="orderby" name="orderby">
+                <option value="id">ID</option>
+                <option value="name" selected>Name</option>
+                <option value="birthdate">Birthdate</option>
+                <option value="age">Age</option>
+                <option value="gender">Gender</option>
+                <option value="address">Address</option>
+            </select>
+        </label>
+        </form>
     
     <table id="user_table">
         <thead>
@@ -38,6 +58,7 @@
         </tbody>
         
     </table>
+    <p id="comment"></p>
     <button id="start_page">처음</button>
     <button id="previous">이전</button>
     <div id="pagination">
@@ -48,6 +69,55 @@
             
         
     <script>
+        const search_field = document.getElementById('search_field')
+        const input_query = document.getElementById('input_query')
+        const submit = document.getElementById('submit')
+        const gender = document.getElementById('gender')
+        const orderby = document.getElementById('orderby')
+
+        // input_query.name = search_field.value
+        // search field 바뀜에 따라.. input_query가 바뀌도록... 이벤트 리스너 등록 필요...?
+        search_field.addEventListener('change', (e)=>{
+            input_query.name = e.target.value;
+            console.log(input_query.name);
+        })
+        // 검색어 유지
+        const parameters = new URLSearchParams(window.location.search);
+        console.log(parameters.get('name'))
+        console.log(parameters.get('id'))
+        console.log(parameters.get('address'))
+        console.log(parameters.get('gender'))
+        if (parameters.get('id')) {
+            search_field.value = 'id'
+            input_query.value = parameters.get('id')}
+        if (parameters.get('name')) {
+            search_field.value = 'name'
+            input_query.value = parameters.get('name')}
+        if (parameters.get('address')) {
+            search_field.value = 'address'
+            input_query.value = parameters.get('address')}
+        if (parameters.get('gender')) {
+            gender.value = parameters.get('gender')}
+        if (parameters.get('orderby')) {
+            orderby.value = parameters.get('orderby')}
+
+        // 폼 제출 경로 변경
+        submit.addEventListener('click', (e)=>{
+            e.prevent.default();
+        })
+
+        // 정렬 이벤트 리스너 
+        orderby.addEventListener('change', (e)=>{
+            console.log(e.target.value)
+            const query = new URL(window.location);
+            query.searchParams.set('orderby', e.target.value)
+            console.log(query)
+            window.location.href = query
+            const current_page = get_current_page()
+            change_page(current_page, true)
+
+        })
+
         const user_list = document.getElementById('tbody')
         const pages = document.getElementById('pagination')
         const prev = document.getElementById('previous')
@@ -58,21 +128,21 @@
         })
         document.getElementById('end_page').addEventListener('click', ()=>{
             console.log('마지막 페이지 버튼 누름')
-            const current_page = get_current_page()
-            console.log(current_page)
-            fetch_get_data(current_page)
+            // const current_page = get_current_page()
+            // console.log(current_page)
+            fetch_get_data()
                 .then(data =>{
                     const end = data.total_pages
-                    console.log('도대체 왜때문이냐??? ',end)
+                    // console.log('도대체 왜때문이냐??? ',end)
                     change_page(end)
                 })
         })
         prev.addEventListener('click', ()=>{
-            current_page = get_current_page()
+            const current_page = get_current_page()
             change_page(current_page - 1)
         })
         next.addEventListener('click', ()=>{
-            current_page = get_current_page()
+            const current_page = get_current_page()
             change_page(current_page + 1)
         })
         
@@ -97,12 +167,14 @@
         // 현재 페이지 가져오는 함수
         function get_current_page() {
             const params = new URLSearchParams(window.location.search)
-            console.log(params)
+            console.log('현재 페이지 가져오는 함수 실행: ', params)
             // console.log(params.get('page'))
             let current_page = params.get('page')
-            // console.log(current_page)
+            console.log('현재 페이지는? ', current_page)
             if (!current_page || isNaN(current_page)){ // current_page가 빈값(Null)이거나 숫자가 아닌 경우(isNaN)
-                return current_page = 1;
+                current_page = 1
+                console.log('현재 페이지 없으면 1이라고!!!!! ', current_page)
+                return Number(current_page)
             }
             // console.log(current_page)
             // console.log(typeof(current_page))
@@ -112,12 +184,17 @@
         // 사용자 목록 렌더링하는 함수
         function render_users(users) {
             console.log('render_users 함수 실행')
+            console.log('사용자 데이터 수: ', users.length)
             user_list.innerHTML = '' // 사용자 목록 초기화
-            for (u of users) {
-                // console.log(u)
-                const new_tr = document.createElement('tr')
-                new_tr.innerHTML = `<td>${u.id}</td><td>${u.name}</td><td>${u.birthdate}</td><td>${u.age}</td><td>${u.gender}</td><td>${u.address}</td>`
-                user_list.appendChild(new_tr)
+            if (users.length == 0) {
+                document.getElementById('comment').textContent = "검색 조건에 해당하는 사용자를 찾을 수 없습니다."
+            } else {
+                for (u of users) {
+                    // console.log(u)
+                    const new_tr = document.createElement('tr')
+                    new_tr.innerHTML = `<td>${u.id}</td><td>${u.name}</td><td>${u.birthdate}</td><td>${u.age}</td><td>${u.gender}</td><td>${u.address}</td>`
+                    user_list.appendChild(new_tr)
+                }
             }
         }
         
@@ -134,7 +211,7 @@
             } else {
                 next.disabled = false;
             }
-            if (page == 1){
+            if (current_page == 1){
                 prev.disabled = true;
             } else {
                 prev.disabled = false;
@@ -146,21 +223,21 @@
             // console.log(typeof(current_page))
             const first_page = Math.floor((current_page - 1) / num )*num + 1
             const tenth_page = Math.floor((current_page - 1) / num)*num + num
-            console.log('첫번째 페이지: ', first_page)
-            console.log('열번째 페이지: ', tenth_page)
+            // console.log('첫번째 페이지: ', first_page)
+            // console.log('열번째 페이지: ', tenth_page)
             const end_page_first = Math.floor((end - 1) / num)*num + 1
-            console.log('마지막의 첫번째 페이지: ', end_page_first)
+            // console.log('마지막의 첫번째 페이지: ', end_page_first)
             pages.innerHTML = '' // 페이지 번호 초기화
             if (first_page === end_page_first) {
                 console.log('if문 들어왔니?')
                 for (let page = end_page_first; page <= end; page++) {
-                    console.log('페이지 버튼이 왜 안 만들어지니?')
+                    // console.log('페이지 버튼이 왜 안 만들어지니?')
                     const pagelink = document.createElement('button')
                     pagelink.textContent = page
                     pages.appendChild(pagelink)
                 }
             } else {
-                console.log('else문 들어왔니?')
+                // console.log('else문 들어왔니?')
                 for (let page = first_page; page <= tenth_page; page++) {
                     // console.log(page)
                     const pagelink = document.createElement('button')
@@ -170,23 +247,33 @@
             }
         }
         
-        function fetch_get_data(current_page, pushState=true) {
+        function fetch_get_data() {
             console.log('fetch 함수 실행됨')
-            // url 변경(history.pushState 사용)
-            if (pushState) {
-                const url = new URL(window.location);
-                url.searchParams.set('page', current_page);
-                history.pushState({page: current_page}, '', url);
-            }
+            const params = new URLSearchParams(window.location.search)
+            const current_page = params.get('page')
+            const id = params.get('id')
+            const name = params.get('name')
+            const address = params.get('address')
+            const gender = params.get('gender')
+            const orderby = params.get('orderby')
 
-            return fetch(`/api/getUsers/?page=${current_page}`)
+            const query = new URLSearchParams()
+            if (id) {query.set('id', id)}
+            if (name) {query.set('name', name)}
+            if (address) {query.set('address', address)}
+            if (gender) {query.set('gender', gender)}
+            if (current_page) {query.set('page', current_page)}
+            if (orderby) {query.set('orderby', orderby)}
+            console.log('쿼리 내용: ', query)
+
+            return fetch(`/api/getUsers/?${query.toString()}`)
                 .then(response => response.json())
         }
         
         function render_page(data) {    
                 console.log('render_page 실행')
                 // console.log(data.users[0])
-                // console.log(data.total_pages)
+                console.log('전체 페이지 수: ', data.total_pages)
                 // console.log('데이터 가져왔니?')
                 // console.log(typeof(current_page))
                 // console.log('현재 페이지: ', current_page)
@@ -205,18 +292,28 @@
                 
         }
 
-        function change_page(page) {
+        function change_page(page, pushState=true) {
             console.log('페이지 변경')
-            fetch_get_data(page)
+
+            // url 변경(history.pushState 사용)
+            if (pushState) {
+                const url = new URL(window.location);
+                url.searchParams.set('page', page);
+                history.pushState({page: page}, '', url);
+                }
+            fetch_get_data()
                 .then(data => {
                     render_page(data)
+                    console.log(search_field.value) // 검색 후에 value값은 남아있긴 한데.. 다시 검색 누르면 value값 날아감.
+                    console.log(input_query.value)
+
                 })
         }
 
 
         function init() {
             const current_page = get_current_page()
-            change_page(current_page)
+            change_page(current_page, false)
             }
         
         init()
