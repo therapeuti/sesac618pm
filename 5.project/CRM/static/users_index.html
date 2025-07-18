@@ -60,11 +60,13 @@
     </table>
     <p id="comment"></p>
     <button id="start_page">처음</button>
+    <button id="prev10">-10</button>
     <button id="previous">이전</button>
     <div id="pagination">
             <!-- 페이지 번호 뜨는 곳 -->
     </div>
     <button id="next">다음</button>
+    <button id="next10">+10</button>
     <button id="end_page">마지막</button>
             
         
@@ -121,7 +123,9 @@
         const user_list = document.getElementById('tbody')
         const pages = document.getElementById('pagination')
         const prev = document.getElementById('previous')
+        const prev10 = document.getElementById('prev10')
         const next = document.getElementById('next')
+        const next10 = document.getElementById('next10')
         
         document.getElementById('start_page').addEventListener('click', ()=>{
             change_page(1)
@@ -141,9 +145,17 @@
             const current_page = get_current_page()
             change_page(current_page - 1)
         })
+        prev10.addEventListener('click', ()=>{
+            const current_page = get_current_page()
+            change_page(current_page - 10)
+        })
         next.addEventListener('click', ()=>{
             const current_page = get_current_page()
             change_page(current_page + 1)
+        })
+        next10.addEventListener('click', ()=>{
+            const current_page = get_current_page()
+            change_page(current_page + 10)
         })
         
         // 페이지버튼 부모요소에 이벤트 리스너 등록하기

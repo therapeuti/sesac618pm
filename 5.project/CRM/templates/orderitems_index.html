@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>스토어 목록</title>
+    <title>주문아이템 목록</title>
     <style>
         table, th, td {
             border: 1px solid black;
@@ -16,7 +16,7 @@
     </style>
 </head>
 <body>
-    <h1> 스토어 목록</h1>
+    <h1>주문아이템 목록</h1>
     <form>
         <select id="search_field">
             <option value="id">ID</option>
@@ -34,22 +34,20 @@
         </label>
     </form>
     
-    <table id="store_table">
+    <table id="orderitems_table">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Type</th>
-                <th>Name</th>
-                <th>Address</th>
+                <th>Order_ID</th>
+                <th>Item_ID</th>
             </tr>
         </thead>
         <tbody id="tbody">
-            {% for s in stores %}
+            {% for o in orderitems %}
             <tr>
-                <td>{{s.id}}</td>
-                <td>{{s.type}}</td>
-                <td>{{s.name}}</td>
-                <td>{{s.address}}</td>
+                <td>{{o.id}}</td>
+                <td>{{o.order_id}}</td>
+                <td>{{o.item_id}}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -68,12 +66,12 @@
         <a href="/?page={{current_page - 1}}"><button id="previous">이전</button></a>
     {% endif %}
     <div id="pagination">
-        {% if (current_page // 10) == (end_page // 10) %}
-            {% for i in range((current_page // 10) * 10 + 1, end_page + 1 )%}
+        {% if ((current_page-1) // 10) == (end_page // 10) %}
+            {% for i in range(((current_page-1) // 10) * 10 + 1, end_page + 1 )%}
                 <a href="/?page={{i}}"><button>{{i}}</button></a>
             {% endfor %}
         {% else %}
-            {% for i in range((current_page // 10) * 10 + 1, (current_page // 10) * 10 + 11 )%}
+            {% for i in range(((current_page-1) // 10) * 10 + 1, ((current_page-1) // 10) * 10 + 11 )%}
                 <a href="/?page={{i}}"><button>{{i}}</button></a>
             {% endfor %}
         {% endif %}
@@ -84,7 +82,7 @@
     {% else %}
         <a href="/?page={{current_page + 1}}"><button id="next">다음</button></a>
     {% endif %}
-    {% if (current_page // 10) == (end_page // 10) %}
+    {% if ((current_page-1) // 10) == ((end_page-1) // 10) %}
         <a href=""><button id="next10" disabled>+10</button></a>
     {% else %}
         <a href="/?page={{current_page + 10}}"><button id="next10">+10</button></a>
@@ -92,41 +90,41 @@
     <a href="/?page={{end_page}}"><button id="end_page">마지막</button></a>
 
     <script>
-        // 현재 페이지 가져오는 함수
-        function get_current_page() {
-            const params = new URLSearchParams(window.location.search)
-            let page = params.get('page')
-            if (!page || isNaN(page) || page < 1) {
-                page = 1;
-            } 
-            return page
-        }
-        console.log(get_current_page())
+        // // 현재 페이지 가져오는 함수
+        // function get_current_page() {
+        //     const params = new URLSearchParams(window.location.search)
+        //     let page = params.get('page')
+        //     if (!page || isNaN(page) || page < 1) {
+        //         page = 1;
+        //     } 
+        //     return page
+        // }
+        // console.log(get_current_page())
         
-        const prev = document.getElementById('previous');
-        const prev10 = document.getElementById('prev10');
-        const next = document.getElementById('next')
-        const next10 = document.getElementById('next10')
-        if (current_page == 1) {
-            prev.disabled = true;
-        } else { 
-            prev.disabled = false;
-        }
-        if (1 <= current_page & current_page <= 10) {
-            prev10.disabled = true;
-        } else {
-            prev10.disabled = false;
-        }
-        if (current_page == end_page) {
-            next.disabled = true;
-        } else { 
-            next.disabled = false;
-        }
-        if (Math.floor(current_page / 10) == Math.floor(end_page / 10)) {
-            next10.disabled = true;
-        } else {
-            next10.disabled = false;
-        }
+        // const prev = document.getElementById('previous');
+        // const prev10 = document.getElementById('prev10');
+        // const next = document.getElementById('next')
+        // const next10 = document.getElementById('next10')
+        // if (current_page == 1) {
+        //     prev.disabled = true;
+        // } else { 
+        //     prev.disabled = false;
+        // }
+        // if (1 <= current_page & current_page <= 10) {
+        //     prev10.disabled = true;
+        // } else {
+        //     prev10.disabled = false;
+        // }
+        // if (current_page == end_page) {
+        //     next.disabled = true;
+        // } else { 
+        //     next.disabled = false;
+        // }
+        // if (Math.floor(current_page / 10) == Math.floor(end_page / 10)) {
+        //     next10.disabled = true;
+        // } else {
+        //     next10.disabled = false;
+        // }
 
         // 현재 페이지 1이면 이전, -10버튼 비활성화, 마지막페이지에서는 다음, +10 버튼 비활성화
 

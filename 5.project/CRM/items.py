@@ -11,12 +11,12 @@ app = Flask(__name__)
 
 count_per_page = 10
 @app.route('/')
-def store_index():
+def items_index():
     page = request.args.get('page', default=1, type=int)
     filtering = {'page':page}
-    stores, count_stores = get_stores_list(count_per_page, filtering)
-    total_pages = math.ceil(count_stores / count_per_page)
-    return render_template('store_index.html', stores=stores, total_pages=total_pages, current_page=page)
+    items, count_items = get_items_list(count_per_page, filtering)
+    end_page = math.ceil(count_items / count_per_page)
+    return render_template('items_index.html', items=items, end_page=end_page, current_page=page)
 
 
 if __name__=='__main__':
