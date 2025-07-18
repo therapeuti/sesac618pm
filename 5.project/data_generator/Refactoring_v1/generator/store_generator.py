@@ -1,7 +1,7 @@
 from generator import *
 
 class Store_generator(Generator):
-    file_path_store = 'store_type.csv'
+    file_path_store = 'data_sample/store_type.csv'
 
     def generate_store_name(self):
         # store type
@@ -41,11 +41,11 @@ class Store_generator(Generator):
 
 
 if __name__=='__main__':
-    # if len(sys.argv) > 1:
-    #     data_num = int(sys.argv[1])
-    # else:
-        # data_num = int(input('생성할 데이터 개수를 입력하세요: '))
+    if len(sys.argv) > 1:
+        data_num = int(sys.argv[1])
+    else:
+        data_num = int(input('생성할 데이터 개수를 입력하세요: '))
 
     store_dataset = Store_generator()
-    # store_dataset.generate_dataset(data_num)
-    store_dataset.generate_store_name()
+    store_dataset.generate_dataset(data_num)
+    # store_dataset.generate_store_name()

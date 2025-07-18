@@ -213,7 +213,7 @@
                 for (u of users) {
                     // console.log(u)
                     const new_tr = document.createElement('tr')
-                    new_tr.innerHTML = `<td><a href="/users/info">${u.id}</a></td>
+                    new_tr.innerHTML = `<td><a href="/users/info/${u.id}">${u.id}</a></td>
                                         <td>${u.name}</td>
                                         <td>${u.birthdate}</td>
                                         <td>${u.age}</td>

@@ -90,7 +90,7 @@ def get_user_by_id(id):
     cur = conn.cursor()
 
     cur.execute('SELECT * FROM users WHERE id=?', (id ,))
-    user = cur.fetchone()[0]
+    user = cur.fetchone()
     logging.debug(user)
 
     conn.close()
@@ -101,6 +101,35 @@ def get_user_by_id(id):
         logging.debug(dict(user))
         user_dict = dict(user)
         return user_dict
+    
+def get_users_order(id):
+    conn = get_connect()
+    cur = conn.cursor()
+
+    cur.execute('''
+                SELECT o.id as order_id, o.ordertime, s.name as store, i.name as item 
+                FROM orders o
+                JOIN users u ON o.user_id=u.id
+                JOIN stores s ON o.store_id=s.id
+                JOIN orderitems oi ON o.id=oi.order_id
+                JOIN items i ON oi.item_id=i.id
+                WHERE u.id=?''', (id,))
+    order_history = cur.fetchall()
+
+    # history = []
+    # for order in order_history:
+    #     dic = {}
+    #     for key, value in order.items():
+    #         dic[key] = value
+    #     history.append(dic)
+    #     logging.debug(dic)
+
+
+    order_history = [dict(h) for h in order_history]
+    logging.debug(order_history)
+        
+    return order_history
+
 
 
 def get_stores_list(count, filtering):

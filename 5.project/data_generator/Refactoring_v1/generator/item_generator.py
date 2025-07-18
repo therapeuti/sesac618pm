@@ -1,7 +1,7 @@
 from generator import *
 
 class Item_generator(Generator):
-    file_path_item = 'item_data.csv'
+    file_path_item = 'data_sample/item_sample.csv'
 
     def generate_data(self):
         item_list = self.read_csv(self.file_path_item)

@@ -10,16 +10,16 @@ import sys
 
 class Generator(ABC):
     
-    file_path_address = 'address_sample.csv'
-    file_path_item = 'item_data.csv'
+    file_path_address = 'data_sample/address_sample.csv'
+    file_path_item = 'data_sample/item_data.csv'
 
     # 상속받은 클래스에서 사용하는거니까 상속받는 클래스에서 정의하는 것이 더 나음.
-    dataset_file_path_user = 'dataset/user.csv' # 추상함수로 만들어서 강제로 변수 만들도록
-    dataset_file_path_store = 'dataset/store.csv'
-    dataset_file_path_item = 'dataset/item.csv'
-    dataset_file_path_order_item = 'dataset/order_item_dataset.csv'
-    dataset_file_path_order = 'dataset/order.csv'
-    dataset_file_path_orderitem = 'dataset/orderitem.csv'
+    dataset_file_path_user = 'output/user.csv' # 추상함수로 만들어서 강제로 변수 만들도록
+    dataset_file_path_store = 'output/store.csv'
+    dataset_file_path_item = 'output/item.csv'
+    dataset_file_path_order_item = 'output/order_item_dataset.csv'
+    dataset_file_path_order = 'output/order.csv'
+    dataset_file_path_orderitem = 'output/orderitem.csv'
 
     # def __init__(self):
     #     # self.uuid = self.generate_uuid()

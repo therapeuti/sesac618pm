@@ -51,16 +51,20 @@ def send_users():
     logging.debug(f'전체 페이지 수: {total_pages}')
     return jsonify({'users':users, 'total_pages':total_pages})
 
-@users_bp.route('/info')
+@users_bp.route('/info/<id>')
 def user_info(id):
     return send_from_directory(current_app.static_folder, 'user_info.html')
 
-@users_bp.route('/api/user_info')
-def send_user_info():
-    id = request.get('')
+@users_bp.route('/api/user_info/<id>')
+def send_user_info(id):
     user = get_user_by_id(id)
     logging.debug(user)
     return jsonify(user)
+
+@users_bp.route('/api/order_history/<id>')
+def send_order_history(id):
+    order_history = get_users_order(id)
+    return jsonify(order_history)
 
 
 # if __name__=='__main__':
