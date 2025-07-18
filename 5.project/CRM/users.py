@@ -51,6 +51,17 @@ def send_users():
     logging.debug(f'전체 페이지 수: {total_pages}')
     return jsonify({'users':users, 'total_pages':total_pages})
 
+@users_bp.route('/info')
+def user_info(id):
+    return send_from_directory(current_app.static_folder, 'user_info.html')
+
+@users_bp.route('/api/user_info')
+def send_user_info():
+    id = request.get('')
+    user = get_user_by_id(id)
+    logging.debug(user)
+    return jsonify(user)
+
 
 # if __name__=='__main__':
     # app.run(debug=True)

@@ -94,9 +94,13 @@ def get_user_by_id(id):
     logging.debug(user)
 
     conn.close()
-    return user
-
-
+    if not user:
+        user = '사용자 정보가 없음'
+        return user
+    else:
+        logging.debug(dict(user))
+        user_dict = dict(user)
+        return user_dict
 
 
 def get_stores_list(count, filtering):

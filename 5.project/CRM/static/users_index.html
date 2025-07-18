@@ -213,7 +213,12 @@
                 for (u of users) {
                     // console.log(u)
                     const new_tr = document.createElement('tr')
-                    new_tr.innerHTML = `<td>${u.id}</td><td>${u.name}</td><td>${u.birthdate}</td><td>${u.age}</td><td>${u.gender}</td><td>${u.address}</td>`
+                    new_tr.innerHTML = `<td><a href="/users/info">${u.id}</a></td>
+                                        <td>${u.name}</td>
+                                        <td>${u.birthdate}</td>
+                                        <td>${u.age}</td>
+                                        <td>${u.gender}</td>
+                                        <td>${u.address}</td>`
                     user_list.appendChild(new_tr)
                 }
             }
@@ -342,6 +347,9 @@
                 })
         }
 
+
+        // 사용자 id 클릭하면 해당 아이디 정보를 서버로 보내...? url통해서...?
+        // 그럼 서버에서 아이디로 정보 찾아서 클라이언트로 보냄....
 
         function init() {
             const current_page = get_current_page()

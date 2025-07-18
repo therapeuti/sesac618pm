@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 상세정보</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        #pages a {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Login</a>
+        <a href="/users">Users</a>
+        <a href="/stores">Stores</a>
+        <a href="/orders">Orders</a>
+        <a href="/items">Items</a>
+        <a href="/orderitems">Orderitems</a>
+    </nav>
+    <hr>
+    <h3>사용자 상세 정보</h3>    
+    <table id="user">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Birthdate</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <!-- 사용자 정보 뜨는 곳 -->
+        </tbody>
+    </table>
+    <h3>사용자의 주문내역</h3>    
+    <table id="order_history">
+        <tr>
+            <td>order_id</td>
+            <td>ordertime</td>
+            <td>store</td>
+        </tr>
+        <tr>
+            <!-- 주문 내역 뜨는 곳 -->
+        </tr>
+    </table>
+    
+    <h3>자주 방문한 매장 Top 5</h3>    
+    <h3>자주 주문한 상품명 Top 5</h3>    
+
+
+    <script>
+        // fetch로 쿼리 정보 받아오기
+        fetch('/api/user_info')
+            .then(response => response.json)
+            .then(data => {
+        
+            }
+        )
+        function fetch_user_id() {
+            console.log('fetch 함수 실행됨')
+            const params = new URLSearchParams(window.location.search)
+
+            const query = new URLSearchParams()
+            if (id) {query.set('id', id)}
+            if (name) {query.set('name', name)}
+            if (address) {query.set('address', address)}
+            if (gender) {query.set('gender', gender)}
+            if (current_page) {query.set('page', current_page)}
+            if (orderby) {query.set('orderby', orderby)}
+            console.log('쿼리 내용: ', query)
+
+            // return fetch(`/api/getUsers/?${query.toString()}`)
+            return fetch(`/users/api/getUsers/?${query.toString()}`) // blueprint 사용시 fetch경로
+                .then(response => response.json())
+        }
+
+    </script>
+    </body>
+    </html>
