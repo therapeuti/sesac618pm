@@ -20,7 +20,7 @@ def users():
 
 count_per_page = 10
 # @app.route('/api/getUsers/')
-@users_bp.route('/api/getUsers')
+@users_bp.route('/api/getUsers/')
 def send_users():
     page = request.args.get('page', default=1, type=int)
     u_id = request.args.get('id', type=str)

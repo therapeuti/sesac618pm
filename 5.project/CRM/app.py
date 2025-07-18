@@ -1,7 +1,10 @@
 from flask import Flask
-from flask import render_template, send_from_directory, request, jsonify
+from flask import render_template, redirect, url_for, send_from_directory, request, jsonify
 from users import users_bp
 from stores import stores_bp
+from orders import orders_bp
+from items import items_bp
+from orderitems import orderitems_bp
 from database import *
 import logging
 import math
@@ -9,10 +12,21 @@ import math
 app = Flask(__name__)
 app.register_blueprint(users_bp, url_prefix='/users')
 app.register_blueprint(stores_bp, url_prefix='/stores')
+app.register_blueprint(orders_bp, url_prefix='/orders')
+app.register_blueprint(items_bp, url_prefix='/items')
+app.register_blueprint(orderitems_bp, url_prefix='/orderitems')
 
-@app.route('/')
+@app.route('/', methods=['GET','POST'])
 def index():
     return render_template('index.html')
+
+@app.route('/login', methods=['POST'])
+def login():
+    id = request.form.get('id')
+    pw = request.form.get('pw')
+    logging.debug(f'로그인 폼 제출 : 아이디는 {id}, 비번은 {pw}')
+    return redirect(url_for('users.users'))
+
 
 # @app.route('/users')
 # def users():

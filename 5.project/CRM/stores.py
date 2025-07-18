@@ -15,7 +15,7 @@ stores_bp = Blueprint('stores', __name__)
 count_per_page = 10
 # @app.route('/')
 @stores_bp.route('/')
-def store_index():
+def stores_index():
     page = request.args.get('page', default=1, type=int)
     id = request.args.get('id', type=str)
     name = request.args.get('name', type=str)
@@ -37,7 +37,13 @@ def store_index():
     type_values = get_store_type()
     return render_template('stores_index.html', stores=stores, end_page=end_page, current_page=page, type_values=type_values)
 
+@stores_bp.route('/info/<id>')
+def store_info(id):
+    logging.debug('스토어 정보 가져오기')
+    # id에 맞는 해당 스토어 정보 데이터베이스에서 가져와서 전송
+    store = get_store_by_id(id)
 
+    return render_template('store_info.html', store=store)
 # if __name__=='__main__':
     # app.run(debug=True)
 

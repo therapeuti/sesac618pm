@@ -16,6 +16,15 @@
     </style>
 </head>
 <body>
+    <nav>
+        <a href="/">Login</a>
+        <a href="/users">Users</a>
+        <a href="/stores">Stores</a>
+        <a href="/orders">Orders</a>
+        <a href="/items">Items</a>
+        <a href="/orderitems">Orderitems</a>
+    </nav>
+    <hr>
     <h1> 사용자 목록</h1>
     <form>
         <select id="search_field">
@@ -228,6 +237,16 @@
             } else {
                 prev.disabled = false;
             }
+            if (current_page <= 10){
+                prev10.disabled = true;
+            } else {
+                prev10.disabled = false;
+            }
+            if (Math.floor((current_page-1)/10) == Math.floor((end-1)/10)) {
+                next10.disabled = true;
+            } else {
+                next10.disabled = false;
+            }
 
             // 현재 페이지와... 마지막 페이지.. 간의... 관계...? 고려...
             // 출력할 페이지 번호들 계산
@@ -278,7 +297,8 @@
             if (orderby) {query.set('orderby', orderby)}
             console.log('쿼리 내용: ', query)
 
-            return fetch(`/api/getUsers/?${query.toString()}`)
+            // return fetch(`/api/getUsers/?${query.toString()}`)
+            return fetch(`/users/api/getUsers/?${query.toString()}`) // blueprint 사용시 fetch경로
                 .then(response => response.json())
         }
         
@@ -330,6 +350,5 @@
         
         init()
     </script>
-
 </body>
 </html>

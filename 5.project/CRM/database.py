@@ -85,6 +85,20 @@ def get_users_gender():
     logging.debug(gender_value)
     return gender_value
 
+def get_user_by_id(id):
+    conn = get_connect()
+    cur = conn.cursor()
+
+    cur.execute('SELECT * FROM users WHERE id=?', (id ,))
+    user = cur.fetchone()[0]
+    logging.debug(user)
+
+    conn.close()
+    return user
+
+
+
+
 def get_stores_list(count, filtering):
     offset_num = (filtering['page'] - 1) * count
 
@@ -157,13 +171,30 @@ def get_store_type():
     logging.debug(type_values)
     return type_values
 
+def get_store_by_id(id):
+    conn = get_connect()
+    cur = conn.cursor()
+
+    cur.execute('SELECT * FROM stores WHERE id=?', (id ,))
+    store = cur.fetchone()
+    conn.close()
+    if not store:
+        store = '스토어 정보가 없음'
+        return store
+    else:
+        logging.debug(dict(store))
+        store_dict = dict(store)
+        return store_dict
+
 def get_items_list(count, filtering):
     offset_num = (filtering['page'] - 1) * count
 
     conn = get_connect()
     cur = conn.cursor()
 
-    cur.execute('SELECT * from items LIMIT ? OFFSET ?', (count, offset_num))
+    sql_query = f'SELECT * FROM items ORDER BY {filtering["orderby"]} LIMIT ? OFFSET ?'
+    cur.execute(sql_query, (count, offset_num))
+
     items = cur.fetchall()
     items_dict = [dict(s) for s in items]
 
@@ -175,13 +206,30 @@ def get_items_list(count, filtering):
     cur.close()
     return items_dict, count_items
 
+def get_item_by_id(id):
+    conn = get_connect()
+    cur = conn.cursor()
+
+    cur.execute('SELECT * FROM items WHERE id=?', (id ,))
+    item = cur.fetchone()
+    conn.close()
+    if not item:
+        item = '아이템 정보가 없음'
+        return item
+    else:
+        logging.debug(dict(item))
+        item_dict = dict(item)
+        return item_dict
+
 def get_orders_list(count, filtering):
     offset_num = (filtering['page'] - 1) * count
 
     conn = get_connect()
     cur = conn.cursor()
 
-    cur.execute('SELECT * from orders LIMIT ? OFFSET ?', (count, offset_num))
+    sql_query = f'SELECT * FROM orders ORDER BY {filtering["orderby"]} LIMIT ? OFFSET ?'
+    cur.execute(sql_query, (count, offset_num))
+
     orders = cur.fetchall()
     orders_dict = [dict(s) for s in orders]
 
@@ -193,13 +241,32 @@ def get_orders_list(count, filtering):
     cur.close()
     return orders_dict, count_orders
 
+def get_order_by_id(id):
+    conn = get_connect()
+    cur = conn.cursor()
+
+    cur.execute('SELECT * FROM orders WHERE id=?', (id ,))
+    order = cur.fetchone()
+    conn.close()
+    if not order:
+        order = '아이템 정보가 없음'
+        return order
+    else:
+        logging.debug(dict(order))
+        order_dict = dict(order)
+        return order_dict
+
+
+
 def get_orderitems_list(count, filtering):
     offset_num = (filtering['page'] - 1) * count
 
     conn = get_connect()
     cur = conn.cursor()
 
-    cur.execute('SELECT * from orderitems LIMIT ? OFFSET ?', (count, offset_num))
+    sql_query = f'SELECT * FROM orderitems ORDER BY {filtering["orderby"]} LIMIT ? OFFSET ?'
+    cur.execute(sql_query, (count, offset_num))
+
     orderitems = cur.fetchall()
     orderitems_dict = [dict(s) for s in orderitems]
 
@@ -210,3 +277,18 @@ def get_orderitems_list(count, filtering):
 
     cur.close()
     return orderitems_dict, count_orderitems
+
+def get_orderitem_by_id(id):
+    conn = get_connect()
+    cur = conn.cursor()
+
+    cur.execute('SELECT * FROM orderitems WHERE id=?', (id ,))
+    orderitem = cur.fetchone()
+    conn.close()
+    if not orderitem:
+        orderitem = '아이템 정보가 없음'
+        return orderitem
+    else:
+        logging.debug(dict(orderitem))
+        orderitem_dict = dict(orderitem)
+        return orderitem_dict

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} MY CRM {% endblock %}</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        #pages a {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{{url_for('index')}}">Login</a>
+        <a href="{{url_for('users.users')}}">Users</a>
+        <a href="{{url_for('stores.stores_index')}}">Stores</a>
+        <a href="{{url_for('orders.orders_index')}}">Orders</a>
+        <a href="{{url_for('items.items_index')}}">Items</a>
+        <a href="{{url_for('orderitems.orderitems_index')}}">Orderitems</a>
+    </nav>
+    <hr>
+    {% block content %} 기본 본문 {% endblock %}
+</body>
+</html>
