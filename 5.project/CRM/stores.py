@@ -42,8 +42,10 @@ def store_info(id):
     logging.debug('스토어 정보 가져오기')
     # id에 맞는 해당 스토어 정보 데이터베이스에서 가져와서 전송
     store = get_store_by_id(id)
+    monthly_sales = get_monthly_sales(id)
+    most_visited = get_most_visited(id)
 
-    return render_template('store_info.html', store=store)
+    return render_template('store_info.html', store=store, monthly_sales=monthly_sales, most_visited=most_visited)
 # if __name__=='__main__':
     # app.run(debug=True)
 

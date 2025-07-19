@@ -107,29 +107,63 @@ def get_users_order(id):
     cur = conn.cursor()
 
     cur.execute('''
-                SELECT o.id as order_id, o.ordertime, s.name as store, i.name as item 
-                FROM orders o
+                SELECT o.id as order_id, o.ordertime, s.name as store, group_concat(i.name) as item 
+                FROM orders o 
                 JOIN users u ON o.user_id=u.id
                 JOIN stores s ON o.store_id=s.id
                 JOIN orderitems oi ON o.id=oi.order_id
                 JOIN items i ON oi.item_id=i.id
-                WHERE u.id=?''', (id,))
+                WHERE u.id=?
+                GROUP BY order_id
+                ORDER BY ordertime DESC'''
+                , (id,))
     order_history = cur.fetchall()
 
-    # history = []
-    # for order in order_history:
-    #     dic = {}
-    #     for key, value in order.items():
-    #         dic[key] = value
-    #     history.append(dic)
-    #     logging.debug(dic)
-
-
     order_history = [dict(h) for h in order_history]
-    logging.debug(order_history)
+    logging.debug(order_history[0])
         
     return order_history
 
+def get_store_top5(id):
+    conn = get_connect()
+    cur = conn.cursor()
+    cur.execute('''
+                SELECT s.name as store, count(*) as cnt
+                FROM orders o 
+                JOIN stores s ON o.store_id=s.id
+                WHERE o.user_id=?
+                GROUP BY store
+                ORDER BY cnt DESC LIMIT 5
+                ''', (id, ))
+    store_top5 = cur.fetchall()
+    conn.close()
+    if not store_top5:
+        store_top5 = '검색 결과 없음'
+    else:
+        store_top5 = [dict(s) for s in store_top5]
+        logging.debug(store_top5)
+    return store_top5
+
+def get_item_top5(id):
+    conn = get_connect()
+    cur = conn.cursor()
+    cur.execute('''
+                SELECT i.name as item, count(*) as cnt
+                FROM orders o 
+                JOIN orderitems oi ON o.id=oi.order_id
+                JOIN items i ON oi.item_id=i.id
+                WHERE o.user_id=?
+                GROUP BY item
+                ORDER BY cnt DESC LIMIT 5
+                ''', (id, ))
+    item_top5 = cur.fetchall()
+    conn.close()
+    if not item_top5:
+        item_top5 = '검색 결과 없음'
+    else:
+        item_top5 = [dict(s) for s in item_top5]
+        logging.debug(item_top5)
+    return item_top5
 
 
 def get_stores_list(count, filtering):
@@ -207,7 +241,6 @@ def get_store_type():
 def get_store_by_id(id):
     conn = get_connect()
     cur = conn.cursor()
-
     cur.execute('SELECT * FROM stores WHERE id=?', (id ,))
     store = cur.fetchone()
     conn.close()
@@ -218,6 +251,50 @@ def get_store_by_id(id):
         logging.debug(dict(store))
         store_dict = dict(store)
         return store_dict
+
+def get_monthly_sales(id):
+    conn = get_connect()
+    cur = conn.cursor()
+    cur.execute('''
+                SELECT strftime('%Y-%m', o.ordertime) as monthly, sum(i.price) as reevenue, count(*) as cnt
+                FROM stores s
+                JOIN orders o ON s.id=o.store_id
+                JOIN orderitems oi ON o.id=oi.order_id
+                JOIN items i ON oi.item_id=i.id
+                WHERE s.id=?
+                GROUP BY monthly
+                ORDER BY monthly DESC;
+                ''', (id,))
+    monthly_sales = cur.fetchall()
+    cur.close()
+    if not monthly_sales:
+        monthly_sales = '검색된 내용 없음'
+    else:
+        monthly_sales = [dict(m) for m in monthly_sales]
+    return monthly_sales
+
+def get_most_visited(id):
+    conn = get_connect()
+    cur = conn.cursor()
+    cur.execute('''
+                SELECT o.user_id, u.name, count(*) as cnt
+                FROM users u
+                JOIN orders o ON u.id=o.user_id
+                JOIN orderitems oi ON o.id=oi.order_id
+                JOIN items i ON oi.item_id=i.id
+                WHERE o.store_id=?
+                GROUP BY o.user_id
+                ORDER BY cnt DESC LIMIT 10;
+                ''', (id,))
+    most_visited = cur.fetchall()
+    cur.close()
+    if not most_visited:
+        most_visited = '검색된 내용 없음'
+    else:
+        most_visited = [dict(m) for m in most_visited]
+    return most_visited
+
+
 
 def get_items_list(count, filtering):
     offset_num = (filtering['page'] - 1) * count
@@ -254,6 +331,26 @@ def get_item_by_id(id):
         item_dict = dict(item)
         return item_dict
 
+def get_item_sales(id):
+    conn = get_connect()
+    cur = conn.cursor()
+    cur.execute('''
+                SELECT strftime('%Y-%m', o.ordertime) as month, sum(i.price) as revenue, count(*) as cnt
+                FROM items i
+                JOIN orderitems oi ON i.id=oi.item_id
+                JOIN orders o ON o.id=oi.order_id
+                WHERE i.id=?
+                GROUP BY month
+                ORDER BY month DESC
+                LIMIT 12
+                ''',(id,))
+    item_sales = cur.fetchall()
+    if not item_sales:
+        item_sales = '검색된 내용 없음'
+    else:
+        item_sales = [dict(i) for i in item_sales]
+    return item_sales
+
 def get_orders_list(count, filtering):
     offset_num = (filtering['page'] - 1) * count
 
@@ -277,19 +374,45 @@ def get_orders_list(count, filtering):
 def get_order_by_id(id):
     conn = get_connect()
     cur = conn.cursor()
-
-    cur.execute('SELECT * FROM orders WHERE id=?', (id ,))
-    order = cur.fetchone()
+    cur.execute('''
+                SELECT o.id as order_id, o.ordertime, o.store_id, s.name as store, o.user_id, u.name as user
+                FROM orders o
+                JOIN orderitems oi ON o.id=oi.order_id
+                JOIN stores s ON o.store_id=s.id
+                JOIN users u ON o.user_id=u.id 
+                JOIN items i ON i.id=oi.item_id
+                WHERE o.id=?
+                GROUP BY order_id
+                ''',(id ,))
+    order = cur.fetchall()
     conn.close()
     if not order:
         order = '아이템 정보가 없음'
         return order
     else:
-        logging.debug(dict(order))
-        order_dict = dict(order)
+        order_dict = [dict(o) for o in order]
         return order_dict
 
-
+def get_items_in_order(id):
+    conn = get_connect()
+    cur = conn.cursor()
+    cur.execute('''
+                SELECT i.id as item_id, i.name as item, i.price
+                FROM orders o
+                JOIN orderitems oi ON o.id=oi.order_id
+                JOIN stores s ON o.store_id=s.id
+                JOIN users u ON o.user_id=u.id 
+                JOIN items i ON i.id=oi.item_id
+                WHERE o.id=?
+                ''',(id ,))
+    items_in_order = cur.fetchall()
+    conn.close()
+    if not items_in_order:
+        items_in_order = '아이템 정보가 없음'
+        return items_in_order
+    else:
+        items_in_order = [dict(i) for i in items_in_order]
+    return items_in_order
 
 def get_orderitems_list(count, filtering):
     offset_num = (filtering['page'] - 1) * count

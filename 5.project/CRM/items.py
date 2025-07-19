@@ -27,7 +27,10 @@ def items_index():
 def item_info(id):
     logging.debug('아이템 정보 요청')
     item = get_item_by_id(id)
-    return render_template('item_info.html', item=item)
+    item_sales = get_item_sales(id)
+    logging.debug(item_sales)
+    # 그래프 그릴 수 있게 데이터 변경..
+    return render_template('item_info.html', item=item, item_sales=item_sales)
 
 # if __name__=='__main__':
 #     app.run(debug=True)

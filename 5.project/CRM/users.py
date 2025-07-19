@@ -66,6 +66,16 @@ def send_order_history(id):
     order_history = get_users_order(id)
     return jsonify(order_history)
 
+@users_bp.route('/api/store_top5/<id>')
+def send_store_top5(id):
+    store_top5 = get_store_top5(id)
+    return jsonify(store_top5)
+
+@users_bp.route('api/item_top5/<id>')
+def send_item_top5(id):
+    item_top5 = get_item_top5(id)
+    return jsonify(item_top5)
+
 
 # if __name__=='__main__':
     # app.run(debug=True)

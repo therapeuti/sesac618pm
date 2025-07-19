@@ -26,7 +26,10 @@ def orders_index():
 @orders_bp.route('/info/<id>')
 def order_info(id):
     order = get_order_by_id(id)
-    return render_template('order_info.html', order=order)
+    logging.debug(order)
+    items_in_order = get_items_in_order(id)
+    logging.debug(items_in_order)
+    return render_template('order_info.html', order=order[0], items_in_order=items_in_order)
 
 # if __name__=='__main__':
 #     app.run(debug=True)

@@ -24,6 +24,7 @@
         <a href="/orderitems">Orderitems</a>
     </nav>
     <hr>
+    <a href="javascript:history.back()">뒤로가기</a>
     <h3>사용자 상세 정보</h3>    
     <table id="user">
         <thead>
@@ -53,13 +54,21 @@
         </tr>
     </table>
     
-    <h3>자주 방문한 매장 Top 5</h3>    
-    <h3>자주 주문한 상품명 Top 5</h3>    
+    <h3>자주 방문한 매장 Top 5</h3> 
+    <ol id="store_top5">
+        <!-- 매장 리스트 -->
+    </ol>
+    <h3>자주 주문한 상품명 Top 5</h3>
+    <ol id="item_top5">
+        <!-- 상품 리스트 -->
+    </ol> 
 
 
     <script>
         const user = document.getElementById('user')
         const tbody = document.getElementById('tbody')
+        const store_top5 = document.getElementById('store_top5')
+        const item_top5 = document.getElementById('item_top5')
 
         const url2 = window.location.href
         // console.log(url2)
@@ -92,7 +101,7 @@
                 console.log(data)
                 for (u of data) {
                     const new_tr = document.createElement('tr')
-                    new_tr.innerHTML = `<td>${u.order_id}</td>
+                    new_tr.innerHTML = `<td><a href="/orders/info/${u.order_id}">${u.order_id}</td>
                                         <td>${u.ordertime}</td>
                                         <td>${u.store}</td>
                                         <td>${u.item}</td>`
@@ -100,6 +109,27 @@
                 }
             })
         
+        fetch(`/users/api/store_top5/${userid}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data[0])
+                for (i of data) {
+                    const new_li = document.createElement('li')
+                    new_li.innerText = `${i.store} : ${i.cnt}번 방문`
+                    store_top5.appendChild(new_li)
+                }
+            }
+            )
+        
+        fetch(`/users/api/item_top5/${userid}`)
+            .then(response => response.json())
+            .then(data => {
+                for (i of data) {
+                    const new_li = document.createElement('li')
+                    new_li.innerText = `${i.item} : ${i.cnt}번 구매` 
+                    item_top5.appendChild(new_li)                    
+                }
+            })
 
     </script>
     </body>
