@@ -1,5 +1,6 @@
 from flask import Flask
-from flask import render_template, redirect, url_for, send_from_directory, request, jsonify
+from flask import render_template, redirect, url_for, request, jsonify
+from flask import flash
 from users import users_bp
 from stores import stores_bp
 from orders import orders_bp
@@ -8,8 +9,11 @@ from orderitems import orderitems_bp
 from database import *
 import logging
 import math
+import uuid
+from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = 'my_secret'
 app.register_blueprint(users_bp, url_prefix='/users')
 app.register_blueprint(stores_bp, url_prefix='/stores')
 app.register_blueprint(orders_bp, url_prefix='/orders')
@@ -20,51 +24,86 @@ app.register_blueprint(orderitems_bp, url_prefix='/orderitems')
 def index():
     return render_template('index.html')
 
-@app.route('/login', methods=['POST'])
-def login():
+@app.route('/admin_login', methods=['POST'])
+def admin_login():
     id = request.form.get('id')
     pw = request.form.get('pw')
     logging.debug(f'로그인 폼 제출 : 아이디는 {id}, 비번은 {pw}')
     return redirect(url_for('users.users'))
 
-
-# @app.route('/users')
-# def users():
-#     logging.debug('시작!?')
-#     return send_from_directory(app.static_folder, 'users_index.html')
-
-# count_per_page = 10
-# @app.route('/api/getUsers/')
-# def send_users():
-#     page = request.args.get('page', default=1, type=int)
-#     u_id = request.args.get('id', type=str)
-#     name = request.args.get('name', type=str)
-#     address = request.args.get('address', type=str)
-#     gender = request.args.get('gender', type=str)
-#     orderby = request.args.get('orderby', default='name', type=str)
-#     logging.debug(f'GET 파라미터 : {page}, {u_id}, {name}, {address}, {gender}, {orderby}')
+@app.route('/customer')
+def customer_page():
     
-#     filtering = {}
-#     filtering['page'] = page
-#     filtering['orderby'] = orderby
-#     if u_id:
-#         filtering['id'] = u_id
-#     if name:
-#         filtering['name'] = name
-#     if address:
-#         filtering['address'] = address
-#     if gender:
-#         filtering['gender'] = gender
+    return render_template('signup.html')
 
-#     logging.debug(filtering)
+@app.route('/user_login', methods=['POST'])
+def user_login():
+    u_id = request.form.get('id')
+    logging.debug(u_id)
+    login_user = get_user_by_id(u_id)
+    logging.debug(login_user)
+    # if u_id == 'admin':
+    #     login_user = 'admin'
+    #     return render_template('kiosk.html', login_user=login_user)
+    if not login_user:
+        flash('로그인 실패 : 사용자 정보 없음')
+        return redirect(url_for('customer_page'))
+    else:
+        login_user = get_user_by_id(u_id)
+        store_type = get_store_type()
+        logging.debug(store_type)
+        return render_template('kiosk.html', login_user=login_user, store_type=store_type) 
+    
+@app.route('/api/store_name/<type>')
+def send_store_name(type):
+    store_names = get_store_name(type)
+    logging.debug(store_names)
+    return jsonify(store_names)
 
-#     users, count_users = get_users_list(count_per_page, filtering)
-      
-#     total_pages = math.ceil(count_users / count_per_page)
-#     logging.debug(f'send_user() : {users}')
-#     logging.debug(f'전체 페이지 수: {total_pages}')
-#     return jsonify({'users':users, 'total_pages':total_pages})
+@app.route('/api/items')
+def send_items():
+    items = get_items()
+    return jsonify(items)
 
+
+@app.route('/signup', methods=['POST'])
+def user_signup():
+    u_id = str(uuid.uuid4())
+    u_name =  request.form.get('name')
+    birthdate =  request.form.get('birthdate')
+    birthdate =  datetime.strptime(birthdate, '%Y-%m-%d')
+    age = datetime.today().year - birthdate.year
+    birthdate = birthdate.strftime('%Y-%m-%d')
+    gender =  request.form.get('gender')
+    address =  request.form.get('address')
+    logging.debug(f'사용자 정보 : {u_id}, {u_name}, {birthdate}, {gender}, {age}, {address}')
+    users = {'id':u_id, 'name':u_name, 'birthdate':birthdate, 'age':age, 'gender':gender, 'address':address}
+    insert_result = insert_user(users)
+    logging.debug(insert_result)
+    new_user = get_user_by_id(u_id)
+    logging.debug(new_user)
+    return redirect(url_for('customer_page'))
+
+@app.route('/add_order', methods=['POST'])
+def add_order():
+    logging.debug(request.get_json())
+    user_id = request.get_json()['user_id']
+    store_id = request.get_json()['store_id']
+    item_ids = request.get_json()['items']
+    order_id = str(uuid.uuid4())
+    ordertime = datetime.today()
+    logging.debug(ordertime)
+    order_data = {'id': order_id, 'ordertime': ordertime, 'store_id': store_id, 'user_id': user_id}
+    new_order = insert_order(order_data)
+    logging.debug(f'삽입된 주문 데이터: {new_order}')
+    orderitems = []
+    for i in item_ids:
+        orderitem_id = str(uuid.uuid4())
+        orderitem = {'id': orderitem_id, 'order_id': order_id, 'item_id': i}
+        orderitems.append(orderitem)
+    new_orderitems = insert_orderitem(orderitems)
+    logging.debug(f'삽입된 주문아이템 데이터: {orderitems}')
+    return jsonify({'order':new_order, 'orderitems':new_orderitems})
 
 if __name__=='__main__':
     app.run(debug=True)

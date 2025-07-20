@@ -65,6 +65,7 @@ def get_users_list(count: int, filtering: dict):
         count_users = cur.fetchone()[0]
         logging.debug(count_users)
     cur.close()
+    conn.close()
 
     # 검색된 사용자가 없는 경우... 한 명만 있는 경우... 여러 명인 경우...
     logging.debug(f'전체 사용자 수: {count_users}')
@@ -83,19 +84,19 @@ def get_users_gender():
     gender = cur.fetchall()
     gender_value = gender.values()
     logging.debug(gender_value)
+    cur.close()
+    conn.close()
     return gender_value
 
 def get_user_by_id(id):
     conn = get_connect()
     cur = conn.cursor()
-
     cur.execute('SELECT * FROM users WHERE id=?', (id ,))
     user = cur.fetchone()
     logging.debug(user)
-
+    cur.close()
     conn.close()
     if not user:
-        user = '사용자 정보가 없음'
         return user
     else:
         logging.debug(dict(user))
@@ -105,7 +106,6 @@ def get_user_by_id(id):
 def get_users_order(id):
     conn = get_connect()
     cur = conn.cursor()
-
     cur.execute('''
                 SELECT o.id as order_id, o.ordertime, s.name as store, group_concat(i.name) as item 
                 FROM orders o 
@@ -121,7 +121,8 @@ def get_users_order(id):
 
     order_history = [dict(h) for h in order_history]
     logging.debug(order_history[0])
-        
+    cur.close()
+    conn.close()
     return order_history
 
 def get_store_top5(id):
@@ -136,6 +137,7 @@ def get_store_top5(id):
                 ORDER BY cnt DESC LIMIT 5
                 ''', (id, ))
     store_top5 = cur.fetchall()
+    cur.close()
     conn.close()
     if not store_top5:
         store_top5 = '검색 결과 없음'
@@ -157,6 +159,7 @@ def get_item_top5(id):
                 ORDER BY cnt DESC LIMIT 5
                 ''', (id, ))
     item_top5 = cur.fetchall()
+    cur.close()
     conn.close()
     if not item_top5:
         item_top5 = '검색 결과 없음'
@@ -213,7 +216,7 @@ def get_stores_list(count, filtering):
         count_stores = cur.fetchone()[0]
         logging.debug(count_stores)
     cur.close()
-
+    conn.close()
     # 검색된 사용자가 없는 경우... 한 명만 있는 경우... 여러 명인 경우...
     logging.debug(f'전체 사용자 수: {count_stores}')
     if count_stores == 0:
@@ -225,7 +228,6 @@ def get_stores_list(count, filtering):
         logging.debug(stores_dict)
         logging.debug(count_stores)
 
-    cur.close()
     return stores_dict, count_stores
 
 def get_store_type():
@@ -236,13 +238,28 @@ def get_store_type():
     logging.debug(store_type)
     type_values = [dict(s)['type'] for s in store_type]
     logging.debug(type_values)
+    cur.close()
+    conn.close()
     return type_values
+
+def get_store_name(type):
+    conn = get_connect()
+    cur = conn.cursor()
+    cur.execute('SELECT id, name from stores WHERE type=?',(type,))
+    store_name = cur.fetchall()
+    logging.debug(store_name)
+    store_values = [dict(s) for s in store_name]
+    logging.debug(store_values)
+    cur.close()
+    conn.close()
+    return store_values
 
 def get_store_by_id(id):
     conn = get_connect()
     cur = conn.cursor()
     cur.execute('SELECT * FROM stores WHERE id=?', (id ,))
     store = cur.fetchone()
+    cur.close()
     conn.close()
     if not store:
         store = '스토어 정보가 없음'
@@ -267,6 +284,7 @@ def get_monthly_sales(id):
                 ''', (id,))
     monthly_sales = cur.fetchall()
     cur.close()
+    conn.close()
     if not monthly_sales:
         monthly_sales = '검색된 내용 없음'
     else:
@@ -288,6 +306,7 @@ def get_most_visited(id):
                 ''', (id,))
     most_visited = cur.fetchall()
     cur.close()
+    conn.close()
     if not most_visited:
         most_visited = '검색된 내용 없음'
     else:
@@ -314,7 +333,18 @@ def get_items_list(count, filtering):
     logging.debug(count_items)
 
     cur.close()
+    conn.close()
     return items_dict, count_items
+
+def get_items():
+    conn = get_connect()
+    cur = conn.cursor()
+    cur.execute('SELECT * from items')
+    items = cur.fetchall()
+    items = [dict(i) for i in items]
+    cur.close()
+    conn.close()
+    return items
 
 def get_item_by_id(id):
     conn = get_connect()
@@ -322,6 +352,7 @@ def get_item_by_id(id):
 
     cur.execute('SELECT * FROM items WHERE id=?', (id ,))
     item = cur.fetchone()
+    cur.close()
     conn.close()
     if not item:
         item = '아이템 정보가 없음'
@@ -345,6 +376,8 @@ def get_item_sales(id):
                 LIMIT 12
                 ''',(id,))
     item_sales = cur.fetchall()
+    cur.close()
+    conn.close()
     if not item_sales:
         item_sales = '검색된 내용 없음'
     else:
@@ -369,6 +402,7 @@ def get_orders_list(count, filtering):
     logging.debug(count_orders)
 
     cur.close()
+    conn.close()
     return orders_dict, count_orders
 
 def get_order_by_id(id):
@@ -385,6 +419,7 @@ def get_order_by_id(id):
                 GROUP BY order_id
                 ''',(id ,))
     order = cur.fetchall()
+    cur.close()
     conn.close()
     if not order:
         order = '아이템 정보가 없음'
@@ -406,6 +441,7 @@ def get_items_in_order(id):
                 WHERE o.id=?
                 ''',(id ,))
     items_in_order = cur.fetchall()
+    cur.close()
     conn.close()
     if not items_in_order:
         items_in_order = '아이템 정보가 없음'
@@ -413,6 +449,7 @@ def get_items_in_order(id):
     else:
         items_in_order = [dict(i) for i in items_in_order]
     return items_in_order
+
 
 def get_orderitems_list(count, filtering):
     offset_num = (filtering['page'] - 1) * count
@@ -432,6 +469,7 @@ def get_orderitems_list(count, filtering):
     logging.debug(count_orderitems)
 
     cur.close()
+    conn.close()
     return orderitems_dict, count_orderitems
 
 def get_orderitem_by_id(id):
@@ -440,6 +478,7 @@ def get_orderitem_by_id(id):
 
     cur.execute('SELECT * FROM orderitems WHERE id=?', (id ,))
     orderitem = cur.fetchone()
+    cur.close()
     conn.close()
     if not orderitem:
         orderitem = '아이템 정보가 없음'
@@ -448,3 +487,43 @@ def get_orderitem_by_id(id):
         logging.debug(dict(orderitem))
         orderitem_dict = dict(orderitem)
         return orderitem_dict
+    
+
+def insert_user(users):
+    conn = get_connect()
+    cur = conn.cursor()
+    cur.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)',
+                (users['id'], users['name'], users['birthdate'], users['age'], users['gender'], users['address']))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return '회원가입 완료'
+
+def insert_order(order):
+    conn = get_connect()
+    cur = conn.cursor()
+    cur.execute('INSERT INTO orders VALUES (?, ?, ?, ?)',
+                (order['id'], order['ordertime'], order['store_id'], order['user_id']))
+    conn.commit()
+    cur.execute('SELECT * FROM orders WHERE id=?', (order['id'],))
+    new_order = cur.fetchone()
+    new_order = dict(new_order)
+    cur.close()
+    conn.close()
+    return new_order
+
+def insert_orderitem(orderitem):
+    conn = get_connect()
+    cur = conn.cursor()
+    new_orderitems = []
+    for i in orderitem:
+        cur.execute('INSERT INTO orderitems VALUES (?, ?, ?)',
+                    (i['id'], i['order_id'], i['item_id']))
+        conn.commit()
+        cur.execute('SELECT * FROM orderitems WHERE id=?', (i['id'],))
+        new = cur.fetchone()
+        new_orderitems.append(new)
+    cur.close()
+    conn.close()
+    new_orderitems = [dict(new) for new in new_orderitems]
+    return new_orderitems
