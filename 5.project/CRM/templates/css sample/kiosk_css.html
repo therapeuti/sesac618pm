@@ -1,136 +1,116 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>주문 페이지</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<html>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            min-height: 100vh;
-            padding: 40px;
-            color: #343a40;
-        }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+        padding: 40px;
+        color: #343a40;
+    }
 
-        h1, h3, h4 {
-            color: #212529;
-            margin-bottom: 10px;
-        }
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #212529;
+    }
 
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
+    h3 {
+        margin: 30px 0 10px;
+        color: #495057;
+    }
 
-        form {
-            background: #ffffff;
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-        }
+    p {
+        margin-bottom: 20px;
+        font-size: 1rem;
+    }
 
-        select {
-            padding: 10px;
-            font-size: 1rem;
-            margin-right: 12px;
-            border: 1px solid #ced4da;
-            border-radius: 8px;
-            background-color: #fff;
-            transition: border-color 0.3s ease;
-        }
+    form {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
 
-        select:focus {
-            border-color: #495057;
-            outline: none;
-        }
+    select {
+        padding: 10px;
+        margin-right: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        font-size: 1rem;
+        background-color: #fff;
+        transition: border-color 0.3s ease;
+    }
 
-        table {
-            width: 100%;
-            table-layout: fixed;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+    select:focus {
+        border-color: #495057;
+        outline: none;
+    }
 
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid #dee2e6;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
 
-        th {
-            background-color: #f1f3f5;
-            font-weight: 600;
-        }
+    th, td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #dee2e6;
+    }
 
-        td {
-            background-color: #ffffff;
-        }
+    th {
+        background-color: #f1f3f5;
+        font-weight: 600;
+    }
 
-        .number {
-            width: 50px;
-            text-align: center;
-            padding: 6px;
-            border: 1px solid #ced4da;
-            border-radius: 6px;
-            margin: 0 5px;
-        }
+    .number {
+        width: 50px;
+        text-align: center;
+        padding: 5px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+    }
 
-        button {
-            padding: 6px 10px;
-            border: none;
-            border-radius: 6px;
-            background-color: #adb5bd;
-            color: #fff;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
+    button {
+        background-color: #4dabf7;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-        button:hover {
-            background-color: #868e96;
-        }
+    button:hover {
+        background-color: #339af0;
+    }
 
-        #align_right {
-            text-align: right;
-        }
+    #order {
+        margin-top: 20px;
+        width: 120px;
+        height: 45px;
+        font-weight: bold;
+    }
 
-        #order {
-            /* display: inline-block; */
-            display: ;
-            margin-top: 20px;
-            width: 150px;
-            height: 45px;
-            background-color: #339af0;
-            font-weight: bold;
-            font-size: 18px;
-            border-radius: 10px;
-            /* transition: background-color 0.3s ease; */
-        }
+    #total_price {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #212529;
+        margin-top: 20px;
+    }
 
-        #order:hover {
-            background-color: #228be6;
-        }
-
-        #total_price {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #212529;
-            margin-top: 20px;
-            text-align: right;
-
-        }
+    hr {
+        margin-top: 40px;
+        border: 1px solid #dee2e6;
+    }
 </style>
-
-    
-</head>
 <body>
     <h1> 주문 페이지 </h1>
     <h3> 사용자 </h3>
@@ -158,18 +138,16 @@
             </tr>
         </table>
     </form>
-    <div id="align_right">
-        <h3><div id="total_price"></div></h3>
-        <button id="order" type="submit" disabled="true">주문하기</button>
-    </div>
-    <!-- <hr> -->
-    <!-- <div id="order_container">
+    <h3><div id="total_price"></div></h3>
+    <button id="order" type="submit">주문하기</button>
+    <hr>
+    <div id="order_container">
         <h3> 장바구니 </h3>
         <h4 id="store_for_order"></h4>
-        <ul id="order_list"> -->
+        <ul id="order_list">
             <!-- 주문할 아이템 표시 -->
-        <!-- </ul> -->
-    <!-- </div> -->
+        </ul>
+    </div>
     
     <script>
         const store_type = document.getElementById('store_type')
@@ -201,7 +179,7 @@
             })
         
         store_name.addEventListener('change', (e) => {
-            // document.getElementById('store_for_order').innerText = store_name.options[store_name.selectedIndex].text
+            document.getElementById('store_for_order').innerText = store_name.options[store_name.selectedIndex].text
             store_id = e.target.value
             console.log(store_id)
             fetch('api/items')
@@ -216,7 +194,7 @@
                                             <td class="unit_price">${i.price}</td>
                                             <td>
                                                 <button type="button" class="subst">-</button>
-                                                <input class="number" type="number" value=0 min=0 max=50 data-id=${i.id}>
+                                                <input class="number" type="number" value=0 data-id=${i.id}>
                                                 <button type="button" class="plus">+</button>
                                             </td>
                                             <td class="price"></td>`       
@@ -235,9 +213,6 @@
                 
                 input.value = parseInt(input.value) - 1
                 console.log(input.value)
-                if (input.value < 0) {
-                    input.value = 0;
-                }
 
                 const tr = e.target.closest('tr')
                 calculate_price(tr)
@@ -249,11 +224,7 @@
                 const input = e.target.parentElement.querySelector('.number')
                 input.value = parseInt(input.value) + 1
                 console.log(input.value)
-                if (input.value > 50){
-                    alert('최대 수량은 50개를 넘을 수 없습니다.')
-                    input.value = 50
-
-                }
+                
                 const tr = e.target.closest('tr')
                 calculate_price(tr)
                 // totalPrice(tr)
@@ -261,7 +232,7 @@
             }    
             })
         
-        add_order.addEventListener('click', (e) => {
+        add_order.addEventListener('click', () => {
             console.log('주문 추가....')
             console.log('사용자 아이디: ', user_id)
             console.log('스토어 아이디: ', store_id)
@@ -279,28 +250,22 @@
                 value.value = 0
                 items[i].cells[4].innerText = ''
                 document.getElementById('total_price').innerText = ''
-                e.target.disabled = true
             }
             console.log(item_ids)
-            if (item_ids.length != 0) {
-                const order_data = {
-                    'user_id': user_id,
-                    'store_id': store_id,
-                    'items': item_ids
-                }
-                fetch('/add_order', {
-                    method: 'POST',
-                    headers: {'content-type': 'application/json; charset=UTF-8'},
-                    body: JSON.stringify(order_data)                
-                })
-                .then(response => response.json()) 
-                .then(data => {
-                    console.log(data)
-                })
-            } else {
-                console.log('주문할 상품이 없음.')
-                alert('주문할 상품이 없습니다. 상품을 선택해주세요!')
+            const order_data = {
+                'user_id': user_id,
+                'store_id': store_id,
+                'items': item_ids
             }
+            fetch('/add_order', {
+                method: 'POST',
+                headers: {'content-type': 'application/json; charset=UTF-8'},
+                body: JSON.stringify(order_data)                
+            })
+            .then(response => response.json()) 
+            .then(data => {
+                console.log(data)
+            })
         })
         
         function calculate_price(tr) {
@@ -311,7 +276,6 @@
             const price = tr.querySelector('.price')
             price.innerText = parseInt(number) * parseInt(unit_price)
             console.log(tr.querySelector('.number').dataset.id)
-            add_order.disabled = false
             
         }
 
