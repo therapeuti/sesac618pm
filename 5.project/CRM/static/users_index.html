@@ -5,13 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>사용자 목록</title>
     <style>
+        * {
+           margin: 0;
+           padding: 0;
+           box-sizing: border-box; 
+        }
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            padding: 40px;
+            color: #343a40;
+        }
+        nav {
+            background: white;
+            height: 60px;
+            display: flex;
+            justify-content: space-evenly;
+        }
+        nav a {
+            height: 20px;
+            width: 40px;
+            padding: 10px;
+            margin: 10px;
+            background: skyblue;
+        }
+        #container {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            background: white;
+            padding: 20px;
+        }
         table, th, td {
-            border: 1px solid black;
+            border-bottom: 1px solid gray;
             border-collapse: collapse;
         }
+        table {
+            width: 90%;
+        }
+        th, td {
+            height: 40px;
 
-        #pages a {
+        }
+        th {
+            background: lightgray;
+        }
+
+        button {
+            /* width: 3px; */
             margin: 5px;
+        }
+        #btn-container {
+            display: flex;
+            justify-content: space-evenly;
+        }
+        #btn-container button {
+            width: 30px;
         }
     </style>
 </head>
@@ -31,8 +80,8 @@
             <option value="id">ID</option>
             <option value="name">Name</option>
             <option value="address">Address</option>
-        </select>
-        <input type="text" id="input_query" placeholder="검색어 입력">
+            </select>
+            <input type="text" id="input_query" placeholder="검색어 입력">
         <select id="gender" name="gender">
             <option value="">성별 선택</option>
             <option value="Female">Female</option>
@@ -49,10 +98,11 @@
                 <option value="address">Address</option>
             </select>
         </label>
-        </form>
+    </form>
     
-    <table id="user_table">
-        <thead>
+    <div id="container">
+        <table id="user_table">
+            <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
@@ -63,20 +113,27 @@
             </tr>
         </thead>
         <tbody id="tbody">
-           <!-- 사용자 정보 뜨는 곳 -->
+            <!-- 사용자 정보 뜨는 곳 -->
         </tbody>
         
     </table>
     <p id="comment"></p>
-    <button id="start_page">처음</button>
-    <button id="prev10">-10</button>
-    <button id="previous">이전</button>
-    <div id="pagination">
-            <!-- 페이지 번호 뜨는 곳 -->
     </div>
-    <button id="next">다음</button>
-    <button id="next10">+10</button>
-    <button id="end_page">마지막</button>
+    <div id="btn-container">
+        <div class="page-btn">
+            <button id="start_page">처음</button>
+            <button id="prev10">-10</button>
+            <button id="previous">이전</button>
+        </div>
+        <div id="pagination">
+            <!-- 페이지 번호 뜨는 곳 -->
+        </div>
+        <div class="page-btn">
+            <button id="next">다음</button>
+            <button id="next10">+10</button>
+            <button id="end_page">끝</button>
+        </div>
+    </div>
             
         
     <script>
