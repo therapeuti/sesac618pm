@@ -4,103 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>사용자 목록</title>
-    <style>
-        * {
-           margin: 0;
-           padding: 0;
-           box-sizing: border-box; 
-        }
-        body {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            min-height: 100vh;
-            padding: 40px;
-            color: #343a40;
-        }
-        nav {
-            background: white;
-            height: 60px;
-            display: flex;
-            justify-content: space-evenly;
-        }
-        nav a {
-            height: 20px;
-            width: 40px;
-            padding: 10px;
-            margin: 10px;
-            background: skyblue;
-        }
-        #container {
-            display: flex;
-            justify-content: center;
-            text-align: center;
-            background: white;
-            padding: 20px;
-        }
-        table, th, td {
-            border-bottom: 1px solid gray;
-            border-collapse: collapse;
-        }
-        table {
-            width: 90%;
-        }
-        th, td {
-            height: 40px;
-
-        }
-        th {
-            background: lightgray;
-        }
-
-        button {
-            /* width: 3px; */
-            margin: 5px;
-        }
-        #btn-container {
-            display: flex;
-            justify-content: space-evenly;
-        }
-        #btn-container button {
-            width: 30px;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/css/users.css">
 </head>
 <body>
     <nav>
-        <a href="/">Login</a>
-        <a href="/users">Users</a>
-        <a href="/stores">Stores</a>
-        <a href="/orders">Orders</a>
-        <a href="/items">Items</a>
-        <a href="/orderitems">Orderitems</a>
+        <a class="nav_link" href="/">Login</a>
+        <a class="nav_link" href="/users">Users</a>
+        <a class="nav_link" href="/stores">Stores</a>
+        <a class="nav_link" href="/orders">Orders</a>
+        <a class="nav_link" href="/items">Items</a>
+        <a class="nav_link" href="/orderitems">Orderitems</a>
     </nav>
     <hr>
-    <h1> 사용자 목록</h1>
-    <form>
-        <select id="search_field">
-            <option value="id">ID</option>
-            <option value="name">Name</option>
-            <option value="address">Address</option>
-            </select>
-            <input type="text" id="input_query" placeholder="검색어 입력">
-        <select id="gender" name="gender">
-            <option value="">성별 선택</option>
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
-        </select>
-        <button type="submit" id="submit">검색</button>
-        <label> 정렬기준
-            <select id="orderby" name="orderby">
-                <option value="id">ID</option>
-                <option value="name" selected>Name</option>
-                <option value="birthdate">Birthdate</option>
-                <option value="age">Age</option>
-                <option value="gender">Gender</option>
-                <option value="address">Address</option>
-            </select>
-        </label>
-    </form>
-    
     <div id="container">
+        <h1>사용자 목록</h1>
+        <form>
+            <div id="search">
+                <select id="search_field">
+                    <option value="id">ID</option>
+                    <option value="name">Name</option>
+                    <option value="address">Address</option>
+                </select>
+                <input type="text" id="input_query" placeholder="검색어 입력">
+                <select id="gender" name="gender">
+                    <option value="">성별 선택</option>
+                    <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+                </select>
+                <button type="submit" id="submit">검색</button>
+            </div>
+            <div id="order_by">
+                <label> 정렬기준
+                    <select id="orderby" name="orderby">
+                        <option value="id">ID</option>
+                    <option value="name" selected>Name</option>
+                    <option value="birthdate">Birthdate</option>
+                    <option value="age">Age</option>
+                    <option value="gender">Gender</option>
+                    <option value="address">Address</option>
+                    </select>
+                </label>
+            </div>
+        </form>
         <table id="user_table">
             <thead>
             <tr>
