@@ -17,10 +17,11 @@
     </nav>
     <hr>
     <a href="javascript:history.back()">뒤로가기</a>
-    <h3>사용자 상세 정보</h3>    
-    <table id="user">
-        <thead>
-            <tr>
+    <div id="user_container">
+        <h3>사용자 상세 정보</h3>    
+        <table id="user">
+            <thead>
+                <tr>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Birthdate</th>
@@ -32,29 +33,30 @@
         <tbody id="tbody">
             <!-- 사용자 정보 뜨는 곳 -->
         </tbody>
-    </table>
-    <h3>사용자의 주문내역</h3>    
-    <table id="order_history">
-        <tr>
-            <td>order_id</td>
-            <td>ordertime</td>
-            <td>store</td>
-            <td>item</td>
-        </tr>
-        <tr>
-            <!-- 주문 내역 뜨는 곳 -->
-        </tr>
-    </table>
+        </table>
+        <h3>사용자의 주문내역</h3>    
+        <table id="order_history">
+            <tr>
+                <th>order_id</th>
+                <th>ordertime</th>
+                <th>store</th>
+                <th>item</th>
+            </tr>
+            <tr>
+                <!-- 주문 내역 뜨는 곳 -->
+            </tr>
+        </table>
+        
+        <h3>자주 방문한 매장 Top 5</h3> 
+        <ol id="store_top5">
+            <!-- 매장 리스트 -->
+        </ol>
+        <h3>자주 주문한 상품명 Top 5</h3>
+        <ol id="item_top5">
+            <!-- 상품 리스트 -->
+        </ol> 
+    </div>
     
-    <h3>자주 방문한 매장 Top 5</h3> 
-    <ol id="store_top5">
-        <!-- 매장 리스트 -->
-    </ol>
-    <h3>자주 주문한 상품명 Top 5</h3>
-    <ol id="item_top5">
-        <!-- 상품 리스트 -->
-    </ol> 
-
 
     <script>
         const user = document.getElementById('user')

@@ -51,7 +51,7 @@ nav {
     transform: scaleX(1);
     transform-origin: bottom left;
 }
-
+#user_container,
 #container {
     background-color: #ffffff;
     border-radius: 12px;
@@ -94,21 +94,31 @@ form {
     border-color: #339af0;
     background-color: white;
 }
+#user,
+#order_history,
 #user_table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
+    margin-bottom: 20px;
 }
+#user th,
+#user td,
+#order_history th,
+#order_history td,
 #user_table th,
 #user_table td {
     padding: 12px 8px;
     border-bottom: 1px solid #dee2e6;
 }
+#user th,
+#order_history th,
 #user_table th {
     text-align: center;
     background-color: #f1f3f5;
     font-weight: 600;
 }
+#order_history td a,
 #user_table td a {
     color: #1c7ed6;
     text-decoration: none;
@@ -147,4 +157,13 @@ form {
 #pagination button:disabled {
     background-color: #e9ecef;
     cursor: not-allowed;
+}
+h3 {
+    margin-top: 20px;
+}
+ol {
+    margin-top: 10px;
+}
+a {
+    color:#868e96;
 }

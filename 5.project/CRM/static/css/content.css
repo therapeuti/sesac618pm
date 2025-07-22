@@ -1,4 +1,4 @@
-
+.info-container,
 #container {
     margin: 30px auto;
     background-color: white;
@@ -39,6 +39,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
+    margin-bottom: 20px;
 }
 th {
     text-align: center;
@@ -87,4 +88,10 @@ table td a:hover {
 #pagination button:disabled {
     background-color: #e9ecef;
     cursor: not-allowed;
+}
+h3 {
+    margin-top:  10px;
+}
+a {
+    color:#868e96;
 }

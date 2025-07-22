@@ -1,17 +1,21 @@
+<link rel="stylesheet" href="{{url_for('static', filename="css/content.css")}}">
+
 {% extends "base.html" %}
 {% block title %} 주문 상세 정보 {% endblock %}
 {% block content %}
 <a href="javascript:history.back()">뒤로가기</a>
+<div class="info-container">
+
 <h3>주문 상세 정보</h3>
 <!-- {{order}} -->
 <h4>Order ID : {{order.order_id}}</h4>
 <h4>Order Time : {{order.ordertime}}</h4>
 <table>
     <tr>
-        <td>Store_ID</td>
-        <td>Store Name</td>
-        <td>User_ID</td>
-        <td>User Name</td>
+        <th>Store_ID</th>
+        <th>Store Name</th>
+        <th>User_ID</th>
+        <th>User Name</th>
     </tr>
     <tr>
         <td><a href="/stores/info/{{order.store_id}}">{{order.store_id}}</a></td>
@@ -36,4 +40,5 @@
         </tr>
     {% endfor %}
 </table>
+</div>
 {% endblock %}
