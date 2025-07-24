@@ -17,11 +17,22 @@ count_per_page = 10
 @items_bp.route('/')
 def items_index():
     page = request.args.get('page', default=1, type=int)
+    id = request.args.get('id')
+    item_type = request.args.get('type')
+    name = request.args.get('name')
     orderby = request.args.get('orderby', default='name', type=str)
-    filtering = {'page':page, 'orderby':orderby}
+    filtering = {'page':page,'orderby':orderby}
+    if id:
+        filtering['id'] = id
+    if item_type:
+        filtering['type'] = item_type
+    if name:
+        filtering['name'] = name
     items, count_items = get_items_list(count_per_page, filtering)
+    logging.debug(items)
     end_page = math.ceil(count_items / count_per_page)
-    return render_template('items_index.html', items=items, end_page=end_page, current_page=page)
+    item_type = get_item_type()
+    return render_template('items_index.html', items=items, end_page=end_page, current_page=page, item_type=item_type)
 
 @items_bp.route('/info/<id>')
 def item_info(id):

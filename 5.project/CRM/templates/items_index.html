@@ -9,9 +9,14 @@
                 <select id="search_field">
                     <option value="id">ID</option>
                     <option value="name">Name</option>
-                    <option value="type">Type</option>
                 </select>
                 <input type="text" id="input_query" placeholder="검색어 입력">
+                <select id="type" name="type">
+                    <option value="">상품 종류 선택</option>
+                    {% for type in item_type %}
+                        <option value="{{type}}">{{type}}</option>
+                    {% endfor %}
+                </select>
                 <button type="submit" id="submit">검색</button>
             </div>
             <div id="order_by">
@@ -88,6 +93,30 @@
         </div>
     </div>
     <script>
+        const search_field = document.getElementById('search_field')
+        const input_query = document.getElementById('input_query')
+        const type = document.getElementById('type')
+        const submit = document.getElementById('submit')
+        const orderby = document.getElementById('orderby')
+
+        submit.addEventListener('click', (e) => {
+            input_query.name = search_field.value;
+        })
+
+        const params = new URLSearchParams(window.location.search)
+        if (params.get('id')){
+            const id = params.get('id')
+            search_field.value = 'id'
+            input_query.value = id}
+        if (params.get('name')){
+            const name = params.get('name')
+            search_field.value = 'name'
+            input_query.value = name}
+        if (params.get('type')){
+            type.value = params.get('type')}
+        if (params.get('orderby')){
+            orderby.value = params.get('orderby')}
+
         // 페이지 버튼 눌렀을 때, url의 겟 파라미터들 유지하면서 페이지 변경
         function change_page(page) {
             const url = new URL(window.location.href)

@@ -8,8 +8,8 @@
             <div id="search">
                 <select id="search_field">
                     <option value="id">ID</option>
-                    <option value="name">Name</option>
-                    <option value="address">Address</option>
+                    <option value="order_id">Order_ID</option>
+                    <option value="item_id">Item_ID</option>
                 </select>
                 <input type="text" id="input_query" placeholder="검색어 입력">
                 <button type="submit" id="submit">검색</button>
@@ -86,6 +86,32 @@
         </div>
     </div>
     <script>
+        const search_field = document.getElementById('search_field')
+        const input_query = document.getElementById('input_query')
+        const submit = document.getElementById('submit')
+        const orderby = document.getElementById('orderby')
+        const params = new URLSearchParams(window.location.search)
+        if (params.get('id')){
+            search_field.value = 'id'
+            input_query.value = params.get('id')
+        }
+        if (params.get('order_id')){
+            search_field.value = 'order_id'
+            input_query.value = params.get('order_id')
+        }
+        if (params.get('store_id')){
+            search_field.value = 'store_id'
+            input_query.value = params.get('store_id')
+        }
+        if (params.get('orderby')){
+            orderby.value = params.get('orderby')
+        }
+        
+        submit.addEventListener('click', () => {
+            input_query.name = search_field.value;
+        })
+    
+
         // 페이지 버튼 눌렀을 때, url의 겟 파라미터들 유지하면서 페이지 변경
         function change_page(page) {
             const url = new URL(window.location.href)

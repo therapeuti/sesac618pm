@@ -8,10 +8,11 @@
             <div id="search">
                 <select id="search_field">
                     <option value="id">ID</option>
-                    <option value="name">Name</option>
-                    <option value="address">Address</option>
+                    <option value="store_id">Store_ID</option>
+                    <option value="user_id">User_ID</option>
                 </select>
                 <input type="text" id="input_query" placeholder="검색어 입력">
+                <input type="date" id="ordertime" name="ordertime">
                 <button type="submit" id="submit">검색</button>
             </div>
             <div id="order_by">
@@ -39,8 +40,8 @@
                 <tr>
                     <td><a href="/orders/info/{{s.id}}">{{s.id}}</a></td>
                     <td>{{s.ordertime}}</td>
-                    <td>{{s.store_id}}</td>
-                    <td>{{s.user_id}}</td>
+                    <td><a href="/stores/info/{{s.store_id}}">{{s.store_id}}</a></td>
+                    <td><a href="/users/info/{{s.user_id}}">{{s.user_id}}</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -88,6 +89,40 @@
         </div>
     </div>
     <script>
+        const search_field = document.getElementById('search_field')
+        const input_query = document.getElementById('input_query')
+        const ordertime = document.getElementById('ordertime')
+        const submit = document.getElementById('submit')
+        const orderby = document.getElementById('orderby')
+        
+        // submit 클릭 시, 폼 내용 파라미터에 반영
+        submit.addEventListener('click', (e) => {
+            console.log(e.target)
+            input_query.name = search_field.value;
+        })
+        
+        // 파라미터 값 가져와서 검색창이나, 정렬기준에 반영
+        // 검색어 유지
+        const parameters = new URLSearchParams(window.location.search);
+        console.log(parameters.get('id'))
+        console.log(parameters.get('ordertime'))
+        console.log(parameters.get('store_id'))
+        console.log(parameters.get('user_id'))
+        if (parameters.get('id')) {
+            search_field.value = 'id'
+            input_query.value = parameters.get('id')}
+        if (parameters.get('store_id')) {
+            search_field.value = 'store_id'
+            input_query.value = parameters.get('store_id')}
+        if (parameters.get('user_id')) {
+            search_field.value = 'user_id'
+            input_query.value = parameters.get('user_id')}
+        if (parameters.get('ordertime')) {
+            ordertime.value = parameters.get('ordertime')}
+        if (parameters.get('orderby')) {
+            orderby.value = parameters.get('orderby')}
+
+
         // 페이지 버튼 눌렀을 때, url의 겟 파라미터들 유지하면서 페이지 변경
         function change_page(page) {
             const url = new URL(window.location.href)
@@ -106,6 +141,7 @@
             window.location.href = params
         }
         )
+
     </script>
     {% endblock %}       
         
