@@ -440,11 +440,11 @@ def get_orders_list(count, filtering):
     filter_keys = []   # ex) id LIKE ?
     filter_values = []  # ex) %김%
     for key, value in filtering.items(): 
-        if key not in ['page', 'orderby']:
+        if key not in ['page', 'ordertime', 'orderby']:
             filter_keys.append(f'{key} LIKE ?')
             filter_values.append(f'%{value}%')
         elif key == 'ordertime':
-            filter_keys.append(f'{key}=?')
+            filter_keys.append(f'strftime("%Y-%m-%d",{key})=?')
             filter_values.append(value)
     parameter_count_tuple = tuple(filter_values)
     filter_values.extend([count, offset_num])
@@ -471,7 +471,7 @@ def get_orders_list(count, filtering):
         where_keys = ' AND '.join(filter_keys)
         where = 'WHERE ' + where_keys
         sql_query = 'SELECT * FROM orders ' + where + ' ORDER BY '+ filtering['orderby']+' LIMIT ? OFFSET ?'
-        sql_count_query = 'SELECT COUNT(*) FROM stores ' + where
+        sql_count_query = 'SELECT COUNT(*) FROM orders ' + where
         logging.debug(f'SQL 쿼리문:  {sql_query}')
         logging.debug(f'파라미터 튜플 :  {parameter_tuple}')
         # 필터링한 데이터 가져오기
