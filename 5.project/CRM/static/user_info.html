@@ -46,12 +46,16 @@
                 <!-- 주문 내역 뜨는 곳 -->
             </tr>
         </table>
+        <p class="comment" id="p_order_history"></p>
         
         <h3>자주 방문한 매장 Top 5</h3> 
+        <p class="top5" id="p_store_top5"></p>
         <ol id="store_top5">
             <!-- 매장 리스트 -->
         </ol>
+        
         <h3>자주 주문한 상품명 Top 5</h3>
+        <p class="top5" id="p_item_top5"></p>
         <ol id="item_top5">
             <!-- 상품 리스트 -->
         </ol> 
@@ -92,25 +96,33 @@
         fetch(`/users/api/order_history/${userid}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data)
-                for (u of data) {
-                    const new_tr = document.createElement('tr')
-                    new_tr.innerHTML = `<td><a href="/orders/info/${u.order_id}">${u.order_id}</td>
-                                        <td>${u.ordertime}</td>
-                                        <td>${u.store}</td>
-                                        <td>${u.item}</td>`
-                    order_history.appendChild(new_tr)
-                }
+                console.log('주문내역: ',data)
+                if (data.length == 0){
+                    document.getElementById('p_order_history').innerText = `주문내역이 없습니다.`
+                } else {
+                    for (u of data) {
+                        const new_tr = document.createElement('tr')
+                        new_tr.innerHTML = `<td><a href="/orders/info/${u.order_id}">${u.order_id}</td>
+                            <td>${u.ordertime}</td>
+                            <td>${u.store}</td>
+                            <td>${u.item}</td>`
+                            order_history.appendChild(new_tr)
+                        }
+                    }
             })
         
         fetch(`/users/api/store_top5/${userid}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data[0])
-                for (i of data) {
-                    const new_li = document.createElement('li')
-                    new_li.innerText = `${i.store} : ${i.cnt}번 방문`
-                    store_top5.appendChild(new_li)
+                console.log(data)
+                if (data.length == 0){
+                    document.getElementById('p_store_top5').innerText = `주문내역이 없습니다.`
+                } else {
+                    for (i of data) {
+                        const new_li = document.createElement('li')
+                        new_li.innerText = `${i.store} : ${i.cnt}번 방문`
+                        store_top5.appendChild(new_li)
+                    }
                 }
             }
             )
@@ -118,11 +130,14 @@
         fetch(`/users/api/item_top5/${userid}`)
             .then(response => response.json())
             .then(data => {
-                for (i of data) {
-                    const new_li = document.createElement('li')
-                    new_li.innerText = `${i.item} : ${i.cnt}번 구매` 
-                    item_top5.appendChild(new_li)                    
-                }
+                if (data.length == 0){
+                    document.getElementById('p_item_top5').innerText = `주문내역이 없습니다.`
+                } else {
+                    for (i of data) {
+                        const new_li = document.createElement('li')
+                        new_li.innerText = `${i.item} : ${i.cnt}번 구매` 
+                        item_top5.appendChild(new_li)                    
+                    }}
             })
 
     </script>

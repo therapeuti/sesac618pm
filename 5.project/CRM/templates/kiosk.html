@@ -23,6 +23,10 @@
             color: #212529;
             margin-bottom: 10px;
         }
+        h3 span {
+            color:#343a40;
+            font-size: 16px;
+        }
 
         h1 {
             font-size: 2rem;
@@ -132,7 +136,7 @@
 </head>
 <body>
     <h2> 주문 페이지 </h2>
-    <h3> 어서오세요, {{login_user.name}}님 </h3>
+    <h3> 어서오세요, {{login_user.name}}<span>(ID: {{login_user.id}})</span>님 </h3>
     
     <form>
         <h3> 매장 선택 </h3>
@@ -295,6 +299,7 @@
                 .then(data => {
                     console.log(data)
                 })
+                alert('상품이 주문되었습니다!')
             } else {
                 console.log('주문할 상품이 없음.')
                 alert('주문할 상품이 없습니다. 상품을 선택해주세요!')
@@ -344,7 +349,7 @@
                 }
             }
             console.log(sum)
-            total_price.innerText = `총 구매금액: ${sum}`
+            total_price.innerText = `총 구매금액: ${sum}원`
 
         }
     </script>

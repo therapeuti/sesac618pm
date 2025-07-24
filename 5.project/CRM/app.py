@@ -36,9 +36,12 @@ def customer_page():
     
     return render_template('signup.html')
 
-@app.route('/user_login', methods=['POST'])
+@app.route('/user_login', methods=['GET','POST'])
 def user_login():
-    u_id = request.form.get('id')
+    if request.method == 'GET':
+        u_id = request.args.get('id')
+    if request.method == 'POST':
+        u_id = request.form.get('id')
     logging.debug(u_id)
     login_user = get_user_by_id(u_id)
     logging.debug(login_user)
@@ -82,7 +85,7 @@ def user_signup():
     logging.debug(insert_result)
     new_user = get_user_by_id(u_id)
     logging.debug(new_user)
-    return redirect(url_for('customer_page'))
+    return redirect(url_for('user_login', id=u_id))
 
 @app.route('/add_order', methods=['POST'])
 def add_order():
@@ -91,11 +94,11 @@ def add_order():
     store_id = request.get_json()['store_id']
     item_ids = request.get_json()['items']
     order_id = str(uuid.uuid4())
-    ordertime = datetime.today()
+    ordertime = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
     logging.debug(ordertime)
     order_data = {'id': order_id, 'ordertime': ordertime, 'store_id': store_id, 'user_id': user_id}
     new_order = insert_order(order_data)
-    logging.debug(f'삽입된 주문 데이터: {new_order}')
+    logging.debug(f'주문이 들어왔습니다.  {new_order}')
     orderitems = []
     for i in item_ids:
         orderitem_id = str(uuid.uuid4())

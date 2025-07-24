@@ -120,7 +120,7 @@ def get_users_order(id):
     order_history = cur.fetchall()
 
     order_history = [dict(h) for h in order_history]
-    logging.debug(order_history[0])
+    logging.debug(order_history)
     cur.close()
     conn.close()
     return order_history
@@ -139,11 +139,13 @@ def get_store_top5(id):
     store_top5 = cur.fetchall()
     cur.close()
     conn.close()
-    if not store_top5:
-        store_top5 = '검색 결과 없음'
-    else:
-        store_top5 = [dict(s) for s in store_top5]
-        logging.debug(store_top5)
+    # if not store_top5:
+    #     store_top5 = '검색 결과 없음'
+    # else:
+    #     store_top5 = [dict(s) for s in store_top5]
+    #     logging.debug(store_top5)
+    store_top5 = [dict(s) for s in store_top5]
+    logging.debug(store_top5)
     return store_top5
 
 def get_item_top5(id):
@@ -161,11 +163,12 @@ def get_item_top5(id):
     item_top5 = cur.fetchall()
     cur.close()
     conn.close()
-    if not item_top5:
-        item_top5 = '검색 결과 없음'
-    else:
-        item_top5 = [dict(s) for s in item_top5]
-        logging.debug(item_top5)
+    item_top5 = [dict(s) for s in item_top5]
+    # if not item_top5:
+    #     item_top5 = '검색 결과 없음'
+    # else:
+    #     item_top5 = [dict(s) for s in item_top5]
+    #     logging.debug(item_top5)
     return item_top5
 
 
@@ -432,6 +435,7 @@ def get_item_sales(id):
         item_sales = '검색된 내용 없음'
     else:
         item_sales = [dict(i) for i in item_sales]
+        item_sales.reverse()
     return item_sales
 
 def get_orders_list(count, filtering):
