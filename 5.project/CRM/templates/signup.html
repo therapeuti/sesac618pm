@@ -5,10 +5,11 @@
   	<style>
 		* {
 			box-sizing: border-box;
-			font-family:"Noto Sans KR", sans-serif;
+			font-family: "Noto Sans KR", sans-serif;
 			margin: 0;
 			padding: 0;
 		}
+
 		html, body {
 			width: 100%;
 			min-height: 100vh;
@@ -16,84 +17,115 @@
 			align-items: center;
 			justify-content: center;
 			padding: 20px;
-			background: linear-gradient(45deg,rgb(76, 76, 236),purple)
+			background-color: #f5f5f5;
 		}
+
 		#chk {
-			display:none;
+			display: none;
 		}
+
 		.main {
-			width:340px;
-			height:500px;
-			background-color: lightgreen;
-			position: relative; /* signup, login 폼을 main 안에 유지하기 위함 */
-			overflow: hidden; /* main 넘어가는 부분은 안 보이게 */
-			border-radius:10px;
-			box-shadow:5px 5px 10px black;
+			width: 360px;
+			height: 520px;
+			background-color: #ffffff;
+			position: relative;
+			overflow: hidden;
+			border-radius: 12px;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 		}
+
 		.main .signup,
 		.main .login {
-			/* display: flex; */
-			/* flex-direction: column; */
 			align-items: center;
 			justify-content: center;
 		}
+
 		.signup, .login {
-			width:100%;
-			height:100%;
-			text-align:center;
-			padding: 20px;
+			width: 100%;
+			height: 100%;
+			text-align: center;
+			padding: 30px 25px;
 			position: absolute;
-			top:0;
-			left:0;
-			border-radius: 5px;
-			transition-duration:1s;
-			transition-timing-function:ease;
+			top: 0;
+			left: 0;
+			border-radius: 12px;
+			transition-duration: 0.8s;
+			transition-timing-function: ease;
 		}
+
 		.signup {
-			background: linear-gradient(45deg, rgb(237, 168, 237), purple);
-			transform: translateX(100%)
+			background-color: #ffffff;
+			transform: translateX(100%);
 		}
+
 		.login {
-			background: linear-gradient(45deg, skyblue, blue);
-			transform: translateX(0%)
+			background-color: #ffffff;
+			transform: translateX(0%);
 		}
+
 		#chk:checked ~ .signup {
-			transform:translate(0)
+			transform: translateX(0%);
 		}
+
 		#chk:checked ~ .login {
-			transform:translateX(-100%)
+			transform: translateX(-100%);
 		}
+
 		label {
 			display: block;
-            margin-bottom: 30px; /* label이 인라인 요소라 변경해줘야 margin이 적용이 됨 */
-			font-size: 30px;
-			color: white;
+			margin-bottom: 30px;
+			font-size: 26px;
+			color: #333333;
+			font-weight: 600;
 		}
+
 		input, select {
 			width: 100%;
-			height: 40px;
-			padding: 7px;
-			border-radius: 20px;
-			border: none;
+			height: 42px;
+			padding: 10px 15px;
+			border-radius: 10px;
+			border: 1px solid #cccccc;
 			margin-bottom: 15px;
-			background-color:rgba(255,255,255,0.3);
+			background-color: #ffffff;
+			color: #333333;
+			font-size: 14px;
+			transition: border 0.3s;
 		}
+
+		input:focus, select:focus {
+			outline: none;
+			border: 1px solid #007BFF;
+			box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+		}
+
 		input::placeholder {
-			color:rgba(255,255,255,0.7)
+			color: #aaaaaa;
 		}
+
 		button {
 			width: 100%;
-			height:40px;
-			border-radius: 20px;
-			background-color: rgba(255,255,255,1);
-			border:none;
-			margin-top: 30px;
-			font-size: 15px;
+			height: 42px;
+			border-radius: 10px;
+			background-color: #007BFF;
+			border: none;
+			margin-top: 25px;
+			font-size: 16px;
+			color: #ffffff;
+			font-weight: 500;
+			cursor: pointer;
+			transition: background-color 0.3s;
 		}
-        #login_fail {
-            color:red;
-            height: 30px;
-        }
+
+		button:hover {
+			background-color: #0056b3;
+		}
+
+		#login_fail {
+			color: red;
+			height: 30px;
+			font-size: 14px;
+		}
+
 	</style>
 </head>
 <body>
@@ -118,7 +150,7 @@
 			<div class="login">
 				<form action="/user_login", method="post">
 					<label for="chk" aria-hidden="true">Login</label><br> <!-- 라벨을 클릭하면 위 체크박스가 체크/해제됨 -->
-					<input type="user_id" name="id" placeholder="ID로 로그인" required=""><br>
+					<input type="user_id" name="id" placeholder="사용자ID나 'admin'입력해서 로그인" required=""><br>
                     <p id="login_fail">
 						{% with messages = get_flashed_messages() %}
 							{{messages[0]}}

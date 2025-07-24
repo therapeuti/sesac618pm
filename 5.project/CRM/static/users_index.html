@@ -21,7 +21,7 @@
         <form>
             <div id="search">
                 <select id="search_field">
-                    <option value="id">ID</option>
+                    <option value="id" selected>ID</option>
                     <option value="name">Name</option>
                     <option value="address">Address</option>
                 </select>
@@ -37,11 +37,11 @@
                 <label> 정렬기준
                     <select id="orderby" name="orderby">
                         <option value="id">ID</option>
-                    <option value="name" selected>Name</option>
-                    <option value="birthdate">Birthdate</option>
-                    <option value="age">Age</option>
-                    <option value="gender">Gender</option>
-                    <option value="address">Address</option>
+                        <option value="name" selected>Name</option>
+                        <option value="birthdate">Birthdate</option>
+                        <option value="age">Age</option>
+                        <option value="gender">Gender</option>
+                        <option value="address">Address</option>
                     </select>
                 </label>
             </div>
@@ -88,12 +88,13 @@
         const gender = document.getElementById('gender')
         const orderby = document.getElementById('orderby')
 
-        // input_query.name = search_field.value
+        input_query.name = search_field.value
         // search field 바뀜에 따라.. input_query가 바뀌도록... 이벤트 리스너 등록 필요...?
         search_field.addEventListener('change', (e)=>{
             input_query.name = e.target.value;
             console.log(input_query.name);
         })
+        
         // 검색어 유지
         const parameters = new URLSearchParams(window.location.search);
         console.log(parameters.get('name'))
@@ -116,7 +117,8 @@
 
         // 폼 제출 경로 변경
         submit.addEventListener('click', (e)=>{
-            e.prevent.default();
+            // e.preventDefault();
+            input_query.name = search_field.value
         })
 
         // 정렬 이벤트 리스너 
@@ -190,13 +192,14 @@
         // 현재 페이지 가져오는 함수
         function get_current_page() {
             const params = new URLSearchParams(window.location.search)
+            console.log('------------------------------------')
             console.log('현재 페이지 가져오는 함수 실행: ', params)
             // console.log(params.get('page'))
             let current_page = params.get('page')
             console.log('현재 페이지는? ', current_page)
             if (!current_page || isNaN(current_page)){ // current_page가 빈값(Null)이거나 숫자가 아닌 경우(isNaN)
                 current_page = 1
-                console.log('현재 페이지 없으면 1이라고!!!!! ', current_page)
+                console.log('현재 페이지 없으면 1 ', current_page)
                 return Number(current_page)
             }
             // console.log(current_page)
@@ -206,6 +209,8 @@
         
         // 사용자 목록 렌더링하는 함수
         function render_users(users) {
+            console.log('------------------------------------')
+
             console.log('render_users 함수 실행')
             console.log('사용자 데이터 수: ', users.length)
             user_list.innerHTML = '' // 사용자 목록 초기화
@@ -228,6 +233,7 @@
         
         // 페이지 버튼 렌더링하는 함수 => 10개 다 렌더링할 필요가 없는 경우...?
         function render_page_btns(end) {
+            console.log('------------------------------------')
             console.log('render_page_btns 함수 실행')
             // console.log('end page: ', end)
             // console.log(typeof(end))
@@ -286,6 +292,7 @@
         }
         
         function fetch_get_data() {
+            console.log('------------------------------')
             console.log('fetch 함수 실행됨')
             const params = new URLSearchParams(window.location.search)
             const current_page = params.get('page')
@@ -309,7 +316,8 @@
                 .then(response => response.json())
         }
         
-        function render_page(data) {    
+        function render_page(data) {   
+                console.log('-------------------------------------------------')
                 console.log('render_page 실행')
                 // console.log(data.users[0])
                 console.log('전체 페이지 수: ', data.total_pages)
@@ -332,6 +340,7 @@
         }
 
         function change_page(page, pushState=true) {
+            console.log('---------------------------------------------')
             console.log('페이지 변경')
 
             // url 변경(history.pushState 사용)
@@ -354,6 +363,7 @@
         // 그럼 서버에서 아이디로 정보 찾아서 클라이언트로 보냄....
 
         function init() {
+            console.log('init이 따로 필요할까....?--------------')
             const current_page = get_current_page()
             change_page(current_page, false)
             }
