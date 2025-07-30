@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %} 상품 페이지 {% endblock%}
+
+{% block content %}
+<h1>상품</h1>
+<table style="text-align: center;">
+    <tr>
+        <th>상품ID</th>
+        <th>상품 이름</th>
+        <th>상품 가격</th>
+        <th>장바구니에 추가</th>
+    </tr>
+{% for item in items %}
+    <tr>
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.price}}</td>
+        <td><a href="/add-to-cart/{{item.id}}"><button>추가</button></a></td>
+        <td><form action="/add-to-cart"><input type="hidden" name="id" value="{{item.id}}"><input type="submit" value="폼 제출"></form></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
