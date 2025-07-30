@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, session
 from flask import render_template, redirect, url_for, request, jsonify
 from flask import flash
 from users import users_bp
@@ -44,18 +44,30 @@ def user_login():
         u_id = request.form.get('id')
     logging.debug(u_id)
     login_user = get_user_by_id(u_id)
-    logging.debug(login_user)
-    # if u_id == 'admin':
-    #     login_user = 'admin'
-    #     return render_template('kiosk.html', login_user=login_user)
     if not login_user:
         flash('로그인 실패 : 사용자 정보 없음')
         return redirect(url_for('customer_page'))
     else:
+        session['user'] = u_id
+        return redirect(url_for('kiosk'))
+    
+@app.route('/kiosk')
+def kiosk():
+    u_id = session.get('user')
+    if u_id:
         login_user = get_user_by_id(u_id)
         store_type = get_store_type()
-        logging.debug(store_type)
-        return render_template('kiosk.html', login_user=login_user, store_type=store_type) 
+        return render_template('kiosk.html', login_user=login_user, store_type=store_type)
+    else:
+        flash('로그인 먼저 하세요')
+        return redirect(url_for('customer_page'))
+
+@app.route('/logout')
+def logout():
+    user = session.get('user')
+    if user:
+        session.pop('user', None)
+    return redirect(url_for('customer_page'))
     
 @app.route('/api/store_name/<type>')
 def send_store_name(type):
