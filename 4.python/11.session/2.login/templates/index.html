@@ -17,5 +17,12 @@
             <br>
             <input type="submit" value="로그인">
         </form>
+    {% with message = get_flashed_messages() %}
+        {% if message %}
+            {% for msg in message %}
+                <p>msg</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 </body>
 </html>

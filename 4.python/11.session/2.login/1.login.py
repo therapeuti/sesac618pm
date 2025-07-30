@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask import session
 
 
@@ -28,8 +28,6 @@ def index():
             return redirect(url_for('profile'))
         else:
              return '로그인에 실패하였습니다.'
-
-
     return render_template('index.html')
 
 @app.route('/profile')
@@ -41,6 +39,31 @@ def profile():
         return render_template('dashboard.html', user_name=user['name'])
      else:
         return '로그인 안 된 사용자'
+@app.route('/edit_profile')
+def edit_page():
+    user = session.get('user')
+    print('프로필 수정 페이지.', user)
+    if user:
+        return render_template('edit_profile.html', user=user)
+    flash('로그인 먼저 하세요.')
+    return redirect(url_for('index'))
+
+@app.route('/api/edit', methods=['GET','POST'])
+def edit_profile():
+    print('프로필 수정 된거 아냐?')
+    user = session.get('user')
+    name = request.form.get('name')
+    pw = request.form.get('pw')
+    print(name, pw)
+    if user:
+        user
+        user['name'] = name
+        user['pw'] = pw
+        flash('사용자 정보가 수정되었습니다.')
+        return redirect(url_for('profile'))
+    else:
+        flash('로그인 먼저 하세요')
+        return redirect(url_for('index'))
      
 @app.route('/logout')
 def logout():
@@ -52,6 +75,7 @@ def logout():
 # 미션1. 로그인된 사용자는 dashboard를 만들어서 안녕하셍 00
 # 미션2. /에 접속 해서 로그인 된 사용자면 바로 dashboard로 보내기
 # 미션3. 로그아웃 ㅜㄱ현. /logout a href
+# 숙제. 프로필 화면에서 이름, 비번 수정
 
 if __name__=='__main__':
         app.run(debug=True)
