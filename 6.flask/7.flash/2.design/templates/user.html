@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %} 사용자 페이지 {% endblock%}
+
+{% block content %}
+<h1>사용자</h1>
+<p>안녕하세요, {{user.name}}님</p>
+{% with message = get_flashed_messages(with_categories=true) %}
+        {% if message %}
+            {% for category, msg in message %}
+            <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+                {{ msg }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+{% endblock %}

@@ -44,6 +44,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.clear()
+    print(session)
     # session.pop('user', None) # user가 없으면 KeyError 발생. 
     return redirect(url_for('login'))
 
@@ -80,11 +81,23 @@ def add_to_cart(id):
     else:
         carts.append({'id': id, 'count': 1})
         session['carts'] = carts
-    print(session['carts'])
+    print('carts: ', carts)
+    print('세션 내 carts: ', session['carts'])
     return render_template('product.html', user=user, items=items)
 
 @app.route('/carts')
 def in_carts():
-    return '장바구니'
+    user = session.get('user')
+    if not user:
+        error = '로그인부터 하세요'
+        return redirect(url_for('login', error=error))
+    items_in_cart = session.get('carts')
+    print(items_in_cart)
+
+
+    return render_template('cart.html', items_in_cart=items_in_cart)
+
+
+
 if __name__=='__main__':
     app.run(debug=True)
