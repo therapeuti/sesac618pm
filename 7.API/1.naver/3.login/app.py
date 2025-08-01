@@ -17,7 +17,7 @@ NAVER_CLIENT_SECRET = os.getenv('NAVER_CLIENT_SECRET')
 NAVER_REDIRECT_URI = os.getenv('NAVER_REDIRECT_URL')
 
 @app.route('/')
-def index():
+def index():    
     user = session.get('user')
     if user:
         return render_template('index.html', user=user)
