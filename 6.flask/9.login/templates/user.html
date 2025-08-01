@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>사용자 페이지</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{category}} alert-dismisible fade show">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+    <h3>안녕하세요, {{user.name}}님<a href="{{url_for('logout')}}">로그아웃</a></h3>
+</body>
+</html>
