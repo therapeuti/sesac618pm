@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원정보 수정</title>
+</head>
+<body>
+    <h2>회원정보 수정</h2>
+    <form method="post" action="/update">
+        <img src="{{user.profile_image}}">
+        <p>ID : {{user.id}}</p>
+        <label for name="nickname">nickname</label>
+        <input type="text" name="nickname" value="{{user.nickname}}">
+        <br>
+        <label for name="age">age</label>
+        <input type="text" name="age" value="{{user.age}}">
+        <br>
+        <label for name="gender">gender</label>
+        <select name="gender" value="{{user.gender}}">
+            <option value="F">여자</option>
+            <option value="M">남자</option>
+        </select>
+        <br>
+        <label for name="email">email</label>
+        <input type="text" name="email" value="{{user.email}}">
+        <br>
+        <label for name="name">name</label>
+        <input type="text" name="name" value="{{user.name}}">
+        <br>
+        <label for name="birthday">birthday</label>
+        <input type="text" name="birthday" value="{{user.birthday}}">
+        <br>
+        <input type="submit" value="회원정보 수정">
+    </form>
+
+</body>
+</html>

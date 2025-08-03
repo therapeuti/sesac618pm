@@ -3,6 +3,7 @@ from flask import session
 from dotenv import load_dotenv
 import os
 import requests # 내가 남한테 요청할 때
+import database as db
 
 # TODO: sqlite에 사용자가 있는지 확인하고, 있으면 그 정보 가져와서 세션에 저장. 없으면 DB에 삽입.
 # 확장시킬 경우, 사용자 없으면 회원가입 페이지로 보내서 추가 정보 입력받아 DB에 저장
@@ -14,7 +15,7 @@ app.secret_key = os.getenv('SESSION_SECRET_KEY')
 
 NAVER_CLIENT_ID = os.getenv('NAVER_CLIENT_ID')
 NAVER_CLIENT_SECRET = os.getenv('NAVER_CLIENT_SECRET')
-NAVER_REDIRECT_URI = os.getenv('NAVER_REDIRECT_URL')
+NAVER_REDIRECT_URI = os.getenv('NAVER_REDIRECT_URI')
 
 @app.route('/')
 def index():    
@@ -58,11 +59,50 @@ def naver_callback():
 
     # 세션에 저장
     session['user'] = profile['response']
+    user = session.get('user')
 
-
+    # db.create_users()    
+    db.insert_user(user)
 
     return redirect(url_for('index'))
 
+@app.route('/edit_profile')
+def edit_profile():
+    user = session.get('user')
+    if user:
+        return render_template('profile.html', user=user)
+
+    return redirect(url_for('index'))
+
+@app.route('/update', methods=['POST'])
+def update():
+    print(request.form)
+    nickname = request.form.get('nickname')
+    age = request.form.get('age')    
+    gender = request.form.get('gender')
+    email = request.form.get('email')
+    name = request.form.get('name')
+    birthday = request.form.get('birthday')
+
+    user = session.get('user')
+    print(user)
+
+    user['nickname'] = nickname
+    user['age'] = age
+    user['gender'] = gender
+    user['email'] = email
+    user['name'] = name
+    user['birthday'] = birthday
+
+    session['user'] = user
+
+    print(session)
+
+    updated_user = (nickname, age, gender, email, name, birthday)
+    db.update_user(updated_user)
+
+
+    return redirect(url_for('index'))
 
 @app.route('/logout')
 def logout():
