@@ -7,18 +7,24 @@
 <table style="text-align: center;">
     <tr>
         <th>상품ID</th>
-        <th>상품 이름</th>
+        <th>이름</th>
+        <th>가격</th>
         <th>수량</th>
-        <th>상품 가격</th>
+        <th>상품별 합계금액</th>
+        <th></th>
     </tr>
 {% for item in items_in_cart %}
     <tr>
         <td>{{item.id}}</td>
         <td>{{item.name}}</td>
-        <td>{{item.cont}}</td>
-        <td><a href="/add-to-cart/{{item.id}}"><button>추가</button></a></td>
-        <td><form action="/add-to-cart"><input type="hidden" name="id" value="{{item.id}}"><input type="submit" value="폼 제출"></form></td>
+        <td>{{item.price}}</td>
+        <td><a href="/subtraction/{{item.id}}">-</a>{{item.count}}<a href="/plus/{{item.id}}">+</a></td>
+        <td>{{item.count * item.price}}</td>
+        <td><a href="/delete_row/{{item.id}}">삭제</a></td>
     </tr>
     {% endfor %}
 </table>
+<br>
+<h4>총 합계: {{total_price}}원</h4>
+<a href="/empty_cart">장바구니 비우기</a>
 {% endblock %}

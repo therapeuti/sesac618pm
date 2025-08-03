@@ -14,9 +14,10 @@ items = [
     {'id': 'prod-003', 'name': '딸기', 'price': 3000}
 ]
 
-carts = [
+cart = [
     # {'id': id, 'count': count}
 ]
+# id_in_cart = {}
 
 
 @app.route('/')
@@ -25,6 +26,10 @@ def home():
 
 @app.route('/login', methods=['GET','POST'])
 def login():
+    user = session.get('user')
+    if user:
+        return redirect(url_for('user'))
+    
     if request.method == 'POST':
         id = request.form.get('id')
         pw = request.form.get('pw')
@@ -37,8 +42,7 @@ def login():
         else:
             error = '로그인 실패'
             return render_template('login.html', error=error)
-    # if error:
-    #     return render_template('login.html', error=error)
+    
     return render_template('login.html')
 
 @app.route('/logout')
@@ -70,32 +74,104 @@ def add_to_cart(id):
     if not user:
         error = '로그인부터 하세요'
         return redirect(url_for('login', error=error))
-    print(len(carts))
-    if len(carts) != 0 :
-        for item in carts:
-            if id == item['id']:
-                item['count'] += 1
-                session['carts'] = carts
-        carts.append({'id': id, 'count': 1})
-        session['carts'] = carts
-    else:
-        carts.append({'id': id, 'count': 1})
-        session['carts'] = carts
-    print('carts: ', carts)
-    print('세션 내 carts: ', session['carts'])
-    return render_template('product.html', user=user, items=items)
+    
+    print(len(cart))
+    for item in items:
+        if item['id'] == id:
+            for i in cart:
+                if id == i['id']:
+                    i['count'] += 1
+                    session['cart'] = cart
+                    print('장바구니 : ', session['cart'])
+                    return redirect(url_for('product'))
+            item['count'] = 1
+            cart.append(item)
+            session['cart'] = cart
+    print('장바구니 : ', session['cart'])
+    return redirect(url_for('product'))
 
-@app.route('/carts')
-def in_carts():
+
+@app.route('/cart')
+def in_cart():
     user = session.get('user')
     if not user:
         error = '로그인부터 하세요'
         return redirect(url_for('login', error=error))
-    items_in_cart = session.get('carts')
-    print(items_in_cart)
+    
+    print('세션 장바구니 ', session['cart'])
+    items_in_cart = session['cart']
+    print('장바구니 : ', items_in_cart)
+    total_price = 0
+    for item in items_in_cart:
+        price = item['count'] * item['price']
+        total_price += price
+
+    return render_template('cart.html', items_in_cart=items_in_cart, total_price=total_price)
 
 
-    return render_template('cart.html', items_in_cart=items_in_cart)
+@app.route("/empty_cart")
+def empty_cart():
+    session.pop('cart', None)
+    return redirect(url_for('in_cart'))
+
+@app.route('/plus/<id>')
+def plus(id):
+    user = session.get('user')
+    if not user:
+        return redirect(url_for('login'))
+    
+    print(f"개수 추가 전 장바구니 : {session['cart']}")
+    items_in_cart = session['cart']
+    for item in items_in_cart:
+        print(item)
+        if item['id'] == id:
+            print(f'개수 추가한 아이템: {item}')
+            item['count'] += 1
+            print(f' 개수 추가 후 세션 내 장바구니 아이템: {items_in_cart}')
+            session['cart'] = items_in_cart
+            break
+
+    return redirect(url_for('in_cart'))
+
+
+
+@app.route('/subtraction/<id>')
+def subtraction(id):
+    user = session.get('user')
+    if not user:
+        return redirect(url_for('login'))
+    
+    print(f"개수 감소 전 장바구니 : {session['cart']}")
+    items_in_cart = session['cart']
+    for item in items_in_cart:
+        print(item)
+        if item['id'] == id:
+            print(f'개수 감소한 아이템: {item}')
+            item['count'] -= 1
+            print(f' 개수 감소 후 세션 내 장바구니 아이템: {items_in_cart}')
+            session['cart'] = items_in_cart
+            break
+
+    return redirect(url_for('in_cart'))
+
+@app.route('/delete_row/<id>')
+def delete_row(id):
+    user = session.get('user')
+    if not user:
+        return redirect(url_for('login'))
+    
+    print(f"삭제 전 장바구니 : {session['cart']}")
+    items_in_cart = session['cart']
+    for item in items_in_cart:
+        print(item)
+        if item['id'] == id:
+            print(f'삭제하기로 선택한 아이템: {item}')
+            items_in_cart.remove(item)
+            print(f'삭제 후 세션 내 장바구니 아이템: {items_in_cart}')
+            session['cart'] = items_in_cart
+            break
+
+    return redirect(url_for('in_cart'))
 
 
 
