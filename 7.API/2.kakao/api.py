@@ -5,7 +5,7 @@ from flask import Flask, render_template, redirect, request, session
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-client_id = "596560f18ad7359574ae728f72f64426"
+client_id = ""
 client_secret = " this is client secret key "
 domain = "http://localhost:4000"
 redirect_uri = "http://127.0.0.1:5000/auth/kakao/callback"
