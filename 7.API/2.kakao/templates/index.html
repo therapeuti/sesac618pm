@@ -7,8 +7,16 @@
 </head>
 <body>
     <h2>카카오 로그인</h2>
-    <a href="{{ url_for('login_naver')}}">
-        <img src="{{ url_for('static', filename='btnW_완성형.png')}}" width="100px">
+    {% if user %}
+        <h2>안녕하세요, {{user.nickname}}님</h2>
+        {% if user.profile_image %}
+            <img src="{{ user.profile_image}}" widht="100">
+        {% endif %}
+        <p><a href="{{ url_for('edit_profile')}}">회원정보 수정</a></p>
+        <p><a href="{{ url_for('logout')}}">로그아웃</a></p>
+    {% else %}
+    <a href="{{ url_for('login_kakao')}}">
+        <img src="{{ url_for('static', filename='kakao_login_medium_narrow.png')}}">
     </a>
     {% endif %}
 </body>
