@@ -6,9 +6,12 @@
     <title>카카오 로그인</title>
 </head>
 <body>
-    <h2>카카오 로그인</h2>
+    <h2>카카오 프로필</h2>
+    <img src="">
+        <h2>안녕하세요, {{user.profile.nickname}}님</h2>
+            <img src="{{ user.profile_nickname_needs_agreement}}" widht="100">
+        <p><a href="{{ url_for('logout')}}">로그아웃</a></p>
     <a href="{{ url_for('login_kakao')}}">
-        <img src="{{ url_for('static', filename='kakao_login_medium_narrow.png')}}">
     </a>
 </body>
 </html>
