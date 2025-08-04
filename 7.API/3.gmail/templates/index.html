@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>고객 로그인 또는 회원가입</title>
+  	<style>
+		* {
+			box-sizing: border-box;
+			font-family: "Noto Sans KR", sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+
+		html, body {
+			width: 100%;
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 20px;
+			background-color: #f5f5f5;
+		}
+
+		#chk {
+			display: none;
+		}
+
+		.main {
+			width: 360px;
+			height: 520px;
+			background-color: #ffffff;
+			position: relative;
+			overflow: hidden;
+			border-radius: 12px;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+		}
+
+		.main .signup,
+		.main .login {
+			align-items: center;
+			justify-content: center;
+		}
+
+		.signup, .login {
+			width: 100%;
+			height: 100%;
+			text-align: center;
+			padding: 30px 25px;
+			position: absolute;
+			top: 0;
+			left: 0;
+			border-radius: 12px;
+			transition-duration: 0.8s;
+			transition-timing-function: ease;
+		}
+
+		.signup {
+			background-color: #ffffff;
+			transform: translateX(100%);
+		}
+
+		.login {
+			background-color: #ffffff;
+			transform: translateX(0%);
+		}
+
+		#chk:checked ~ .signup {
+			transform: translateX(0%);
+		}
+
+		#chk:checked ~ .login {
+			transform: translateX(-100%);
+		}
+
+		label {
+			display: block;
+			margin-bottom: 10px;
+			font-size: 26px;
+			color: #333333;
+			font-weight: 600;
+		}
+
+		input, select {
+			width: 100%;
+			height: 42px;
+			padding: 10px 15px;
+			border-radius: 10px;
+			border: 1px solid #cccccc;
+			margin-bottom: 15px;
+			background-color: #ffffff;
+			color: #333333;
+			font-size: 14px;
+			transition: border 0.3s;
+		}
+
+		input:focus, select:focus {
+			outline: none;
+			border: 1px solid #007BFF;
+			box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+		}
+
+		input::placeholder {
+			color: #aaaaaa;
+		}
+
+		button {
+			width: 100%;
+			height: 42px;
+			border-radius: 10px;
+			background-color: #007BFF;
+			border: none;
+			margin-top: 15px;
+			font-size: 16px;
+			color: #ffffff;
+			font-weight: 500;
+			cursor: pointer;
+			transition: background-color 0.3s;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+
+		#login_fail {
+			color: red;
+			height: 30px;
+			font-size: 14px;
+		}
+        #forgot {
+            border: none;
+            padding: 0;
+            margin: 0;
+            font-size: 13px;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        #forgot a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        #forgot a:hover {
+            text-decoration: underline;
+        }
+	</style>
+</head>
+<body>
+	<div class="main">  	
+		<input type="checkbox" id="chk" aria-hidden="true">
+			<div class="signup">
+				<form action="/signup" method="post">
+					<label for="chk" aria-hidden="true">Sign up</label><br>  <!--라벨 for 속성이 체크박스의 id와 연결되어 있으므로 라벨을 클릭하면 위 체크박스가 체크/해제됨 */-->
+					<input type="text" name="id" placeholder="아이디를 입력하세요" required=""><br>
+					<input type="password" name="pw" placeholder="비밀번호를 입력하세요." required=""><br>
+					<input type="email" name="email" id="email" placeholder="이메일을 입력하세요." required=""><br>
+                    <input type="submit" id="send-code" value="인증코드 전송">
+					<input type="code" id="code" placeholder="인증코드를 입력하세요" required=""><br>
+                    <input type="submit" id="verify-code" value="인증코드 확인">
+					<button type="submit">Sign up</button>
+				</form>
+			</div>
+
+			<div class="login">
+				<form action="/user_login", method="post">
+					<label for="chk" aria-hidden="true">Login</label><br> <!-- 라벨을 클릭하면 위 체크박스가 체크/해제됨 -->
+					<input type="text" name="id" placeholder="아이디 입력" required=""><br>
+					<input type="password" name="pw" placeholder="비밀번호 입력" required=""><br>
+					<button id="login">Login</button>
+                    <button id="forgot"><a href="{{url_for('forgot_password')}}">Forgot Password?</a></button>
+				</form>
+			</div>
+	</div>
+
+
+<script>
+const email = document.getElementById('email')
+const sendCode = document.getElementById('send-code')
+sendCode.addEventListener('click', async (e) => {
+    e.preventDefault();
+    console.log(email.value)
+    const response = await fetch('/send-code', {
+        method: 'post',
+        headers: {'content-type': 'application/json; charset=UTF-8'},
+        body: JSON.stringify(email.value) 
+    })
+    const message = await response.json()
+    sendCode.value = message.message
+    sendCode.disabled = true;
+})
+
+const veryfyCode = document.getElementById('verify-code')
+const code = document.getElementById('code')
+veryfyCode.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const response = await fetch('/verify-code', {
+        method: 'post',
+        headers: {'content-type': 'application/json; charset=UTF-8'},
+        body: JSON.stringify(code.value)
+    })
+
+    const message = await response.json()
+    veryfyCode.value = message.message;
+    veryfyCode.disabled = true;
+})
+
+</script>
+
+</body>
+</html>
