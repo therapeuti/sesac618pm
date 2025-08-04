@@ -5,9 +5,9 @@ from flask import Flask, render_template, redirect, request, session
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-client_id = ""
-client_secret = " this is client secret key "
-domain = "http://localhost:4000"
+client_id = os.getenv('KAKAO_REST_API_KEY')
+client_secret = os.getenv('KAKAO_CLIENT_SECRET')
+domain = "http://127.0.0.1:5000"
 redirect_uri = "http://127.0.0.1:5000/auth/kakao/callback"
 kauth_host = "https://kauth.kakao.com"
 kapi_host = "https://kapi.kakao.com"
@@ -89,4 +89,4 @@ def unlink():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True, port=4000)
+    app.run(host='0.0.0.0', debug=True, port=5000)

@@ -13,7 +13,7 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SESSION_SECRET_KEY')
 
-KAKAO_CLIENT_ID = os.getenv('KAKAO_CLIENT_ID')
+KAKAO_CLIENT_ID = os.getenv('KAKAO_REST_API_KEY')
 KAKAO_CLIENT_SECRET = os.getenv('KAKAO_CLIENT_SECRET')
 KAKAO_REDIRECT_URI = os.getenv('KAKAO_REDIRECT_URI')
 kapi_host="https:/kapi.kakao.com"
@@ -24,6 +24,7 @@ kauth_host="https://kauth.kakao.com"
 def index():
     user = session.get('access_token')
     if user:
+        
         return render_template('index.html', user=user)
 
 
@@ -44,6 +45,14 @@ def login_kakao():
 
 @app.route('/auth/kakao/callback') # 카카오 인증 끝난 후에 돌아올 곳
 def kakao_callback():
+    code = request.args.get('code')
+    if not code:
+        return '인증코드가 없습니다', 400
+    
+    print('code : ', code)
+
+
+
 
     # 인가 코드 발급 요청에 필요한 파라미터 구성
     data = {
@@ -54,11 +63,16 @@ def kakao_callback():
         'code': request.args.get("code")     # 전달받은 인가 코드
     }
 
+    header = {"Content-Type: application/x-www-form-urlencoded;charset=utf-8"}
+
     # 카카오 인증 서버에 액세스 토큰 요청
     resp = requests.post(kauth_host + "/oauth/token", data=data)
 
+
+    print('액세스 토큰 요청 응답 : ', resp)
     # 발급받은 액세스 토큰을 세션에 저장 (로그인 상태 유지 목적)
     session['access_token'] = resp.json()['access_token']
+    print('액세스 토큰 : ', resp.json['access_token'])
     return redirect("/?login=success")
 
 
