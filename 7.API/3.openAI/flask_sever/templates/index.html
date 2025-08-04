@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="container">
+        <div id="chatbox">
+            <!-- 채팅 내용 들어갈 곳 -->
+        </div>
+        <form>
+            <input type="text" name="user" id="user_input">
+            <input type="submit" id="submit">
+        </form>
+    </div>
+
+    <script>
+        const chatbox = document.getElementById('chatbox')
+        const submit = document.getElementById('submit')
+        const user_input = document.getElementById('user_input')
+
+        submit.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const user = document.createElement('p')
+            user.innerText = `사용자: ${user_input.value}`
+            chatbox.appendChild(user)
+            
+            const response =  await fetch('/api/chat_gpt/', {
+                method: 'POST',
+                body: JSON.stringify(user_input.value),
+                headers: { "content-type": 'application/json; charset=UTF-8'}
+            })
+            user_input.value = ''
+
+            const json = await response.json()
+            const assistant = document.createElement('p')
+            assistant.innerText = `어시스턴트: ${json.content}`
+            chatbox.appendChild(assistant)
+
+        })
+    
+
+    </script>
+        
+</body>
+</html>
