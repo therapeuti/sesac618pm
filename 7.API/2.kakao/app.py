@@ -16,17 +16,15 @@ app.secret_key = os.getenv('SESSION_SECRET_KEY')
 KAKAO_CLIENT_ID = os.getenv('KAKAO_REST_API_KEY')
 KAKAO_CLIENT_SECRET = os.getenv('KAKAO_CLIENT_SECRET')
 KAKAO_REDIRECT_URI = os.getenv('KAKAO_REDIRECT_URI')
-kapi_host="https:/kapi.kakao.com"
+kapi_host="https://kapi.kakao.com"
 kauth_host="https://kauth.kakao.com"
 
+print(KAKAO_CLIENT_ID)
+print(KAKAO_CLIENT_SECRET)
+print(KAKAO_REDIRECT_URI)
 
 @app.route('/')
 def index():
-    user = session.get('access_token')
-    if user:
-        
-        return render_template('index.html', user=user)
-
 
     return render_template('index.html')
 
@@ -51,9 +49,6 @@ def kakao_callback():
     
     print('code : ', code)
 
-
-
-
     # 인가 코드 발급 요청에 필요한 파라미터 구성
     data = {
         'grant_type': 'authorization_code',  # 인증 방식 고정값
@@ -63,60 +58,40 @@ def kakao_callback():
         'code': request.args.get("code")     # 전달받은 인가 코드
     }
 
-    header = {"Content-Type: application/x-www-form-urlencoded;charset=utf-8"}
+    # header = {"Content-Type: application/x-www-form-urlencoded;charset=utf-8"}
 
     # 카카오 인증 서버에 액세스 토큰 요청
     resp = requests.post(kauth_host + "/oauth/token", data=data)
-
-
     print('액세스 토큰 요청 응답 : ', resp)
+
+
     # 발급받은 액세스 토큰을 세션에 저장 (로그인 상태 유지 목적)
     session['access_token'] = resp.json()['access_token']
-    print('액세스 토큰 : ', resp.json['access_token'])
-    return redirect("/?login=success")
+    print('액세스 토큰 : ', resp.json()['access_token'])
 
-
-
-
-    # # 카카오에게 코드 검증 후 토큰을 발급받을 엔드포인트 및 입력값 확인
-    # token_url = (
-    # )
-
-    # # 성공했다면 ㅏㅅ용ㅈ ㅏ정보 요청
-    # user_info_url = ()
-
-    # user_info = requests.get()
-
-
-    # # 로그인 ㅓㅅㅇ공
-    # print(user_info)
-    # return '로그인 성공' # 어디로 보낼 지 알아서 처리
-
-# 액세스 토큰을 사용해 로그인한 사용자의 정보 조회 요청
-@app.route("/profile")
-def profile():
     # 사용자 정보 요청
     headers = {
         'Authorization': 'Bearer ' + session.get('access_token', '')  # 세션에 저장된 액세스 토큰 전달
     }
 
     user_info = requests.get(kapi_host + "/v2/user/me", headers=headers)  # 사용자 정보 조회 API 요청 전송
-    print(user_info)
+    print('사용자 정보 : ', user_info.json())
+    user = user_info.json()['kakao_account']
+    session['user'] = user
+    return redirect(url_for('profile', user=user))
 
-    return user_info.text  # 조회한 사용자 정보를 클라이언트에 반환
-    # return redirect(url_for('index'))
-
-
-# @app.route('/profile')
-# def profile():
-#     # 위리 내용 다 끝나면 ㅏㅅ용자 정보 저장하ㅗㄱ, 수정하고 등등 기능 추가
-#     return render_template('profile.html', user=user)
+@app.route("/profile")
+def profile():
+    user = session.get('user')
+    return render_template('profile.html', user=user)
 
 
 #로그아웃 추가
 @app.route('/logout')
 def logout():
-    return redirect(url_for('index'))
+    url = (f'https://kauth.kakao.com/oauth/logout?'
+           f'client_id={KAKAO_CLIENT_ID}&logout_redirect_uri=http://127.0.0.1:5000')
+    return redirect(url)
 
 
 if __name__=='__main__':
