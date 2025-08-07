@@ -4,6 +4,11 @@
 // PUT /api/todo/${id}
 // DELETE /api/todo/${id}
 
+// fetch 시. 예외처리 해야함. try catch
+
+
+
+
 get_todolist()
 
 const todoinput = document.getElementById('todo-input')
@@ -12,11 +17,15 @@ const submit = document.getElementById('submit')
 // 투두리스트 추가
 submit.addEventListener('click', async (e) => {
     e.preventDefault();
+    
+    
     await fetch('/api/todo/', {
         method: 'post',
         headers: {'content-type':'application/json'},
         body: JSON.stringify(todoinput.value)
     })
+
+
     await get_todolist()
     todoinput.value = ''
 })
@@ -29,17 +38,20 @@ document.addEventListener('click', (e) => {
         get_todolist()
     }
 
-    if (e.target.classList.contains('del')) {
-        deleteTodo(e.target.dataset.id)  
+    const delButton = e.target.closest('button.del');
+    if (delButton) {
+        console.log('삭제 버튼 누름')
+
+        deleteTodo(delButton.dataset.id)  
         get_todolist()      
     }
 })
 
 
 async function get_todolist() {
-    const response = await fetch('/api/todo/')
-    const data = await response.json()
-    console.log(data.todolist)
+    const response = await fetch('/api/todo/');
+    const data = await response.json();
+    console.log(data.todolist);
 
     addTodolist(data.todolist)
 }
@@ -47,6 +59,18 @@ async function get_todolist() {
 function addTodolist(todolist) {
     const todoList = document.getElementById('todo-list')
     todoList.innerHTML = ''
+
+    if (todolist.length === 0) {
+        todoList.innerHTML = `
+            <div class="empty-message">
+                <i class="bi bi-list-task"></i>
+                <h3>할 일이 없습니다</h3>
+                <p>새로운 할 일을 추가해보세요!</p>
+            </div>
+        `;
+        return;
+    }
+
     for (todo of todolist){
         const li = document.createElement('li')
         li.innerText = todo.todo;
@@ -55,7 +79,7 @@ function addTodolist(todolist) {
 
         const delBtn = document.createElement('button')
         delBtn.classList.add('del')
-        delBtn.innerText = 'X'
+        delBtn.innerHTML = '<i class="bi bi-trash3"></i>'
         delBtn.dataset.id = todo.id
         li.appendChild(delBtn)
         

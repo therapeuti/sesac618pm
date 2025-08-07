@@ -10,7 +10,7 @@ chatbot_bp = Blueprint('chatbot', __name__)
 
 
 prompt = ChatPromptTemplate.from_messages([
-    ('system', '당신은 투두리스트 관리는 돕는 인공지능 챗봇 "아길레온"입니다.'),
+    ('system', '당신은 투두리스트 관리하고 사용자의 질문에 답변하는 인공지능 챗봇 "아길레온"입니다.'),
     ('human', "{user_input}" )
 ])
 
@@ -21,6 +21,7 @@ chain = prompt | llm
 
 @chatbot_bp.route('/', methods=['POST'])
 def chatbot():
+    print('내 투두리스트 : ', todos)
     userinput = request.get_json()
     print('사용자가 입력한 내용: ', userinput)
 
@@ -32,5 +33,12 @@ def chatbot():
 
     print(response)
     print(response.content)
+
+
+
+
+
+
+
     return jsonify(response.content)
 

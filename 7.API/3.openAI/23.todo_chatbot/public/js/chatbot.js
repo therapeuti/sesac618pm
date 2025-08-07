@@ -98,6 +98,6 @@ async function sendMessageToServer(userInput) {
 
     const data = await response.json();
     console.log('서버응답:', data)
-
+    get_todolist()
     return data; // 나중에 서버의 응답 변수로 변경해야함.
 }
