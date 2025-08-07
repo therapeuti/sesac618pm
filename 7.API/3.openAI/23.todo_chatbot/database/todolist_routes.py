@@ -1,5 +1,5 @@
-from flask import Blueprint, request, jsonify, session
-from database import databse as TODO
+from flask import Blueprint, request, jsonify
+import database as TODO
 
 todo_bp = Blueprint('todo', __name__)
 
@@ -9,31 +9,32 @@ todo_bp = Blueprint('todo', __name__)
 
 @todo_bp.route('/api/todo/', methods=['GET'])
 def get_todos():
-
-    todos = TODO.get_all()
+    todos = TODO.get_todolist() ## 데이터베이스 내용이 바뀌기 전에 불러와서 새로고침 하는 바람에 반영이 제대로 안 되고, 새로고침을 다시 해야 반영이 되는 경우가 많음.
     return jsonify({'todolist': todos})
 
 
 @todo_bp.route('/api/todo/', methods=['POST'])
 def add_():
     new_todo = request.get_json()
-    print(new_todo)
-
-    TODO.add_todo(new_todo)
+    TODO.insert_todo(new_todo, 'incomplete')
     return jsonify({'message': '투두리스트에 저장됨'})
 
 
 @todo_bp.route('/api/todo/<int:todoID>', methods=['PUT'])
 def toggle_(todoID):
-
-    todos = TODO.toggle_todo(todoID)
+    status = TODO.get_status(todoID)
+    print('변경 전: ', status)
+    if status['status'] == 'complete':
+        new_status = 'incomplete'
+    else:
+        new_status = 'complete'
+    todos = TODO.update_todo(todoID, new_status)
     print('상태 수정됨: ', todos)
     return jsonify({'message':'ToDo 완료 여부 수정'})
 
 
 @todo_bp.route('/api/todo/<int:todoID>', methods=['DELETE'])
 def delete_(todoID):
-
     todos = TODO.delete_todo(todoID)    
     print('삭제됨: ', todos)
     return jsonify({'meassage':'ToDo 삭제'})
