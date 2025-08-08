@@ -12,7 +12,6 @@ prompt = ChatPromptTemplate.from_messages([
     HumanMessagePromptTemplate.from_template(template)
 ])
 
-prompt =
 
 # 모델 정의
 llm = ChatOpenAI(temperature=0.5)

@@ -65,7 +65,7 @@ async function handleUserMessage() {
     input.value = ''
     // addMessage(botResponse, 'bot')
     const chatbot = await sendMessageToServer(message)
-    addMessage(chatbot, 'chatbot')
+    addMessage(chatbot, 'bot')
 
 }
 
@@ -73,11 +73,21 @@ function addMessage(message, sender) {
     const container = document.getElementById('chatbotMessages')
 
     const messageElement = document.createElement('div');
-    messageElement.innerHTML = sender === 'user'
-        ?`<i class="bi bi-person"></i> ${message}`
-        :`<i class="bi bi-robot"></i> ${message}`
-    messageElement.classList.add(sender, 'message', 'message-bubble');
+    messageElement.className = `${sender} message`
 
+    const bubbleDiv = document.createElement('div')
+    bubbleDiv.className = 'message-bubble'
+
+    const icon = document.createElement('i')
+    icon.className = sender === 'user' ? 'bi bi-person' : 'bi bi-robot';
+    
+    const textNode = document.createTextNode('  ' + message);  // 공백 추가
+    
+    bubbleDiv.appendChild(icon)
+    bubbleDiv.appendChild(textNode)
+
+    messageElement.appendChild(bubbleDiv)
+    
     container.appendChild(messageElement);
     container.scrollTop = container.scrollHeight;
 }
