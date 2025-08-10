@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, session
-from database import databse as TODO
+from database import database as TODO
 
 todo_bp = Blueprint('todo', __name__)
 
@@ -10,7 +10,7 @@ todo_bp = Blueprint('todo', __name__)
 @todo_bp.route('/api/todo/', methods=['GET'])
 def get_todos():
 
-    todos = TODO.get_all()
+    todos = TODO.get_todolist()
     return jsonify({'todolist': todos})
 
 
@@ -19,14 +19,18 @@ def add_():
     new_todo = request.get_json()
     print(new_todo)
 
-    TODO.add_todo(new_todo)
+    TODO.insert_todo(new_todo, 'incomplete')
     return jsonify({'message': '투두리스트에 저장됨'})
 
 
 @todo_bp.route('/api/todo/<int:todoID>', methods=['PUT'])
 def toggle_(todoID):
-
-    todos = TODO.toggle_todo(todoID)
+    status = TODO.get_status(todoID)
+    print(status)
+    if status['status'] == 'complete':
+        todos = TODO.update_todo(todoID, 'imcomplete')
+    else:
+        todos = TODO.update_todo(todoID, 'complete')
     print('상태 수정됨: ', todos)
     return jsonify({'message':'ToDo 완료 여부 수정'})
 

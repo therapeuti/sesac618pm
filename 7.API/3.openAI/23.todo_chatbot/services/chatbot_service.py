@@ -3,6 +3,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder, Syst
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.chains import LLMChain
 from services.todo_service import get_all
+from database import database as db
 from dotenv import load_dotenv
 import os
 import json
@@ -38,8 +39,8 @@ def get_system_prompt():
 
                 [출력 형식]
                 {{ "action": "add", "item": [항목] }} - 할 일을 추가해야 할 때
-                {{ "action": "delete", "item": [항목ID] }} - 할 일을 안 하겠다고 하거나, 잘못 추가했을 때
-                {{ "action": "update", "item": [항목ID] }} - 할 일을 완료했거나, 완료를 취소해야 할 때
+                {{ "action": "delete", "item": [항목ID] }} - 할 일을 안 하겠다고 하거나, 잘못 추가했을 때, "삭제"해야할 때
+                {{ "action": "update", "item": [항목ID] }} - 할 일을 "완료"했거나, 완료를 취소해야 할 때
                 {{ "action": "list" }} - 할 일을 보여줘야 할 때
                 {{ "action": "nothing" }} - 어떻게 판단해야할지 모를때 또는 TODO 리스트와는 쓸대없는 질문이 들어왔을때
                     '''), # 시스템 프롬프트
@@ -77,27 +78,29 @@ def do_action(response):
 
     if action == 'add':
         item = my_action['item']
-        todo = add(item)
-
-        reply = f'{todo}를 추가했습니다.'
+        db.insert_todo(item, 'incomplete')
+        
+        reply = f'{item}를 추가했습니다.'
 
     elif action == 'update':
         item = my_action['item']
         print('투두리스트 업데이트 해야함')
+        status = db.get_status(item, 'incomplete')
 
-        todo = toggle(item)
-        print('업데이트 된 투두리스트', todo)
-
-        if todo['status'] == 'complete':
-            reply = f'{todo['todo']}가 완료되었습니다.'
+        if status == 'complete':
+            todo = db.update_todo(item, 'incomplete')
+            print('업데이트 된 투두리스트', todo)
+            reply = f'{todo['todo']}가 완료되지 않았습니다.'
         else:
-            reply = f'{todo['todo']}는 완료되지 않았습니다.'            
+            todo = db.update_todo(item, 'complete')
+            print('업데이트 된 투두리스트', todo)
+            reply = f'{todo['todo']}는 완료되었습니다.'            
 
     elif action =='delete':
         item = my_action['item']
         print('투두리스트 삭제해야함')
 
-        todos =  delete(item)
+        todos =  db.delete_todote(item)
         print('삭제된 후의 투두리스트 : ', todos)
         reply = f'투두리스트가 삭제되었습니다.'
 

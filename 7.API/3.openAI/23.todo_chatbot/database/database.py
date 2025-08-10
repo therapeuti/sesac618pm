@@ -11,7 +11,11 @@ def create_table():
                  todo STRING,
                  status STRING)
                  ''')
-    
+    cur.execute('''CREATE TABLE IF NOT EXISTS conversation
+                (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                role STRING,
+                content TEXT)
+                ''')
     conn.commit()
     conn.close()
 
@@ -76,6 +80,15 @@ def delete_todo(todo_id):
     conn.commit()
     conn.close()
 
+
+def save_conversation(role, content):
+    conn = get_connect()
+    cur = conn.cursor()
+
+    cur.execute('INSERT INTO conversation (role, content)VALUES (?, ?)', (role, content))
+
+    conn.commit()
+    conn.close()
 
 
 if __name__=='__main__':
