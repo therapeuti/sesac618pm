@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seoul Population Data</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+        #map {
+            height: 90vh;
+            width: 100%;
+        }
+        .legend {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        .legend-item {
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+        }
+        .legend-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background-color: rgba(255, 0, 0, 0.6);
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>서울시 인구 현황 지도</h1>
+    </div>
+    
+    <div class="legend">
+        <h4>인구수 범례</h4>
+        <div class="legend-item">
+            <div class="legend-circle" style="width: 30px; height: 30px;"></div>
+            <span>60만명 이상</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-circle" style="width: 25px; height: 25px;"></div>
+            <span>50만명 이상</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-circle" style="width: 20px; height: 20px;"></div>
+            <span>40만명 이상</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-circle" style="width: 15px; height: 15px;"></div>
+            <span>30만명 이상</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-circle" style="width: 10px; height: 10px;"></div>
+            <span>30만명 미만</span>
+        </div>
+    </div>
+
+    <div id="map"></div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // 지도 초기화 (서울 중심)
+        var map = L.map('map').setView([37.5665, 126.978], 11);
+
+        // 타일 레이어 추가
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // 백엔드 데이터 가져오기
+        var populationData = {{ population_data|tojson }};
+        var coordinatesData = {{ coordinates_data|tojson }};
+
+        // 인구수에 따른 원의 반지름 계산 함수
+        function getRadius(population) {
+            if (population >= 600000) return 800;
+            if (population >= 500000) return 650;
+            if (population >= 400000) return 500;
+            if (population >= 300000) return 350;
+            return 200;
+        }
+
+        // 인구수에 따른 색상 계산 함수
+        function getColor(population) {
+            if (population >= 600000) return '#8B0000';  // 진한 빨강
+            if (population >= 500000) return '#FF0000';  // 빨강
+            if (population >= 400000) return '#FF4500';  // 주황빨강
+            if (population >= 300000) return '#FFA500';  // 주황
+            return '#FFFF00';  // 노랑
+        }
+
+        // 각 구별로 원 추가
+        for (var district in populationData) {
+            var population = populationData[district];
+            var coordinates = coordinatesData[district];
+            
+            if (coordinates) {
+                var circle = L.circle(coordinates, {
+                    color: getColor(population),
+                    fillColor: getColor(population),
+                    fillOpacity: 0.6,
+                    radius: getRadius(population)
+                }).addTo(map);
+
+                // 팝업 추가
+                circle.bindPopup(`
+                    <strong>${district}</strong><br>
+                    인구수: ${population.toLocaleString()}명
+                `);
+
+                // 툴팁 추가
+                circle.bindTooltip(`${district}: ${population.toLocaleString()}명`);
+
+                // 원 중심에 지역 이름 표시
+                var divIcon = L.divIcon({
+                    className: 'district-label',
+                    html: `<div style="
+                        text-align: center; 
+                        font-size: 12px; 
+                        font-weight: bold; 
+                        color: white; 
+                        text-shadow: 1px 1px 1px black;
+                        pointer-events: none;
+                    ">${district}</div>`,
+                    iconSize: [80, 20],
+                    iconAnchor: [40, 10]
+                });
+
+                L.marker(coordinates, {
+                    icon: divIcon
+                }).addTo(map);
+            }
+        }
+    </script>
+</body>
+</html>

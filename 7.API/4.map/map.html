@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // 지도 초기화 (서울 시청 좌표)
+        var map = L.map('map').setView([37.5665, 126.978], 13);
+
+        // 타일 레이어 추가
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // 커스텀 아이콘 생성
+        var customIcon = L.icon({
+            iconUrl: 'icon.png', // 이미지 파일 경로
+            iconSize: [32, 32], // 아이콘 크기
+            iconAnchor: [16, 16], // 아이콘의 앵커 포인트
+            popupAnchor: [0, -16] // 팝업 위치
+        });
+
+        // 마커 추가 (커스텀 아이콘 사용)
+        L.marker([37.5665, 126.978], {icon: customIcon}).addTo(map)
+            .bindPopup('서울시청')
+            .openPopup();
+
+        // 반투명한 원 추가
+        L.circle([37.5665, 126.978], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 1000
+        }).addTo(map);
+    </script>
+</body>
+</html>
