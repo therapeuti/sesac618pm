@@ -1,0 +1,7 @@
+default_prompt:
+  template: |
+    주어진 문서 내용을 바탕으로 질문에 답변해주세요. 
+    문서 내용 : {content} 
+    질문 : {question} 
+    답변할 때, 반드시 출처도 명시해주세요. 
+    예: (출처: 페이지 15, Python 시큐어코딩 가이드)

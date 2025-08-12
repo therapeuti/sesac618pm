@@ -16,6 +16,9 @@ __pycache__/
 *.png
 *.gif
 *.jpeg
+*.chroma_db
+chroma_Db/
+DATA/
 
 
 # 민감정보 파일
