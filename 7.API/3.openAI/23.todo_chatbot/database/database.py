@@ -76,9 +76,11 @@ def delete_todo(todo_id):
     cur = conn.cursor()
 
     cur.execute('DELETE FROM todolist WHERE id=?', (todo_id, ))
-
     conn.commit()
+
+    todos = get_todolist()
     conn.close()
+    return todos
 
 
 def save_conversation(role, content):

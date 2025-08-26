@@ -2,7 +2,6 @@ from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder, SystemMessagePromptTemplate
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.chains import LLMChain
-from services.todo_service import get_all
 from database import database as db
 from dotenv import load_dotenv
 import os
@@ -53,9 +52,10 @@ def get_system_prompt():
 
 def chat_gpt(userinput):
     user_input = userinput['userInput']
-    my_todo_list = get_all()
+    my_todo_list = db.get_todolist()
     
-    llm = ChatOpenAI(model='gpt-4o', max_tokens=256)
+    # llm = ChatOpenAI(model='gpt-4o', max_tokens=256)
+    llm = ChatOpenAI(model='gpt-5')
 
     prompt = get_system_prompt()
 
@@ -64,10 +64,10 @@ def chat_gpt(userinput):
 
     input_prompt = {'todos': my_todo_list, 'user_input': user_input}
 
-    # response = chain.invoke(input_prompt) LCEL 표준
+    # response = chain.invoke(input_prompt) # LCEL 표준
     response = chain.predict(**input_prompt) # 메모리에 자동 저장
 
-    print(response)
+    print('llm의 응답 : ', response)
     
     return response
 
@@ -85,7 +85,7 @@ def do_action(response):
     elif action == 'update':
         item = my_action['item']
         print('투두리스트 업데이트 해야함')
-        status = db.get_status(item, 'incomplete')
+        status = db.get_status(item)
 
         if status == 'complete':
             todo = db.update_todo(item, 'incomplete')
@@ -100,7 +100,7 @@ def do_action(response):
         item = my_action['item']
         print('투두리스트 삭제해야함')
 
-        todos =  db.delete_todote(item)
+        todos =  db.delete_todo(item)
         print('삭제된 후의 투두리스트 : ', todos)
         reply = f'투두리스트가 삭제되었습니다.'
 
